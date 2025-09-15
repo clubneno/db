@@ -80,34 +80,56 @@ module.exports = async (req, res) => {
             );
             
             if (localProduct) {
-                // PRESERVE Supabase data first, then enhance with local data only where missing
+                // PRIORITIZE local JSON data (has user-added data) and supplement with Supabase metadata
                 return {
-                    // Always preserve ALL Supabase data (including user-added data)
-                    ...supabaseProduct,
+                    // Keep essential Supabase metadata
+                    id: supabaseProduct.id,
+                    scraped_at: supabaseProduct.scraped_at,
                     
-                    // Only enhance with local data if Supabase field is empty/null
-                    title: supabaseProduct.title || localProduct.title,
-                    description: supabaseProduct.description || localProduct.description,
-                    full_description: supabaseProduct.full_description || localProduct.fullDescription,
-                    image: supabaseProduct.image || localProduct.image,
-                    main_image: supabaseProduct.main_image || localProduct.image,
-                    price_amount: supabaseProduct.price_amount || (localProduct.price ? parseFloat(localProduct.price.replace(/[$,]/g, '')) : null),
-                    price_display: supabaseProduct.price_display || localProduct.price,
-                    subscription_price_amount: supabaseProduct.subscription_price_amount || (localProduct.subscriptionPrice ? parseFloat(localProduct.subscriptionPrice.replace(/[$,]/g, '')) : null),
-                    subscription_price_display: supabaseProduct.subscription_price_display || localProduct.subscriptionPrice,
-                    category: supabaseProduct.category || localProduct.category,
-                    primary_goal: supabaseProduct.primary_goal || localProduct.primaryGoal,
-                    link: supabaseProduct.link || localProduct.link,
-                    availability: supabaseProduct.availability || localProduct.availability,
-                    product_type: supabaseProduct.product_type || localProduct.productType,
+                    // Prioritize Supabase for EU/business fields (if they exist)
+                    eu_notification_status: supabaseProduct.eu_notification_status || 'Not started',
+                    eu_allowed: supabaseProduct.eu_allowed || 'yes',
+                    hs_code: supabaseProduct.hs_code,
+                    hs_code_description: supabaseProduct.hs_code_description,
+                    duty_rate: supabaseProduct.duty_rate,
                     
-                    // Add local-only fields as additional data (not overwriting Supabase)
-                    local_images: localProduct.images,
-                    local_variants: localProduct.variants,
-                    local_benefits: localProduct.benefits,
-                    local_ingredients: localProduct.ingredients,
-                    local_usage: localProduct.usage,
-                    local_tags: localProduct.tags
+                    // Prioritize LOCAL JSON for all content (has user-added data)
+                    title: localProduct.title,
+                    handle: localProduct.handle,
+                    price: localProduct.price,
+                    subscriptionPrice: localProduct.subscriptionPrice,
+                    price_amount: localProduct.price ? parseFloat(localProduct.price.replace(/[$,]/g, '')) : null,
+                    price_display: localProduct.price,
+                    subscription_price_amount: localProduct.subscriptionPrice ? parseFloat(localProduct.subscriptionPrice.replace(/[$,]/g, '')) : null,
+                    subscription_price_display: localProduct.subscriptionPrice,
+                    image: localProduct.image,
+                    main_image: localProduct.image,
+                    images: localProduct.images,
+                    description: localProduct.description,
+                    full_description: localProduct.fullDescription,
+                    category: localProduct.category,
+                    categories: localProduct.categories,
+                    primary_goal: localProduct.primaryGoal,
+                    primaryGoal: localProduct.primaryGoal,
+                    goals: localProduct.goals,
+                    vendor: localProduct.vendor,
+                    availability: localProduct.availability,
+                    product_type: localProduct.productType,
+                    productType: localProduct.productType,
+                    link: localProduct.link,
+                    variants: localProduct.variants,
+                    benefits: localProduct.benefits,
+                    ingredients: localProduct.ingredients,
+                    usage: localProduct.usage,
+                    tags: localProduct.tags,
+                    tagsString: localProduct.tagsString,
+                    flavors: localProduct.flavors,
+                    
+                    // Timestamps
+                    created_at: localProduct.createdAt,
+                    updated_at: localProduct.updatedAt,
+                    createdAt: localProduct.createdAt,
+                    updatedAt: localProduct.updatedAt
                 };
             } else {
                 // Only Supabase data available
