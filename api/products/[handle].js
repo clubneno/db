@@ -32,17 +32,23 @@ module.exports = async (req, res) => {
         // Check authentication
         const token = req.headers.authorization?.replace('Bearer ', '');
         
+        console.log('PUT /api/products/[handle] - Token received:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
+        console.log('PUT /api/products/[handle] - Headers:', JSON.stringify(req.headers, null, 2));
+        
         if (!token) {
             console.log('No token provided');
             return res.status(401).json({ error: 'Authentication required' });
         }
         
         // Verify token
+        console.log('PUT /api/products/[handle] - Attempting to verify token with Supabase...');
         const { data: { user }, error } = await supabaseAuth.auth.getUser(token);
+        
+        console.log('PUT /api/products/[handle] - Supabase auth result:', { user: !!user, error: error?.message });
         
         if (error || !user) {
             console.log('Auth verification failed:', error?.message);
-            return res.status(401).json({ error: 'Invalid or expired token' });
+            return res.status(401).json({ error: 'Invalid or expired token', details: error?.message });
         }
         
         console.log('Auth successful for user:', user.email);
