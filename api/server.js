@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -324,6 +325,58 @@ app.put('/api/products/:handle', requireAuth, async (req, res) => {
     console.log('Server received basic product info:', { size, servings, intakeFrequency, reorderPeriod });
     console.log('Server received pricing info:', { nutraceuticalsRegularPrice, nutraceuticalsSubscriptionPrice, clubnenoRegularPrice, clubnenoSubscriptionPrice });
     
+    // Use Supabase instead of local files for serverless environment
+    console.log('Server PUT - Attempting to update product with handle:', handle);
+    
+    // Prepare update object for Supabase
+    const updateObject = {
+      updated_at: new Date().toISOString()
+    };
+    
+    // Add fields that exist in request body
+    if (productName !== undefined && productName.trim() !== '') {
+      updateObject.title = productName.trim();
+    }
+    if (euAllowed !== undefined) {
+      updateObject.eu_allowed = euAllowed;
+    }
+    if (euNotificationStatus !== undefined) {
+      updateObject.eu_notification_status = euNotificationStatus;
+    }
+    if (hsCode !== undefined) {
+      updateObject.hs_code = hsCode;
+    }
+    if (hsCodeDescription !== undefined) {
+      updateObject.hs_code_description = hsCodeDescription;
+    }
+    if (dutyRate !== undefined && dutyRate !== null) {
+      updateObject.duty_rate = dutyRate;
+    }
+    
+    console.log('Server PUT - Supabase update object:', updateObject);
+    
+    // Update product in Supabase
+    const { data, error: updateError } = await supabase
+      .from('products')
+      .update(updateObject)
+      .eq('handle', handle)
+      .select();
+    
+    if (updateError) {
+      console.error('Server PUT - Database update error:', updateError);
+      return res.status(500).json({ error: 'Database update failed', details: updateError.message });
+    }
+    
+    if (!data || data.length === 0) {
+      console.log('Server PUT - Product not found for handle:', handle);
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    
+    console.log('✅ Server PUT - Successfully updated product:', handle);
+    return res.json({ success: true, product: data[0] });
+    
+    // Old file-based logic below (commented out for serverless compatibility)
+    /*
     const dataPath = path.join(__dirname, 'data', 'latest.json');
     if (!fs.existsSync(dataPath)) {
       return res.status(404).json({ error: 'No product data found' });
