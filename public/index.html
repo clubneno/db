@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product analyzer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -537,56 +538,89 @@
     <script>
         class AuthManager {
             constructor() {
-                this.token = localStorage.getItem('sessionToken');
-                this.currentUser = localStorage.getItem('currentUser');
+                this.supabase = null;
+                this.currentUser = null;
+                this.session = null;
+            }
+            
+            async init() {
+                try {
+                    // Get Supabase config
+                    const response = await fetch('/api/config');
+                    const config = await response.json();
+                    
+                    if (config.supabaseUrl && config.supabaseKey) {
+                        this.supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
+                        
+                        // Get current session
+                        const { data: { session } } = await this.supabase.auth.getSession();
+                        this.session = session;
+                        
+                        if (session) {
+                            this.currentUser = session.user;
+                        }
+                        
+                        // Listen for auth changes
+                        this.supabase.auth.onAuthStateChange((event, session) => {
+                            this.session = session;
+                            this.currentUser = session?.user || null;
+                            
+                            if (event === 'SIGNED_OUT' || !session) {
+                                this.redirectToLogin();
+                            } else if (session) {
+                                this.updateUserDisplay();
+                            }
+                        });
+                        
+                        return true;
+                    } else {
+                        throw new Error('Invalid Supabase configuration');
+                    }
+                } catch (error) {
+                    console.error('Failed to initialize Supabase:', error);
+                    return false;
+                }
             }
             
             async checkAuth() {
-                if (!this.token) {
-                    this.redirectToLogin();
-                    return false;
-                }
-                
-                try {
-                    const response = await fetch('/api/auth/check', {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        this.currentUser = data.user;
-                        localStorage.setItem('currentUser', this.currentUser);
-                        document.getElementById('currentUser').textContent = this.currentUser;
-                        return true;
-                    } else {
+                if (!this.supabase) {
+                    const initialized = await this.init();
+                    if (!initialized) {
                         this.redirectToLogin();
                         return false;
                     }
-                } catch (error) {
-                    console.error('Auth check failed:', error);
+                }
+                
+                if (this.session && this.currentUser) {
+                    this.updateUserDisplay();
+                    return true;
+                } else {
                     this.redirectToLogin();
                     return false;
+                }
+            }
+            
+            updateUserDisplay() {
+                if (this.currentUser && document.getElementById('currentUser')) {
+                    const email = this.currentUser.email;
+                    const displayName = email.split('@')[0]; // Use email username part
+                    document.getElementById('currentUser').textContent = displayName;
                 }
             }
             
             async logout() {
-                try {
-                    await fetch('/api/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${this.token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                } catch (error) {
-                    console.error('Logout request failed:', error);
+                if (this.supabase) {
+                    try {
+                        await this.supabase.auth.signOut();
+                    } catch (error) {
+                        console.error('Logout failed:', error);
+                    }
                 }
                 
-                localStorage.removeItem('sessionToken');
-                localStorage.removeItem('currentUser');
+                // Clear local state
+                this.session = null;
+                this.currentUser = null;
+                
                 this.redirectToLogin();
             }
             
@@ -595,10 +629,16 @@
             }
             
             getAuthHeaders() {
-                return {
-                    'Authorization': `Bearer ${this.token}`,
-                    'Content-Type': 'application/json'
-                };
+                if (this.session) {
+                    return {
+                        'Authorization': `Bearer ${this.session.access_token}`,
+                        'Content-Type': 'application/json'
+                    };
+                } else {
+                    return {
+                        'Content-Type': 'application/json'
+                    };
+                }
             }
         }
         
