@@ -4,19 +4,29 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 
-// Initialize Supabase client
+// Initialize Supabase client with service role key for server operations
 const supabase = createClient(
   process.env.SUPABASE_URL || 'https://baqdzabfkhtgnxzhoyax.supabase.co',
   process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhcWR6YWJma2h0Z254emhveWF4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzkxNjk4OSwiZXhwIjoyMDczNDkyOTg5fQ.SZmjBrkLRJ0jjNEiRUgXl2mLuTOqzU78t9abfojWixU'
 );
 
-// Helper function to load local product data
+// Also create a client with anon key for auth verification
+const supabaseAuth = createClient(
+  process.env.SUPABASE_URL || 'https://baqdzabfkhtgnxzhoyax.supabase.co',
+  process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhcWR6YWJma2h0Z254emhveWF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTY5ODksImV4cCI6MjA3MzQ5Mjk4OX0.qJZBWBApyQf8xgV0EuIZkGOy5pDbNhLXfzHklOL_V5o'
+);
+
+// Helper function to load local product data  
 const loadLocalProducts = () => {
   try {
+    // In Vercel serverless environment, try to load from data directory
     const dataPath = path.join(process.cwd(), 'data', 'latest.json');
     if (fs.existsSync(dataPath)) {
       return JSON.parse(fs.readFileSync(dataPath, 'utf8'));
     }
+    
+    // Fallback: return empty array if file doesn't exist
+    console.log('Local product data file not found, returning empty array');
     return [];
   } catch (error) {
     console.error('Error loading local products:', error);
@@ -44,8 +54,8 @@ async function requireAuth(req) {
             return { error: 'Authentication required', status: 401 };
         }
         
-        // Verify the token with Supabase
-        const { data: { user }, error } = await supabase.auth.getUser(token);
+        // Verify the token with Supabase using anon client
+        const { data: { user }, error } = await supabaseAuth.auth.getUser(token);
         
         console.log('Supabase auth result:', { user: !!user, error: error?.message });
         
@@ -135,10 +145,10 @@ module.exports = async (req, res) => {
                 const { data } = await dbQuery;
                 products = data || [];
             } else {
-                console.log('⚠️ Supabase data is incomplete, using local JSON');
+                console.log('⚠️ Supabase data is incomplete, would use local JSON but file not available in serverless');
                 
-                // Load from local JSON
-                let localProducts = loadLocalProducts();
+                // For now, return empty products since local file isn't available in serverless
+                let localProducts = [];
                 const { category, goal, minPrice, maxPrice, search, sortBy } = query;
                 
                 // Apply filters to local data
@@ -230,8 +240,8 @@ module.exports = async (req, res) => {
                     .select('price_amount, category, primary_goal, categories, goals, db_created_at');
                 products = data || [];
             } else {
-                console.log('⚠️ Using local JSON for analytics');
-                products = loadLocalProducts();
+                console.log('⚠️ Would use local JSON for analytics but file not available in serverless');
+                products = [];
             }
             
             if (!products || products.length === 0) {
