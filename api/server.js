@@ -433,6 +433,7 @@ app.put('/api/products/:handle', requireAuth, async (req, res) => {
     fs.writeFileSync(dataPath, JSON.stringify(products, null, 2));
     
     res.json({ success: true, product: products[productIndex] });
+    */
   } catch (error) {
     console.error('Error updating product:', error);
     console.error('Error stack:', error.stack);
