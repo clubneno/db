@@ -150,9 +150,63 @@
         .bg-secondary {
             background-color: var(--secondary);
         }
+        /* Loading screen styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .loading-content {
+            text-align: center;
+            max-width: 400px;
+        }
+        
+        .spinner {
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Hide main content initially */
+        .main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .main-content.show {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="spinner">
+                <i class="fas fa-spinner"></i>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">Loading Product Analyzer</h2>
+            <p class="text-gray-600">Checking authentication...</p>
+        </div>
+    </div>
+
+    <div id="mainContent" class="main-content">
     <!-- Header -->
     <header class="bg-white shadow-sm border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -625,7 +679,15 @@
             }
             
             redirectToLogin() {
-                window.location.href = '/login.html';
+                // Update loading screen message before redirecting
+                const loadingText = document.querySelector('#loadingScreen p');
+                if (loadingText) {
+                    loadingText.textContent = 'Redirecting to login...';
+                }
+                // Small delay to show the message before redirect
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 300);
             }
             
             getAuthHeaders() {
@@ -647,12 +709,26 @@
         
         // Check authentication on page load
         window.addEventListener('DOMContentLoaded', async () => {
-            const isAuthenticated = await window.authManager.checkAuth();
-            if (isAuthenticated) {
-                // Set up logout button
-                document.getElementById('logoutBtn').addEventListener('click', () => {
-                    window.authManager.logout();
-                });
+            try {
+                const isAuthenticated = await window.authManager.checkAuth();
+                if (isAuthenticated) {
+                    // Hide loading screen and show main content
+                    document.getElementById('loadingScreen').style.display = 'none';
+                    document.getElementById('mainContent').classList.add('show');
+                    
+                    // Set up logout button
+                    document.getElementById('logoutBtn').addEventListener('click', () => {
+                        window.authManager.logout();
+                    });
+                } else {
+                    // Authentication failed - loading screen will remain and redirect will happen
+                }
+            } catch (error) {
+                console.error('Authentication check failed:', error);
+                // Hide loading screen if there's an error to prevent infinite loading
+                document.getElementById('loadingScreen').style.display = 'none';
+                // Redirect to login
+                window.location.href = '/login.html';
             }
         });
     </script>
@@ -665,5 +741,6 @@
         });
     </script>
     <script src="navigation.js?v=36"></script>
+    </div> <!-- End mainContent -->
 </body>
 </html>
