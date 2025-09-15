@@ -1,15 +1,25 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
+const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL || 'https://baqdzabfkhtgnxzhoyax.supabase.co',
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhcWR6YWJma2h0Z254emhveWF4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzkxNjk4OSwiZXhwIjoyMDczNDkyOTg5fQ.SZmjBrkLRJ0jjNEiRUgXl2mLuTOqzU78t9abfojWixU'
+);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
+
+// Mount debug routes
+const debugRouter = require('./api/debug');
+app.use('/api', debugRouter);
 
 // Simple authentication (in production, use proper session management)
 const sessions = new Map();
@@ -90,165 +100,165 @@ app.get('/api/auth/check', requireAuth, (req, res) => {
     });
 });
 
-// Protected Routes
-app.get('/api/products', requireAuth, (req, res) => {
+// Protected Routes - Supabase powered
+app.get('/api/products', requireAuth, async (req, res) => {
   try {
-    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    console.log('🔍 Fetching products from Supabase...');
     
-    if (!fs.existsSync(dataPath)) {
-      return res.status(404).json({ 
-        error: 'No product data found. Please run the scraper first.' 
-      });
-    }
-
-    const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-    
-    // Apply filters if provided
-    let filteredProducts = products;
+    let query = supabase.from('products').select('*');
     
     const { category, goal, minPrice, maxPrice, search, sortBy, euNotificationStatus } = req.query;
     
+    // Apply search filter
     if (search) {
-      filteredProducts = filteredProducts.filter(product =>
-        product.title.toLowerCase().includes(search.toLowerCase()) ||
-        (product.description && product.description.toLowerCase().includes(search.toLowerCase()))
-      );
+      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
     }
     
+    // Apply category filter
     if (category) {
-      filteredProducts = filteredProducts.filter(product => {
-        // Check both single category and multiple categories
-        const hasInCategory = product.category && product.category.toLowerCase().includes(category.toLowerCase());
-        const hasInCategories = product.categories && product.categories.some(c => 
-          c.toLowerCase().includes(category.toLowerCase())
-        );
-        return hasInCategory || hasInCategories;
-      });
+      query = query.or(`category.ilike.%${category}%,categories.cs.["%{category}"]`);
     }
     
+    // Apply goal filter
     if (goal) {
-      filteredProducts = filteredProducts.filter(product => {
-        // Check if the product has this goal in any of its goals
-        const hasInGoals = product.goals && product.goals.some(g => 
-          g.toLowerCase().includes(goal.toLowerCase())
-        );
-        const hasInPrimaryGoal = product.primaryGoal && 
-          product.primaryGoal.toLowerCase().includes(goal.toLowerCase());
-        return hasInGoals || hasInPrimaryGoal;
-      });
+      query = query.or(`primary_goal.ilike.%${goal}%,goals.cs.["%{goal}"]`);
     }
     
-    if (minPrice || maxPrice) {
-      filteredProducts = filteredProducts.filter(product => {
-        const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
-        if (isNaN(price)) return true;
-        
-        if (minPrice && price < parseFloat(minPrice)) return false;
-        if (maxPrice && price > parseFloat(maxPrice)) return false;
-        return true;
-      });
+    // Apply price filters
+    if (minPrice) {
+      query = query.gte('price_amount', parseFloat(minPrice));
+    }
+    if (maxPrice) {
+      query = query.lte('price_amount', parseFloat(maxPrice));
     }
     
+    // Apply EU notification status filter
     if (euNotificationStatus) {
-      filteredProducts = filteredProducts.filter(product => {
-        const productStatus = product.euNotificationStatus || 'Not started';
-        return productStatus === euNotificationStatus;
-      });
+      query = query.eq('eu_notification_status', euNotificationStatus);
     }
     
-    // Sort products
+    // Apply sorting
     if (sortBy) {
-      filteredProducts.sort((a, b) => {
-        switch (sortBy) {
-          case 'price_asc':
-            return parseFloat(a.price.replace(/[^0-9.]/g, '')) - parseFloat(b.price.replace(/[^0-9.]/g, ''));
-          case 'price_desc':
-            return parseFloat(b.price.replace(/[^0-9.]/g, '')) - parseFloat(a.price.replace(/[^0-9.]/g, ''));
-          case 'name_asc':
-            return a.title.localeCompare(b.title);
-          case 'name_desc':
-            return b.title.localeCompare(a.title);
-          default:
-            return 0;
-        }
-      });
+      switch (sortBy) {
+        case 'price_asc':
+          query = query.order('price_amount', { ascending: true });
+          break;
+        case 'price_desc':
+          query = query.order('price_amount', { ascending: false });
+          break;
+        case 'name_asc':
+          query = query.order('title', { ascending: true });
+          break;
+        case 'name_desc':
+          query = query.order('title', { ascending: false });
+          break;
+        default:
+          query = query.order('title', { ascending: true });
+      }
+    } else {
+      query = query.order('title', { ascending: true });
     }
+    
+    const { data: products, error } = await query;
+    
+    if (error) {
+      console.error('❌ Supabase error:', error);
+      return res.status(500).json({ error: 'Failed to fetch products from database' });
+    }
+    
+    console.log(`✅ Fetched ${products?.length || 0} products from Supabase`);
     
     res.json({
-      products: filteredProducts,
-      total: filteredProducts.length,
-      scraped_at: products.length > 0 ? products[0].scraped_at : null
+      products: products || [],
+      total: products?.length || 0,
+      source: 'supabase'
     });
     
   } catch (error) {
-    console.error('Error loading products:', error);
-    res.status(500).json({ error: 'Failed to load product data' });
+    console.error('💥 Error loading products from Supabase:', error);
+    res.status(500).json({ error: 'Failed to load product data from database' });
   }
 });
 
-app.get('/api/analytics', requireAuth, (req, res) => {
+app.get('/api/analytics', requireAuth, async (req, res) => {
   try {
-    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    console.log('📊 Generating analytics from Supabase...');
     
-    if (!fs.existsSync(dataPath)) {
-      return res.status(404).json({ error: 'No product data found' });
+    const { data: products, error } = await supabase
+      .from('products')
+      .select('price_amount, category, primary_goal, categories, goals, db_created_at');
+    
+    if (error) {
+      console.error('❌ Supabase analytics error:', error);
+      return res.status(500).json({ error: 'Failed to fetch analytics data' });
     }
-
-    const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+    
+    if (!products || products.length === 0) {
+      return res.json({
+        total_products: 0,
+        price_stats: { min: 0, max: 0, average: 0, median: 0 },
+        categories: {},
+        goals: {},
+        price_ranges: { '$0-25': 0, '$26-50': 0, '$51-100': 0, '$100+': 0 },
+        source: 'supabase'
+      });
+    }
     
     // Generate analytics
     const prices = products
-      .map(p => parseFloat(p.price.replace(/[^0-9.]/g, '')))
-      .filter(p => !isNaN(p));
+      .map(p => p.price_amount)
+      .filter(p => p !== null && !isNaN(p));
     
     const categories = {};
     const goals = {};
+    
     products.forEach(product => {
       // Handle multiple categories per product
       if (product.categories && Array.isArray(product.categories)) {
         product.categories.forEach(category => {
-          categories[category] = (categories[category] || 0) + 1;
+          if (category) categories[category] = (categories[category] || 0) + 1;
         });
-      } else if (product.category) {
-        // Fallback to single category
+      }
+      if (product.category) {
         categories[product.category] = (categories[product.category] || 0) + 1;
       }
       
       // Handle multiple goals per product
       if (product.goals && Array.isArray(product.goals)) {
         product.goals.forEach(goal => {
-          goals[goal] = (goals[goal] || 0) + 1;
+          if (goal) goals[goal] = (goals[goal] || 0) + 1;
         });
       }
-      if (product.primaryGoal) {
-        goals[product.primaryGoal] = (goals[product.primaryGoal] || 0) + 1;
+      if (product.primary_goal) {
+        goals[product.primary_goal] = (goals[product.primary_goal] || 0) + 1;
       }
     });
     
     const analytics = {
       total_products: products.length,
-      price_stats: {
+      price_stats: prices.length > 0 ? {
         min: Math.min(...prices),
         max: Math.max(...prices),
         average: prices.reduce((a, b) => a + b, 0) / prices.length,
         median: prices.sort((a, b) => a - b)[Math.floor(prices.length / 2)]
-      },
+      } : { min: 0, max: 0, average: 0, median: 0 },
       categories,
       goals,
-      price_ranges: {
+      price_ranges: prices.length > 0 ? {
         '$0-25': prices.filter(p => p <= 25).length,
         '$26-50': prices.filter(p => p > 25 && p <= 50).length,
         '$51-100': prices.filter(p => p > 50 && p <= 100).length,
         '$100+': prices.filter(p => p > 100).length
-      },
-      last_updated: products.length > 0 ? products[0].scraped_at : null
+      } : { '$0-25': 0, '$26-50': 0, '$51-100': 0, '$100+': 0 },
+      source: 'supabase'
     };
     
+    console.log(`✅ Analytics generated for ${products.length} products`);
     res.json(analytics);
     
   } catch (error) {
-    console.error('Error generating analytics:', error);
-    res.status(500).json({ error: 'Failed to generate analytics' });
+    console.error('💥 Error generating analytics:', error);
+    res.status(500).json({ error: 'Failed to generate analytics from database' });
   }
 });
 
