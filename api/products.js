@@ -24,10 +24,18 @@ module.exports = async (req, res) => {
         return res.status(200).end();
     }
     
-    // Parse request body for PUT requests
+    // Handle different HTTP methods
     if (req.method === 'PUT') {
-        // Manual body parsing for serverless environment
-        if (!req.body && req.readable) {
+        console.log('PUT /api/products - Request received, body exists:', !!req.body, 'readable:', req.readable);
+        console.log('PUT /api/products - Raw body:', req.body);
+        
+        // Vercel already parses JSON body
+        if (req.body) {
+            return handleProductUpdate(req, res);
+        }
+        
+        // Fallback manual parsing if needed
+        if (req.readable) {
             let body = '';
             req.on('data', chunk => {
                 body += chunk.toString();
@@ -35,7 +43,7 @@ module.exports = async (req, res) => {
             req.on('end', () => {
                 try {
                     req.body = JSON.parse(body);
-                    console.log('PUT /api/products - Parsed request body:', req.body);
+                    console.log('PUT /api/products - Manually parsed request body:', req.body);
                 } catch (e) {
                     console.error('PUT /api/products - Failed to parse request body:', e);
                     req.body = {};
@@ -43,9 +51,13 @@ module.exports = async (req, res) => {
                 return handleProductUpdate(req, res);
             });
             return;
-        } else {
-            return handleProductUpdate(req, res);
         }
+        
+        // No body available
+        console.log('PUT /api/products - No body data available');
+        req.body = {};
+        return handleProductUpdate(req, res);
+        
     } else if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
