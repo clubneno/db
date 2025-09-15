@@ -287,6 +287,10 @@ class MomentousApp {
             
             console.log('Products loaded:', productsData.products.length);
             
+            // Store products data for editing functionality
+            this.products = productsData.products;
+            this.analytics = analyticsData;
+            
             // Hide loading, show products
             if (loadingState) loadingState.classList.add('hidden');
             
