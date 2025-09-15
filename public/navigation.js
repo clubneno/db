@@ -2023,6 +2023,14 @@ class MomentousApp {
         });
         
         try {
+            // Debug: Check auth headers
+            const authHeaders = window.authManager ? window.authManager.getAuthHeaders() : {};
+            console.log('Auth headers for product update:', authHeaders);
+            console.log('Auth manager available:', !!window.authManager);
+            if (window.authManager) {
+                console.log('Auth manager session:', !!window.authManager.session);
+            }
+            
             const response = await this.authFetch(`/api/products/${encodeURIComponent(productHandle)}`, {
                 method: 'PUT',
                 body: JSON.stringify({ 
