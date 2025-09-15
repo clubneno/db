@@ -12,10 +12,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// Initialize Supabase client
+// Initialize Supabase client with service role for database operations
 const supabase = createClient(
     process.env.SUPABASE_URL, 
-    process.env.SUPABASE_ANON_KEY
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY
 );
 
 // Supabase authentication middleware
@@ -54,93 +54,82 @@ app.get('/api/auth/check', requireAuth, (req, res) => {
 });
 
 // Protected Routes
-app.get('/api/products', requireAuth, (req, res) => {
+app.get('/api/products', requireAuth, async (req, res) => {
   try {
-    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
-    
-    if (!fs.existsSync(dataPath)) {
-      return res.status(404).json({ 
-        error: 'No product data found. Please run the scraper first.' 
-      });
-    }
-
-    const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-    
-    // Apply filters if provided
-    let filteredProducts = products;
-    
     const { category, goal, minPrice, maxPrice, search, sortBy, euNotificationStatus } = req.query;
     
+    // Build Supabase query
+    let query = supabase
+      .from('products')
+      .select('*');
+    
+    // Apply search filter
     if (search) {
-      filteredProducts = filteredProducts.filter(product =>
-        product.title.toLowerCase().includes(search.toLowerCase()) ||
-        (product.description && product.description.toLowerCase().includes(search.toLowerCase()))
-      );
+      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
     }
     
+    // Apply category filter
     if (category) {
-      filteredProducts = filteredProducts.filter(product => {
-        // Check both single category and multiple categories
-        const hasInCategory = product.category && product.category.toLowerCase().includes(category.toLowerCase());
-        const hasInCategories = product.categories && product.categories.some(c => 
-          c.toLowerCase().includes(category.toLowerCase())
-        );
-        return hasInCategory || hasInCategories;
-      });
+      query = query.or(`category.ilike.%${category}%`);
     }
     
+    // Apply primary goal filter
     if (goal) {
-      filteredProducts = filteredProducts.filter(product => {
-        // Check if the product has this goal in any of its goals
-        const hasInGoals = product.goals && product.goals.some(g => 
-          g.toLowerCase().includes(goal.toLowerCase())
-        );
-        const hasInPrimaryGoal = product.primaryGoal && 
-          product.primaryGoal.toLowerCase().includes(goal.toLowerCase());
-        return hasInGoals || hasInPrimaryGoal;
-      });
+      query = query.or(`primary_goal.ilike.%${goal}%`);
     }
     
-    if (minPrice || maxPrice) {
-      filteredProducts = filteredProducts.filter(product => {
-        const price = parseFloat(product.price.replace(/[^0-9.]/g, ''));
-        if (isNaN(price)) return true;
-        
-        if (minPrice && price < parseFloat(minPrice)) return false;
-        if (maxPrice && price > parseFloat(maxPrice)) return false;
-        return true;
-      });
+    // Apply price range filters
+    if (minPrice) {
+      query = query.gte('price_amount', parseFloat(minPrice));
+    }
+    if (maxPrice) {
+      query = query.lte('price_amount', parseFloat(maxPrice));
     }
     
-    if (euNotificationStatus) {
-      filteredProducts = filteredProducts.filter(product => {
-        const productStatus = product.euNotificationStatus || 'Not started';
-        return productStatus === euNotificationStatus;
-      });
-    }
-    
-    // Sort products
+    // Apply sorting
     if (sortBy) {
-      filteredProducts.sort((a, b) => {
-        switch (sortBy) {
-          case 'price_asc':
-            return parseFloat(a.price.replace(/[^0-9.]/g, '')) - parseFloat(b.price.replace(/[^0-9.]/g, ''));
-          case 'price_desc':
-            return parseFloat(b.price.replace(/[^0-9.]/g, '')) - parseFloat(a.price.replace(/[^0-9.]/g, ''));
-          case 'name_asc':
-            return a.title.localeCompare(b.title);
-          case 'name_desc':
-            return b.title.localeCompare(a.title);
-          default:
-            return 0;
-        }
-      });
+      switch (sortBy) {
+        case 'price_asc':
+          query = query.order('price_amount', { ascending: true });
+          break;
+        case 'price_desc':
+          query = query.order('price_amount', { ascending: false });
+          break;
+        case 'name_asc':
+          query = query.order('title', { ascending: true });
+          break;
+        case 'name_desc':
+          query = query.order('title', { ascending: false });
+          break;
+        default:
+          query = query.order('title', { ascending: true });
+      }
+    } else {
+      query = query.order('title', { ascending: true });
     }
+    
+    const { data: products, error } = await query;
+    
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: 'Failed to load product data from database' });
+    }
+    
+    // Transform data to match expected format
+    const transformedProducts = products.map(product => ({
+      ...product,
+      price: product.price_display || `$${product.price_amount || 0}`,
+      subscriptionPrice: product.subscription_price_display || `$${product.subscription_price_amount || 0}`,
+      primaryGoal: product.primary_goal,
+      euAllowed: product.eu_allowed,
+      createdAt: product.created_at,
+      updatedAt: product.updated_at || product.created_at
+    }));
     
     res.json({
-      products: filteredProducts,
-      total: filteredProducts.length,
-      scraped_at: products.length > 0 ? products[0].scraped_at : null
+      products: transformedProducts,
+      total: transformedProducts.length,
+      scraped_at: new Date().toISOString()
     });
     
   } catch (error) {
@@ -149,53 +138,45 @@ app.get('/api/products', requireAuth, (req, res) => {
   }
 });
 
-app.get('/api/analytics', requireAuth, (req, res) => {
+app.get('/api/analytics', requireAuth, async (req, res) => {
   try {
-    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
+    const { data: products, error } = await supabase
+      .from('products')
+      .select('price_amount, category, primary_goal, created_at');
     
-    if (!fs.existsSync(dataPath)) {
-      return res.status(404).json({ error: 'No product data found' });
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: 'Failed to load product data from database' });
     }
-
-    const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
     
     // Generate analytics
     const prices = products
-      .map(p => parseFloat(p.price.replace(/[^0-9.]/g, '')))
-      .filter(p => !isNaN(p));
+      .map(p => p.price_amount)
+      .filter(p => p !== null && !isNaN(p));
     
     const categories = {};
     const goals = {};
+    
     products.forEach(product => {
-      // Handle multiple categories per product
-      if (product.categories && Array.isArray(product.categories)) {
-        product.categories.forEach(category => {
-          categories[category] = (categories[category] || 0) + 1;
-        });
-      } else if (product.category) {
-        // Fallback to single category
+      // Count categories
+      if (product.category) {
         categories[product.category] = (categories[product.category] || 0) + 1;
       }
       
-      // Handle multiple goals per product
-      if (product.goals && Array.isArray(product.goals)) {
-        product.goals.forEach(goal => {
-          goals[goal] = (goals[goal] || 0) + 1;
-        });
-      }
-      if (product.primaryGoal) {
-        goals[product.primaryGoal] = (goals[product.primaryGoal] || 0) + 1;
+      // Count goals
+      if (product.primary_goal) {
+        goals[product.primary_goal] = (goals[product.primary_goal] || 0) + 1;
       }
     });
     
     const analytics = {
       total_products: products.length,
-      price_stats: {
+      price_stats: prices.length > 0 ? {
         min: Math.min(...prices),
         max: Math.max(...prices),
         average: prices.reduce((a, b) => a + b, 0) / prices.length,
         median: prices.sort((a, b) => a - b)[Math.floor(prices.length / 2)]
-      },
+      } : { min: 0, max: 0, average: 0, median: 0 },
       categories,
       goals,
       price_ranges: {
@@ -204,7 +185,7 @@ app.get('/api/analytics', requireAuth, (req, res) => {
         '$51-100': prices.filter(p => p > 50 && p <= 100).length,
         '$100+': prices.filter(p => p > 100).length
       },
-      last_updated: products.length > 0 ? products[0].scraped_at : null
+      last_updated: new Date().toISOString()
     };
     
     res.json(analytics);
@@ -547,13 +528,18 @@ app.delete('/api/goals/:name', requireAuth, (req, res) => {
 });
 
 // Get categories
-app.get('/api/categories', requireAuth, (req, res) => {
+app.get('/api/categories', requireAuth, async (req, res) => {
   try {
-    const categoriesPath = path.join(__dirname, '..', 'data', 'categories.json');
-    let categories = [];
-    if (fs.existsSync(categoriesPath)) {
-      categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
+    const { data: categories, error } = await supabase
+      .from('categories')
+      .select('*')
+      .order('name');
+    
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: 'Failed to load categories from database' });
     }
+    
     res.json({ categories });
   } catch (error) {
     console.error('Error loading categories:', error);
@@ -562,13 +548,18 @@ app.get('/api/categories', requireAuth, (req, res) => {
 });
 
 // Get goals
-app.get('/api/goals', requireAuth, (req, res) => {
+app.get('/api/goals', requireAuth, async (req, res) => {
   try {
-    const goalsPath = path.join(__dirname, '..', 'data', 'goals.json');
-    let goals = [];
-    if (fs.existsSync(goalsPath)) {
-      goals = JSON.parse(fs.readFileSync(goalsPath, 'utf8'));
+    const { data: goals, error } = await supabase
+      .from('goals')
+      .select('*')
+      .order('name');
+    
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: 'Failed to load goals from database' });
     }
+    
     res.json({ goals });
   } catch (error) {
     console.error('Error loading goals:', error);
@@ -577,13 +568,18 @@ app.get('/api/goals', requireAuth, (req, res) => {
 });
 
 // Get flavors
-app.get('/api/flavors', requireAuth, (req, res) => {
+app.get('/api/flavors', requireAuth, async (req, res) => {
   try {
-    const flavorsPath = path.join(__dirname, '..', 'data', 'flavors.json');
-    let flavors = [];
-    if (fs.existsSync(flavorsPath)) {
-      flavors = JSON.parse(fs.readFileSync(flavorsPath, 'utf8'));
+    const { data: flavors, error } = await supabase
+      .from('flavors')
+      .select('*')
+      .order('name');
+    
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: 'Failed to load flavors from database' });
     }
+    
     res.json({ flavors });
   } catch (error) {
     console.error('Error loading flavors:', error);
