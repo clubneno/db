@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,30 +29,44 @@ const users = {
     'user': 'pass123'
 };
 
-// Authentication middleware
-const requireAuth = (req, res, next) => {
-    const token = req.headers.authorization?.replace('Bearer ', '') || 
-                 req.body.token || 
-                 req.query.token;
-    
-    if (!token || !sessions.has(token)) {
-        return res.status(401).json({ error: 'Authentication required' });
+// Authentication middleware for Supabase
+const requireAuth = async (req, res, next) => {
+    try {
+        const token = req.headers.authorization?.replace('Bearer ', '');
+        
+        if (!token) {
+            return res.status(401).json({ error: 'Authentication required' });
+        }
+        
+        // Verify the token with Supabase
+        const { data: { user }, error } = await supabase.auth.getUser(token);
+        
+        if (error || !user) {
+            console.log('Auth error:', error);
+            return res.status(401).json({ error: 'Invalid or expired token' });
+        }
+        
+        req.user = user;
+        next();
+        
+    } catch (error) {
+        console.error('Authentication middleware error:', error);
+        return res.status(401).json({ error: 'Authentication failed' });
     }
-    
-    const session = sessions.get(token);
-    if (Date.now() > session.expires) {
-        sessions.delete(token);
-        return res.status(401).json({ error: 'Session expired' });
-    }
-    
-    req.user = session.user;
-    next();
 };
 
 // Generate simple token
 function generateToken() {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
 }
+
+// Config endpoint for frontend
+app.get('/api/config', (req, res) => {
+  res.json({
+    supabaseUrl: process.env.SUPABASE_URL || 'https://baqdzabfkhtgnxzhoyax.supabase.co',
+    supabaseKey: process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhcWR6YWJma2h0Z254emhveWF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTY5ODksImV4cCI6MjA3MzQ5Mjk4OX0.qJZBWBApyQf8xgV0EuIZkGOy5pDbNhLXfzHklOL_V5o'
+  });
+});
 
 // Authentication Routes
 app.post('/api/login', (req, res) => {
@@ -100,97 +115,178 @@ app.get('/api/auth/check', requireAuth, (req, res) => {
     });
 });
 
-// Protected Routes - Supabase powered
+// Helper function to load local product data
+const loadLocalProducts = () => {
+  try {
+    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    if (fs.existsSync(dataPath)) {
+      return JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+    }
+    return [];
+  } catch (error) {
+    console.error('Error loading local products:', error);
+    return [];
+  }
+};
+
+// Helper function to extract price from string
+const extractPrice = (priceString) => {
+  if (!priceString) return 0;
+  const matches = priceString.toString().match(/[\d,]+\.?\d*/);
+  return matches ? parseFloat(matches[0].replace(',', '')) : 0;
+};
+
+// Protected Routes - Hybrid approach (Supabase + Local JSON fallback)
 app.get('/api/products', requireAuth, async (req, res) => {
   try {
-    console.log('🔍 Fetching products from Supabase...');
+    console.log('🔍 Fetching products...');
     
-    let query = supabase.from('products').select('*');
+    // Try Supabase first
+    const { data: supabaseProducts } = await supabase.from('products').select('*').limit(5);
     
-    const { category, goal, minPrice, maxPrice, search, sortBy, euNotificationStatus } = req.query;
+    // Check if Supabase has meaningful data
+    const hasUsefulSupabaseData = supabaseProducts && supabaseProducts.some(p => 
+      p.price_amount || p.description || p.image || p.category
+    );
     
-    // Apply search filter
-    if (search) {
-      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
-    }
+    let products = [];
+    let dataSource = 'local';
     
-    // Apply category filter
-    if (category) {
-      query = query.or(`category.ilike.%${category}%,categories.cs.["%{category}"]`);
-    }
-    
-    // Apply goal filter
-    if (goal) {
-      query = query.or(`primary_goal.ilike.%${goal}%,goals.cs.["%{goal}"]`);
-    }
-    
-    // Apply price filters
-    if (minPrice) {
-      query = query.gte('price_amount', parseFloat(minPrice));
-    }
-    if (maxPrice) {
-      query = query.lte('price_amount', parseFloat(maxPrice));
-    }
-    
-    // Apply EU notification status filter
-    if (euNotificationStatus) {
-      query = query.eq('eu_notification_status', euNotificationStatus);
-    }
-    
-    // Apply sorting
-    if (sortBy) {
-      switch (sortBy) {
-        case 'price_asc':
-          query = query.order('price_amount', { ascending: true });
-          break;
-        case 'price_desc':
-          query = query.order('price_amount', { ascending: false });
-          break;
-        case 'name_asc':
-          query = query.order('title', { ascending: true });
-          break;
-        case 'name_desc':
-          query = query.order('title', { ascending: false });
-          break;
-        default:
-          query = query.order('title', { ascending: true });
+    if (hasUsefulSupabaseData) {
+      console.log('✅ Using Supabase data');
+      dataSource = 'supabase';
+      // Use Supabase query logic
+      let query = supabase.from('products').select('*');
+      
+      const { category, goal, minPrice, maxPrice, search, sortBy, euNotificationStatus } = req.query;
+      
+      if (search) query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+      if (category) query = query.or(`category.ilike.%${category}%,categories.cs.["%{category}"]`);
+      if (goal) query = query.or(`primary_goal.ilike.%${goal}%,goals.cs.["%{goal}"]`);
+      if (minPrice) query = query.gte('price_amount', parseFloat(minPrice));
+      if (maxPrice) query = query.lte('price_amount', parseFloat(maxPrice));
+      if (euNotificationStatus) query = query.eq('eu_notification_status', euNotificationStatus);
+      
+      if (sortBy) {
+        switch (sortBy) {
+          case 'price_asc': query = query.order('price_amount', { ascending: true }); break;
+          case 'price_desc': query = query.order('price_amount', { ascending: false }); break;
+          case 'name_asc': query = query.order('title', { ascending: true }); break;
+          case 'name_desc': query = query.order('title', { ascending: false }); break;
+          default: query = query.order('title', { ascending: true });
+        }
+      } else {
+        query = query.order('title', { ascending: true });
       }
+      
+      const { data } = await query;
+      products = data || [];
     } else {
-      query = query.order('title', { ascending: true });
+      console.log('⚠️ Supabase data is incomplete, using local JSON');
+      
+      // Load from local JSON
+      let localProducts = loadLocalProducts();
+      const { category, goal, minPrice, maxPrice, search, sortBy } = req.query;
+      
+      // Apply filters to local data
+      if (search) {
+        const searchLower = search.toLowerCase();
+        localProducts = localProducts.filter(p => 
+          (p.title && p.title.toLowerCase().includes(searchLower)) ||
+          (p.description && p.description.toLowerCase().includes(searchLower))
+        );
+      }
+      
+      if (category) {
+        localProducts = localProducts.filter(p => 
+          (p.category && p.category.toLowerCase().includes(category.toLowerCase())) ||
+          (p.categories && p.categories.some(c => c.toLowerCase().includes(category.toLowerCase())))
+        );
+      }
+      
+      if (goal) {
+        localProducts = localProducts.filter(p => 
+          (p.primaryGoal && p.primaryGoal.toLowerCase().includes(goal.toLowerCase())) ||
+          (p.goals && p.goals.some(g => g.toLowerCase().includes(goal.toLowerCase())))
+        );
+      }
+      
+      if (minPrice || maxPrice) {
+        localProducts = localProducts.filter(p => {
+          const price = extractPrice(p.price);
+          if (minPrice && price < parseFloat(minPrice)) return false;
+          if (maxPrice && price > parseFloat(maxPrice)) return false;
+          return true;
+        });
+      }
+      
+      // Apply sorting
+      if (sortBy) {
+        switch (sortBy) {
+          case 'price_asc':
+            localProducts.sort((a, b) => extractPrice(a.price) - extractPrice(b.price));
+            break;
+          case 'price_desc':
+            localProducts.sort((a, b) => extractPrice(b.price) - extractPrice(a.price));
+            break;
+          case 'name_asc':
+            localProducts.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+            break;
+          case 'name_desc':
+            localProducts.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+            break;
+        }
+      }
+      
+      products = localProducts;
     }
     
-    const { data: products, error } = await query;
-    
-    if (error) {
-      console.error('❌ Supabase error:', error);
-      return res.status(500).json({ error: 'Failed to fetch products from database' });
-    }
-    
-    console.log(`✅ Fetched ${products?.length || 0} products from Supabase`);
+    console.log(`✅ Returning ${products.length} products from ${dataSource}`);
     
     res.json({
-      products: products || [],
-      total: products?.length || 0,
-      source: 'supabase'
+      products: products,
+      total: products.length,
+      source: dataSource,
+      scraped_at: dataSource === 'local' ? new Date().toISOString() : null
     });
     
   } catch (error) {
-    console.error('💥 Error loading products from Supabase:', error);
-    res.status(500).json({ error: 'Failed to load product data from database' });
+    console.error('💥 Error loading products:', error);
+    
+    // Final fallback to local data
+    const localProducts = loadLocalProducts();
+    res.json({
+      products: localProducts,
+      total: localProducts.length,
+      source: 'local-fallback',
+      scraped_at: new Date().toISOString()
+    });
   }
 });
 
 app.get('/api/analytics', requireAuth, async (req, res) => {
   try {
-    console.log('📊 Generating analytics from Supabase...');
+    console.log('📊 Generating analytics...');
     
-    const { data: products, error } = await supabase
-      .from('products')
-      .select('price_amount, category, primary_goal, categories, goals, db_created_at');
+    // Check which data source to use (same logic as products endpoint)
+    const { data: supabaseProducts } = await supabase.from('products').select('*').limit(5);
+    const hasUsefulSupabaseData = supabaseProducts && supabaseProducts.some(p => 
+      p.price_amount || p.description || p.image || p.category
+    );
     
-    if (error) {
-      console.error('❌ Supabase analytics error:', error);
-      return res.status(500).json({ error: 'Failed to fetch analytics data' });
+    let products = [];
+    let dataSource = 'local';
+    
+    if (hasUsefulSupabaseData) {
+      console.log('✅ Using Supabase data for analytics');
+      dataSource = 'supabase';
+      const { data } = await supabase
+        .from('products')
+        .select('price_amount, category, primary_goal, categories, goals, db_created_at');
+      products = data || [];
+    } else {
+      console.log('⚠️ Using local JSON for analytics');
+      products = loadLocalProducts();
     }
     
     if (!products || products.length === 0) {
@@ -200,39 +296,66 @@ app.get('/api/analytics', requireAuth, async (req, res) => {
         categories: {},
         goals: {},
         price_ranges: { '$0-25': 0, '$26-50': 0, '$51-100': 0, '$100+': 0 },
-        source: 'supabase'
+        source: dataSource
       });
     }
     
-    // Generate analytics
-    const prices = products
-      .map(p => p.price_amount)
-      .filter(p => p !== null && !isNaN(p));
-    
+    // Generate analytics based on data source
+    let prices = [];
     const categories = {};
     const goals = {};
     
-    products.forEach(product => {
-      // Handle multiple categories per product
-      if (product.categories && Array.isArray(product.categories)) {
-        product.categories.forEach(category => {
-          if (category) categories[category] = (categories[category] || 0) + 1;
-        });
-      }
-      if (product.category) {
-        categories[product.category] = (categories[product.category] || 0) + 1;
-      }
+    if (dataSource === 'supabase') {
+      // Supabase data structure
+      prices = products
+        .map(p => p.price_amount)
+        .filter(p => p !== null && !isNaN(p));
       
-      // Handle multiple goals per product
-      if (product.goals && Array.isArray(product.goals)) {
-        product.goals.forEach(goal => {
-          if (goal) goals[goal] = (goals[goal] || 0) + 1;
-        });
-      }
-      if (product.primary_goal) {
-        goals[product.primary_goal] = (goals[product.primary_goal] || 0) + 1;
-      }
-    });
+      products.forEach(product => {
+        if (product.categories && Array.isArray(product.categories)) {
+          product.categories.forEach(category => {
+            if (category) categories[category] = (categories[category] || 0) + 1;
+          });
+        }
+        if (product.category) {
+          categories[product.category] = (categories[product.category] || 0) + 1;
+        }
+        
+        if (product.goals && Array.isArray(product.goals)) {
+          product.goals.forEach(goal => {
+            if (goal) goals[goal] = (goals[goal] || 0) + 1;
+          });
+        }
+        if (product.primary_goal) {
+          goals[product.primary_goal] = (goals[product.primary_goal] || 0) + 1;
+        }
+      });
+    } else {
+      // Local JSON data structure
+      prices = products
+        .map(p => extractPrice(p.price))
+        .filter(p => p > 0);
+      
+      products.forEach(product => {
+        if (product.categories && Array.isArray(product.categories)) {
+          product.categories.forEach(category => {
+            if (category) categories[category] = (categories[category] || 0) + 1;
+          });
+        }
+        if (product.category) {
+          categories[product.category] = (categories[product.category] || 0) + 1;
+        }
+        
+        if (product.goals && Array.isArray(product.goals)) {
+          product.goals.forEach(goal => {
+            if (goal) goals[goal] = (goals[goal] || 0) + 1;
+          });
+        }
+        if (product.primaryGoal) {
+          goals[product.primaryGoal] = (goals[product.primaryGoal] || 0) + 1;
+        }
+      });
+    }
     
     const analytics = {
       total_products: products.length,
@@ -250,15 +373,48 @@ app.get('/api/analytics', requireAuth, async (req, res) => {
         '$51-100': prices.filter(p => p > 50 && p <= 100).length,
         '$100+': prices.filter(p => p > 100).length
       } : { '$0-25': 0, '$26-50': 0, '$51-100': 0, '$100+': 0 },
-      source: 'supabase'
+      source: dataSource
     };
     
-    console.log(`✅ Analytics generated for ${products.length} products`);
+    console.log(`✅ Analytics generated for ${products.length} products from ${dataSource}`);
     res.json(analytics);
     
   } catch (error) {
     console.error('💥 Error generating analytics:', error);
-    res.status(500).json({ error: 'Failed to generate analytics from database' });
+    
+    // Fallback to local data
+    try {
+      const localProducts = loadLocalProducts();
+      const prices = localProducts.map(p => extractPrice(p.price)).filter(p => p > 0);
+      const categories = {};
+      const goals = {};
+      
+      localProducts.forEach(product => {
+        if (product.category) categories[product.category] = (categories[product.category] || 0) + 1;
+        if (product.primaryGoal) goals[product.primaryGoal] = (goals[product.primaryGoal] || 0) + 1;
+      });
+      
+      res.json({
+        total_products: localProducts.length,
+        price_stats: prices.length > 0 ? {
+          min: Math.min(...prices),
+          max: Math.max(...prices),
+          average: prices.reduce((a, b) => a + b, 0) / prices.length,
+          median: prices.sort((a, b) => a - b)[Math.floor(prices.length / 2)]
+        } : { min: 0, max: 0, average: 0, median: 0 },
+        categories,
+        goals,
+        price_ranges: prices.length > 0 ? {
+          '$0-25': prices.filter(p => p <= 25).length,
+          '$26-50': prices.filter(p => p > 25 && p <= 50).length,
+          '$51-100': prices.filter(p => p > 50 && p <= 100).length,
+          '$100+': prices.filter(p => p > 100).length
+        } : { '$0-25': 0, '$26-50': 0, '$51-100': 0, '$100+': 0 },
+        source: 'local-fallback'
+      });
+    } catch (fallbackError) {
+      res.status(500).json({ error: 'Failed to generate analytics' });
+    }
   }
 });
 

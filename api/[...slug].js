@@ -8,16 +8,44 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY
 );
 
-// In-memory session store (shared across all routes in this function)
-const sessions = new Map();
 const users = {
     'admin': 'password123',
     'user': 'pass123'
 };
 
-// Generate simple token
-function generateToken() {
-    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+const JWT_SECRET = 'your-secret-key-change-in-production';
+
+// Simple JWT implementation (base64 encoded)
+function createToken(payload) {
+    const header = { alg: 'HS256', typ: 'JWT' };
+    const now = Math.floor(Date.now() / 1000);
+    const tokenPayload = { 
+        ...payload, 
+        iat: now,
+        exp: now + (24 * 60 * 60) // 24 hours
+    };
+    
+    const encodedHeader = Buffer.from(JSON.stringify(header)).toString('base64url');
+    const encodedPayload = Buffer.from(JSON.stringify(tokenPayload)).toString('base64url');
+    const signature = Buffer.from(`${encodedHeader}.${encodedPayload}.${JWT_SECRET}`).toString('base64url');
+    
+    return `${encodedHeader}.${encodedPayload}.${signature}`;
+}
+
+function verifyToken(token) {
+    try {
+        const [header, payload, signature] = token.split('.');
+        const decodedPayload = JSON.parse(Buffer.from(payload, 'base64url').toString());
+        
+        // Check expiration
+        if (decodedPayload.exp && Date.now() / 1000 > decodedPayload.exp) {
+            return { error: 'Token expired' };
+        }
+        
+        return { user: decodedPayload.user };
+    } catch (error) {
+        return { error: 'Invalid token' };
+    }
 }
 
 // Auth middleware
@@ -26,17 +54,16 @@ function requireAuth(req) {
                  req.body?.token || 
                  req.query?.token;
     
-    if (!token || !sessions.has(token)) {
+    if (!token) {
         return { error: 'Authentication required', status: 401 };
     }
     
-    const session = sessions.get(token);
-    if (Date.now() > session.expires) {
-        sessions.delete(token);
-        return { error: 'Session expired', status: 401 };
+    const result = verifyToken(token);
+    if (result.error) {
+        return { error: result.error, status: 401 };
     }
     
-    return { user: session.user };
+    return { user: result.user };
 }
 
 module.exports = async (req, res) => {
