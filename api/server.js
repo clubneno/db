@@ -56,7 +56,7 @@ app.get('/api/auth/check', requireAuth, (req, res) => {
 // Protected Routes
 app.get('/api/products', requireAuth, (req, res) => {
   try {
-    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
     
     if (!fs.existsSync(dataPath)) {
       return res.status(404).json({ 
@@ -151,7 +151,7 @@ app.get('/api/products', requireAuth, (req, res) => {
 
 app.get('/api/analytics', requireAuth, (req, res) => {
   try {
-    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
     
     if (!fs.existsSync(dataPath)) {
       return res.status(404).json({ error: 'No product data found' });
@@ -228,7 +228,7 @@ app.put('/api/products/:handle', requireAuth, (req, res) => {
     console.log('Server received basic product info:', { size, servings, intakeFrequency, reorderPeriod });
     console.log('Server received pricing info:', { nutraceuticalsRegularPrice, nutraceuticalsSubscriptionPrice, clubnenoRegularPrice, clubnenoSubscriptionPrice });
     
-    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
     if (!fs.existsSync(dataPath)) {
       return res.status(404).json({ error: 'No product data found' });
     }
@@ -299,7 +299,7 @@ app.post('/api/categories', requireAuth, (req, res) => {
     }
 
     // Load existing categories
-    const categoriesPath = path.join(__dirname, 'data', 'categories.json');
+    const categoriesPath = path.join(__dirname, '..', 'data', 'categories.json');
     let categories = [];
     if (fs.existsSync(categoriesPath)) {
       categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
@@ -353,7 +353,7 @@ app.post('/api/goals', requireAuth, (req, res) => {
     }
 
     // Load existing goals
-    const goalsPath = path.join(__dirname, 'data', 'goals.json');
+    const goalsPath = path.join(__dirname, '..', 'data', 'goals.json');
     let goals = [];
     if (fs.existsSync(goalsPath)) {
       goals = JSON.parse(fs.readFileSync(goalsPath, 'utf8'));
@@ -407,7 +407,7 @@ app.post('/api/flavors', requireAuth, (req, res) => {
     }
 
     // Load existing flavors
-    const flavorsPath = path.join(__dirname, 'data', 'flavors.json');
+    const flavorsPath = path.join(__dirname, '..', 'data', 'flavors.json');
     let flavors = [];
     if (fs.existsSync(flavorsPath)) {
       flavors = JSON.parse(fs.readFileSync(flavorsPath, 'utf8'));
@@ -438,7 +438,7 @@ app.delete('/api/categories/:name', requireAuth, (req, res) => {
     const { name } = req.params;
     
     // Remove from categories.json (persistent storage)
-    const categoriesPath = path.join(__dirname, 'data', 'categories.json');
+    const categoriesPath = path.join(__dirname, '..', 'data', 'categories.json');
     let categories = [];
     if (fs.existsSync(categoriesPath)) {
       categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
@@ -466,7 +466,7 @@ app.delete('/api/categories/:name', requireAuth, (req, res) => {
     }
 
     // Remove category from all products in latest.json
-    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
     if (fs.existsSync(dataPath)) {
       const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
       
@@ -495,7 +495,7 @@ app.delete('/api/goals/:name', requireAuth, (req, res) => {
     const { name } = req.params;
     
     // Remove from goals.json (persistent storage)
-    const goalsPath = path.join(__dirname, 'data', 'goals.json');
+    const goalsPath = path.join(__dirname, '..', 'data', 'goals.json');
     let goals = [];
     if (fs.existsSync(goalsPath)) {
       goals = JSON.parse(fs.readFileSync(goalsPath, 'utf8'));
@@ -523,7 +523,7 @@ app.delete('/api/goals/:name', requireAuth, (req, res) => {
     }
 
     // Remove goal from all products in latest.json
-    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
     if (fs.existsSync(dataPath)) {
       const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
       
@@ -549,7 +549,7 @@ app.delete('/api/goals/:name', requireAuth, (req, res) => {
 // Get categories
 app.get('/api/categories', requireAuth, (req, res) => {
   try {
-    const categoriesPath = path.join(__dirname, 'data', 'categories.json');
+    const categoriesPath = path.join(__dirname, '..', 'data', 'categories.json');
     let categories = [];
     if (fs.existsSync(categoriesPath)) {
       categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
@@ -564,7 +564,7 @@ app.get('/api/categories', requireAuth, (req, res) => {
 // Get goals
 app.get('/api/goals', requireAuth, (req, res) => {
   try {
-    const goalsPath = path.join(__dirname, 'data', 'goals.json');
+    const goalsPath = path.join(__dirname, '..', 'data', 'goals.json');
     let goals = [];
     if (fs.existsSync(goalsPath)) {
       goals = JSON.parse(fs.readFileSync(goalsPath, 'utf8'));
@@ -579,7 +579,7 @@ app.get('/api/goals', requireAuth, (req, res) => {
 // Get flavors
 app.get('/api/flavors', requireAuth, (req, res) => {
   try {
-    const flavorsPath = path.join(__dirname, 'data', 'flavors.json');
+    const flavorsPath = path.join(__dirname, '..', 'data', 'flavors.json');
     let flavors = [];
     if (fs.existsSync(flavorsPath)) {
       flavors = JSON.parse(fs.readFileSync(flavorsPath, 'utf8'));
@@ -597,7 +597,7 @@ app.delete('/api/flavors/:name', requireAuth, (req, res) => {
     const { name } = req.params;
     
     // Remove from flavors.json
-    const flavorsPath = path.join(__dirname, 'data', 'flavors.json');
+    const flavorsPath = path.join(__dirname, '..', 'data', 'flavors.json');
     let flavors = [];
     if (fs.existsSync(flavorsPath)) {
       flavors = JSON.parse(fs.readFileSync(flavorsPath, 'utf8'));
@@ -606,7 +606,7 @@ app.delete('/api/flavors/:name', requireAuth, (req, res) => {
     }
 
     // Remove flavor from all products
-    const dataPath = path.join(__dirname, 'data', 'latest.json');
+    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
     if (fs.existsSync(dataPath)) {
       const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
       
