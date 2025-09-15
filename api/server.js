@@ -329,9 +329,7 @@ app.put('/api/products/:handle', requireAuth, async (req, res) => {
     console.log('Server PUT - Attempting to update product with handle:', handle);
     
     // Prepare update object for Supabase
-    const updateObject = {
-      updated_at: new Date().toISOString()
-    };
+    const updateObject = {};
     
     // Add fields that exist in request body
     if (productName !== undefined && productName.trim() !== '') {
