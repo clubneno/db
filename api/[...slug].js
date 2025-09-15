@@ -36,18 +36,25 @@ async function requireAuth(req) {
     try {
         const token = req.headers.authorization?.replace('Bearer ', '');
         
+        console.log('Auth check - Token present:', !!token);
+        console.log('Auth check - Supabase client initialized:', !!supabase);
+        
         if (!token) {
+            console.log('No token provided');
             return { error: 'Authentication required', status: 401 };
         }
         
         // Verify the token with Supabase
         const { data: { user }, error } = await supabase.auth.getUser(token);
         
+        console.log('Supabase auth result:', { user: !!user, error: error?.message });
+        
         if (error || !user) {
-            console.log('Auth error:', error);
+            console.log('Auth verification failed:', error);
             return { error: 'Invalid or expired token', status: 401 };
         }
         
+        console.log('Auth successful for user:', user.email);
         return { user: user };
         
     } catch (error) {
@@ -330,6 +337,25 @@ module.exports = async (req, res) => {
             return res.json({
                 message: 'Environment Variables Status',
                 env: envVars,
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        // Debug auth endpoint
+        if (req.method === 'GET' && pathname === '/api/debug-auth') {
+            const token = req.headers.authorization?.replace('Bearer ', '');
+            const authResult = await requireAuth(req);
+            
+            return res.json({
+                message: 'Authentication Debug',
+                hasToken: !!token,
+                tokenLength: token ? token.length : 0,
+                authResult: {
+                    hasError: !!authResult.error,
+                    error: authResult.error,
+                    hasUser: !!authResult.user,
+                    userEmail: authResult.user?.email
+                },
                 timestamp: new Date().toISOString()
             });
         }
