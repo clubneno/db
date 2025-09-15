@@ -7,8 +7,8 @@ const app = express();
 // Import the main server for API routes
 const mainServer = require('./server.js');
 
-// API routes
-app.use('/api', mainServer);
+// API routes (mainServer already has /api prefix)
+app.use('/', mainServer);
 
 // Serve static files
 app.use(express.static(path.join(__dirname, '..', 'public')));
