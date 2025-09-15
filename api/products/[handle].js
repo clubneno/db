@@ -35,6 +35,7 @@ module.exports = async (req, res) => {
         
         console.log('PUT /api/products/[handle] - Token received:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
         console.log('PUT /api/products/[handle] - Headers:', JSON.stringify(req.headers, null, 2));
+        console.log('PUT /api/products/[handle] - Auth bypass version deployed');
         
         if (token) {
             try {
