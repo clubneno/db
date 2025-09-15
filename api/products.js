@@ -62,13 +62,34 @@ module.exports = async (req, res) => {
         // Load local JSON data with rich information
         let localProducts = [];
         try {
-            const dataPath = path.join(process.cwd(), 'data', 'latest.json');
-            if (fs.existsSync(dataPath)) {
-                localProducts = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-                console.log(`Loaded ${localProducts.length} products from local JSON`);
+            // Try multiple possible paths in Vercel environment
+            const possiblePaths = [
+                path.join(process.cwd(), 'data', 'latest.json'),
+                path.join(__dirname, '..', 'data', 'latest.json'),
+                './data/latest.json'
+            ];
+            
+            let dataLoaded = false;
+            for (const dataPath of possiblePaths) {
+                try {
+                    if (fs.existsSync(dataPath)) {
+                        localProducts = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+                        console.log(`✅ Loaded ${localProducts.length} products from ${dataPath}`);
+                        dataLoaded = true;
+                        break;
+                    } else {
+                        console.log(`❌ Path not found: ${dataPath}`);
+                    }
+                } catch (pathError) {
+                    console.log(`❌ Error with path ${dataPath}:`, pathError.message);
+                }
+            }
+            
+            if (!dataLoaded) {
+                console.log('⚠️ No local product data found in any path');
             }
         } catch (error) {
-            console.log('Could not load local products:', error.message);
+            console.log('💥 Error loading local products:', error.message);
         }
         
         // Merge Supabase data with local data
@@ -137,13 +158,25 @@ module.exports = async (req, res) => {
             }
         });
         
-        console.log(`Merged data for ${mergedProducts.length} products`);
+        console.log(`Merged data for ${mergedProducts.length} products (local: ${localProducts.length})`);
+        
+        // If no local data was found, return Supabase data with warning
+        if (localProducts.length === 0) {
+            console.log('⚠️ No local data available, returning Supabase data only');
+            return res.json({
+                products: supabaseProducts || [],
+                total: (supabaseProducts || []).length,
+                source: 'supabase-only',
+                message: 'Local product data not available in serverless environment',
+                warning: 'Rich product data not loaded - local JSON file not found'
+            });
+        }
         
         return res.json({
             products: mergedProducts,
             total: mergedProducts.length,
             source: 'hybrid-merged',
-            message: 'Products with merged local and Supabase data'
+            message: `Products with merged local (${localProducts.length}) and Supabase (${(supabaseProducts || []).length}) data`
         });
         
     } catch (error) {
