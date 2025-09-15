@@ -1,7 +1,9 @@
-// Products API endpoint
+// Products API endpoint - Updated with database fix
 const { createClient } = require('@supabase/supabase-js');
 const fs = require('fs');
 const path = require('path');
+
+console.log('🚀 Products API loaded - database db_updated_at column should be available now');
 
 // Initialize Supabase clients
 const supabase = createClient(
