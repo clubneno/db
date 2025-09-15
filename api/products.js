@@ -380,6 +380,7 @@ async function handleProductUpdate(req, res) {
         
         console.log('PUT /api/products - Supabase update object:', updateObject);
         console.log('PUT /api/products - Number of fields to update:', Object.keys(updateObject).length);
+        console.log('PUT /api/products - Database should now work with db_updated_at column added');
         
         // Get the current product data to verify changes later
         const { data: currentData, error: getCurrentError } = await supabase
