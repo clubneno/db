@@ -80,42 +80,34 @@ module.exports = async (req, res) => {
             );
             
             if (localProduct) {
-                // Merge: use local data for rich content, Supabase for metadata
+                // PRESERVE Supabase data first, then enhance with local data only where missing
                 return {
-                    // From Supabase (IDs, metadata, custom fields)
-                    id: supabaseProduct.id,
-                    eu_notification_status: supabaseProduct.eu_notification_status,
-                    eu_allowed: supabaseProduct.eu_allowed,
-                    hs_code: supabaseProduct.hs_code,
-                    duty_rate: supabaseProduct.duty_rate,
+                    // Always preserve ALL Supabase data (including user-added data)
+                    ...supabaseProduct,
                     
-                    // From local JSON (rich content)
-                    title: localProduct.title || supabaseProduct.title,
-                    handle: localProduct.handle || supabaseProduct.handle,
-                    price: localProduct.price,
-                    subscriptionPrice: localProduct.subscriptionPrice,
-                    price_amount: localProduct.price ? parseFloat(localProduct.price.replace(/[$,]/g, '')) : null,
-                    subscription_price_amount: localProduct.subscriptionPrice ? parseFloat(localProduct.subscriptionPrice.replace(/[$,]/g, '')) : null,
-                    image: localProduct.image,
-                    images: localProduct.images,
-                    description: localProduct.description,
-                    fullDescription: localProduct.fullDescription,
-                    category: localProduct.category || supabaseProduct.category,
-                    primaryGoal: localProduct.primaryGoal || supabaseProduct.primary_goal,
-                    vendor: localProduct.vendor || supabaseProduct.vendor,
-                    availability: localProduct.availability,
-                    productType: localProduct.productType,
-                    link: localProduct.link,
-                    variants: localProduct.variants,
-                    benefits: localProduct.benefits,
-                    ingredients: localProduct.ingredients,
-                    usage: localProduct.usage,
-                    tags: localProduct.tags,
+                    // Only enhance with local data if Supabase field is empty/null
+                    title: supabaseProduct.title || localProduct.title,
+                    description: supabaseProduct.description || localProduct.description,
+                    full_description: supabaseProduct.full_description || localProduct.fullDescription,
+                    image: supabaseProduct.image || localProduct.image,
+                    main_image: supabaseProduct.main_image || localProduct.image,
+                    price_amount: supabaseProduct.price_amount || (localProduct.price ? parseFloat(localProduct.price.replace(/[$,]/g, '')) : null),
+                    price_display: supabaseProduct.price_display || localProduct.price,
+                    subscription_price_amount: supabaseProduct.subscription_price_amount || (localProduct.subscriptionPrice ? parseFloat(localProduct.subscriptionPrice.replace(/[$,]/g, '')) : null),
+                    subscription_price_display: supabaseProduct.subscription_price_display || localProduct.subscriptionPrice,
+                    category: supabaseProduct.category || localProduct.category,
+                    primary_goal: supabaseProduct.primary_goal || localProduct.primaryGoal,
+                    link: supabaseProduct.link || localProduct.link,
+                    availability: supabaseProduct.availability || localProduct.availability,
+                    product_type: supabaseProduct.product_type || localProduct.productType,
                     
-                    // Timestamps
-                    createdAt: localProduct.createdAt,
-                    updatedAt: localProduct.updatedAt,
-                    scraped_at: supabaseProduct.scraped_at
+                    // Add local-only fields as additional data (not overwriting Supabase)
+                    local_images: localProduct.images,
+                    local_variants: localProduct.variants,
+                    local_benefits: localProduct.benefits,
+                    local_ingredients: localProduct.ingredients,
+                    local_usage: localProduct.usage,
+                    local_tags: localProduct.tags
                 };
             } else {
                 // Only Supabase data available
