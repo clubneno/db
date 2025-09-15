@@ -6,6 +6,10 @@ const app = express();
 
 // Import the main server for API routes
 const mainServer = require('./server.js');
+const healthRouter = require('./health.js');
+
+// Health check route
+app.use('/api', healthRouter);
 
 // API routes (mainServer already has /api prefix)
 app.use('/', mainServer);
