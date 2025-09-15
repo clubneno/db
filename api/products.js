@@ -24,9 +24,28 @@ module.exports = async (req, res) => {
         return res.status(200).end();
     }
     
-    // Handle different HTTP methods
+    // Parse request body for PUT requests
     if (req.method === 'PUT') {
-        return handleProductUpdate(req, res);
+        // Manual body parsing for serverless environment
+        if (!req.body && req.readable) {
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString();
+            });
+            req.on('end', () => {
+                try {
+                    req.body = JSON.parse(body);
+                    console.log('PUT /api/products - Parsed request body:', req.body);
+                } catch (e) {
+                    console.error('PUT /api/products - Failed to parse request body:', e);
+                    req.body = {};
+                }
+                return handleProductUpdate(req, res);
+            });
+            return;
+        } else {
+            return handleProductUpdate(req, res);
+        }
     } else if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -198,6 +217,8 @@ module.exports = async (req, res) => {
 async function handleProductUpdate(req, res) {
     try {
         console.log('PUT /api/products - Handling product update request');
+        console.log('PUT /api/products - Full URL:', req.url);
+        console.log('PUT /api/products - Headers:', JSON.stringify(req.headers, null, 2));
         
         // Extract product handle from URL path
         const urlPath = req.url || '';
@@ -205,47 +226,102 @@ async function handleProductUpdate(req, res) {
         const handle = pathParts[pathParts.length - 1]; // Get last part of path
         
         console.log('PUT /api/products - Product handle:', handle);
-        console.log('PUT /api/products - Request body:', req.body);
+        console.log('PUT /api/products - Request body:', JSON.stringify(req.body, null, 2));
         
         if (!handle || handle === 'products') {
             return res.status(400).json({ error: 'Product handle is required' });
         }
         
-        // Temporarily make authentication optional for debugging
+        // Authentication with debugging fallback
         const token = req.headers.authorization?.replace('Bearer ', '');
         let user = null;
         
         if (token) {
-            console.log('PUT /api/products - Token provided, skipping auth for debugging');
-            // Skip auth verification for now
+            try {
+                console.log('PUT /api/products - Attempting token verification...');
+                const { data: { user: authUser }, error } = await supabaseAuth.auth.getUser(token);
+                
+                if (error) {
+                    console.log('PUT /api/products - Auth verification failed:', error?.message);
+                    // For debugging: allow JWT-like tokens
+                    if (token.includes('.')) {
+                        console.log('PUT /api/products - Allowing JWT-like token for debugging');
+                        user = 'debug-user';
+                    } else {
+                        return res.status(401).json({ error: 'Authentication failed' });
+                    }
+                } else {
+                    user = authUser;
+                    console.log('PUT /api/products - Auth successful for user:', user?.email);
+                }
+            } catch (authError) {
+                console.log('PUT /api/products - Auth error:', authError.message);
+                // For debugging: allow JWT-like tokens
+                if (token.includes('.')) {
+                    console.log('PUT /api/products - Allowing JWT-like token for debugging (exception)');
+                    user = 'debug-user';
+                } else {
+                    return res.status(401).json({ error: 'Authentication failed' });
+                }
+            }
         } else {
-            console.log('PUT /api/products - No token provided, continuing without auth');
+            console.log('PUT /api/products - No token provided');
+            return res.status(401).json({ error: 'Authentication required' });
         }
         
         // Get update data from request body
         const updateData = req.body;
+        console.log('PUT /api/products - Processing update data:', updateData);
+        
+        if (!updateData) {
+            return res.status(400).json({ error: 'Request body is required' });
+        }
+        
+        // Prepare update object for Supabase
+        const updateObject = {
+            updated_at: new Date().toISOString()
+        };
+        
+        // Add fields that exist in request body
+        if (updateData.productName !== undefined) {
+            updateObject.title = updateData.productName;
+        }
+        if (updateData.euAllowed !== undefined) {
+            updateObject.eu_allowed = updateData.euAllowed;
+        }
+        if (updateData.euNotificationStatus !== undefined) {
+            updateObject.eu_notification_status = updateData.euNotificationStatus;
+        }
+        if (updateData.hsCode !== undefined) {
+            updateObject.hs_code = updateData.hsCode;
+        }
+        if (updateData.hsCodeDescription !== undefined) {
+            updateObject.hs_code_description = updateData.hsCodeDescription;
+        }
+        if (updateData.dutyRate !== undefined) {
+            updateObject.duty_rate = updateData.dutyRate;
+        }
+        
+        console.log('PUT /api/products - Supabase update object:', updateObject);
         
         // Update product in Supabase
         const { data, error: updateError } = await supabase
             .from('products')
-            .update({
-                title: updateData.productName,
-                eu_allowed: updateData.euAllowed,
-                updated_at: new Date().toISOString()
-            })
+            .update(updateObject)
             .eq('handle', handle)
             .select();
         
         if (updateError) {
-            console.error('Database update error:', updateError);
+            console.error('PUT /api/products - Database update error:', updateError);
             return res.status(500).json({ error: 'Database update failed', details: updateError.message });
         }
         
         if (!data || data.length === 0) {
+            console.log('PUT /api/products - Product not found for handle:', handle);
             return res.status(404).json({ error: 'Product not found' });
         }
         
-        console.log(`✅ Successfully updated product: ${handle}`);
+        console.log(`✅ PUT /api/products - Successfully updated product: ${handle}`);
         
         return res.json({
             success: true,
@@ -254,7 +330,7 @@ async function handleProductUpdate(req, res) {
         });
         
     } catch (error) {
-        console.error('PUT endpoint error:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        console.error('PUT /api/products - Endpoint error:', error);
+        return res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 }
