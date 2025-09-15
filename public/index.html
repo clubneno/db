@@ -202,7 +202,7 @@
                 <i class="fas fa-spinner"></i>
             </div>
             <h2 class="text-xl font-semibold text-gray-800 mb-2">Loading Product Analyzer</h2>
-            <p class="text-gray-600">Checking authentication...</p>
+            <p id="loadingText" class="text-gray-600">Checking authentication...</p>
         </div>
     </div>
 
@@ -637,9 +637,14 @@
             }
             
             async checkAuth() {
+                // Update loading message
+                const loadingText = document.getElementById('loadingText');
+                
                 if (!this.supabase) {
+                    if (loadingText) loadingText.textContent = 'Initializing...';
                     const initialized = await this.init();
                     if (!initialized) {
+                        console.log('Failed to initialize Supabase');
                         this.redirectToLogin();
                         return false;
                     }
@@ -647,7 +652,10 @@
                 
                 // Get current session from Supabase
                 try {
+                    if (loadingText) loadingText.textContent = 'Checking session...';
                     const { data: { session }, error } = await this.supabase.auth.getSession();
+                    
+                    console.log('Session check result:', { session, error });
                     
                     if (error) {
                         console.error('Error getting session:', error);
@@ -656,12 +664,16 @@
                     }
                     
                     if (session && session.user) {
+                        console.log('Valid session found:', session.user.email);
+                        if (loadingText) loadingText.textContent = 'Authenticated! Loading app...';
+                        
                         // Update local state
                         this.session = session;
                         this.currentUser = session.user;
                         this.updateUserDisplay();
                         return true;
                     } else {
+                        console.log('No valid session found');
                         // No valid session
                         this.redirectToLogin();
                         return false;
@@ -698,8 +710,9 @@
             }
             
             redirectToLogin() {
+                console.log('Redirecting to login...');
                 // Update loading screen message before redirecting
-                const loadingText = document.querySelector('#loadingScreen p');
+                const loadingText = document.getElementById('loadingText');
                 if (loadingText) {
                     loadingText.textContent = 'Redirecting to login...';
                 }
