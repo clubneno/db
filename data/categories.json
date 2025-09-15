@@ -1,0 +1,73 @@
+[
+  {
+    "id": "athletic-performance",
+    "name": "Athletic Performance",
+    "subCategories": [
+      "Pre-Workout",
+      "Post-Workout",
+      "Protein Powders",
+      "Endurance",
+      "Strength"
+    ]
+  },
+  {
+    "id": "brain-focus",
+    "name": "Brain & Focus",
+    "subCategories": [
+      "Nootropics",
+      "Mental Clarity",
+      "Memory Support",
+      "Cognitive Enhancement"
+    ]
+  },
+  {
+    "id": "expert-favorites",
+    "name": "Expert Favorites",
+    "subCategories": [
+      "Top Rated",
+      "Professional Choice",
+      "Research Backed"
+    ]
+  },
+  {
+    "id": "foundational-health",
+    "name": "Foundational Health",
+    "subCategories": [
+      "Multivitamins",
+      "Essential Minerals",
+      "Omega-3",
+      "Probiotics",
+      "Antioxidants"
+    ]
+  },
+  {
+    "id": "hormone-balance",
+    "name": "Hormone Balance",
+    "subCategories": [
+      "Testosterone Support",
+      "Cortisol Management",
+      "Thyroid Support",
+      "Adrenal Health"
+    ]
+  },
+  {
+    "id": "sleep-recovery",
+    "name": "Sleep & Recovery",
+    "subCategories": [
+      "Sleep Aids",
+      "Muscle Recovery",
+      "Anti-inflammatory",
+      "Relaxation"
+    ]
+  },
+  {
+    "id": "stacks-bundles",
+    "name": "Stacks & Bundles",
+    "subCategories": [
+      "Performance Stack",
+      "Health Stack",
+      "Recovery Stack",
+      "Value Bundles"
+    ]
+  }
+]

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Script Loading</title>
+</head>
+<body>
+    <h1>Script Loading Debug</h1>
+    <div id="log"></div>
+    
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(message) {
+            console.log(message);
+            log.innerHTML += `<p>${message}</p>`;
+        }
+        
+        addLog('Starting script loading test...');
+        
+        // Test 1: Load Chart.js
+        const chartScript = document.createElement('script');
+        chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        chartScript.onload = () => {
+            addLog('✅ Chart.js loaded: ' + (typeof Chart !== 'undefined'));
+            
+            // Test 2: Load app.js
+            const appScript = document.createElement('script');
+            appScript.src = 'app.js?v=9&debug=true';
+            appScript.onload = () => {
+                addLog('✅ app.js script loaded');
+                addLog('MomentousAnalyzer available: ' + (typeof MomentousAnalyzer !== 'undefined'));
+                
+                if (typeof MomentousAnalyzer !== 'undefined') {
+                    addLog('✅ SUCCESS: MomentousAnalyzer class found!');
+                    try {
+                        // Try to create instance (without initializing to avoid DOM issues)
+                        addLog('Testing class constructor...');
+                        // Don't actually create it, just verify it's a function
+                        addLog('MomentousAnalyzer is function: ' + (typeof MomentousAnalyzer === 'function'));
+                    } catch (error) {
+                        addLog('❌ Error with MomentousAnalyzer: ' + error.message);
+                    }
+                } else {
+                    addLog('❌ FAILED: MomentousAnalyzer class not found after loading app.js');
+                    
+                    // Check what's actually in window object
+                    const windowProps = Object.getOwnPropertyNames(window).filter(prop => 
+                        prop.includes('Momentous') || prop.includes('Analyzer')
+                    );
+                    addLog('Window properties with "Momentous" or "Analyzer": ' + JSON.stringify(windowProps));
+                }
+            };
+            appScript.onerror = (error) => {
+                addLog('❌ Error loading app.js: ' + error.message);
+            };
+            document.head.appendChild(appScript);
+        };
+        chartScript.onerror = (error) => {
+            addLog('❌ Error loading Chart.js: ' + error.message);
+        };
+        document.head.appendChild(chartScript);
+    </script>
+</body>
+</html>

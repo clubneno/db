@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Oswald', sans-serif;
+        }
+        
+        :root {
+            --primary: #FF6831;
+            --secondary: #2E54FB;
+            --third: #F8C231;
+            --fourth: #FF3A7F;
+            --primary-light: #ff8555;
+            --primary-dark: #e55426;
+            --secondary-light: #5470fc;
+            --secondary-dark: #1d3ef5;
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        .nav-item:hover {
+            background-color: #fff0eb;
+            color: var(--primary);
+        }
+        .nav-item.active:hover {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Custom scrollbar for modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Modal backdrop animation */
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.2s ease-out;
+        }
+        
+        /* Modal content animation */
+        .modal-content {
+            animation: slideInUp 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        /* Enhanced focus states */
+        .modern-input:focus {
+            box-shadow: 0 0 0 3px rgba(255, 104, 49, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        /* Primary themed buttons and elements */
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+        }
+        
+        .text-primary {
+            color: var(--primary);
+        }
+        
+        .text-secondary {
+            color: var(--secondary);
+        }
+        
+        .text-third {
+            color: var(--third);
+        }
+        
+        .text-fourth {
+            color: var(--fourth);
+        }
+        
+        .border-primary {
+            border-color: var(--primary);
+        }
+        
+        .bg-primary {
+            background-color: var(--primary);
+        }
+        
+        .bg-secondary {
+            background-color: var(--secondary);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <img src="clubneno-logo.png" alt="Clubneno Logo" class="h-24 w-auto mr-3">
+                    <h1 class="text-xl font-semibold text-gray-900">Product analyzer</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-500" id="userInfo">Welcome, <span id="currentUser"></span></span>
+                    <span class="text-sm text-gray-500" id="lastUpdated">Last updated: Never</span>
+                    <button id="refreshBtn" class="btn-primary text-white px-4 py-2 rounded-md transition-colors">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh Data
+                    </button>
+                    <button id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex space-x-8">
+                <a href="#" onclick="showPage('dashboard', this); return false;" 
+                   class="nav-item flex items-center px-3 py-4 text-sm font-medium text-gray-700 border-b-2 border-transparent transition-colors">
+                    <i class="fas fa-chart-pie mr-2"></i>
+                    Dashboard
+                </a>
+                <a href="#" onclick="showPage('products', this); return false;" 
+                   class="nav-item active flex items-center px-3 py-4 text-sm font-medium text-gray-700 border-b-2 border-blue-500 transition-colors">
+                    <i class="fas fa-box mr-2"></i>
+                    Products
+                </a>
+                <a href="#" onclick="showPage('price-analysis', this); return false;" 
+                   class="nav-item flex items-center px-3 py-4 text-sm font-medium text-gray-700 border-b-2 border-transparent transition-colors">
+                    <i class="fas fa-calculator mr-2"></i>
+                    Price Analysis
+                </a>
+                <a href="#" onclick="showPage('settings', this); return false;" 
+                   class="nav-item flex items-center px-3 py-4 text-sm font-medium text-gray-700 border-b-2 border-transparent transition-colors">
+                    <i class="fas fa-cog mr-2"></i>
+                    Settings
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page-content hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-box text-blue-600 text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-500">Total Products</p>
+                            <p class="text-2xl font-semibold text-gray-900" id="totalProducts">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-dollar-sign text-green-600 text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-500">Average Price</p>
+                            <p class="text-2xl font-semibold text-gray-900" id="avgPrice">$0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-tags text-purple-600 text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-500">Goals</p>
+                            <p class="text-2xl font-semibold text-gray-900" id="totalCategories">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-bullseye text-orange-600 text-2xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-500">Sub-Goals</p>
+                            <p class="text-2xl font-semibold text-gray-900" id="totalGoals">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Price Distribution</h3>
+                    <div class="relative h-64">
+                        <canvas id="priceChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Category Distribution</h3>
+                    <div class="relative h-64">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Page -->
+        <div id="products-page" class="page-content">
+            <!-- Filters Section -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Filters & Search</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Search Products</label>
+                        <input type="text" id="searchInput" placeholder="Search by name or description..." 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">By Goal</label>
+                        <select id="categoryFilter" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Goals</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">By Sub-Goal</label>
+                        <select id="goalFilter" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Sub-Goals</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">By EU Notification</label>
+                        <select id="euStatusFilter" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Statuses</option>
+                            <option value="Not started">Not started</option>
+                            <option value="In Preparation">In Preparation</option>
+                            <option value="Waiting for approval">Waiting for approval</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Declined">Declined</option>
+                            <option value="Returned for clarification">Returned for clarification</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+                        <div class="flex space-x-2">
+                            <input type="number" id="minPrice" placeholder="Min" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="number" id="maxPrice" placeholder="Max" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                        <select id="sortBy" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Default</option>
+                            <option value="name_asc">Name (A-Z)</option>
+                            <option value="name_desc">Name (Z-A)</option>
+                            <option value="price_asc">Price (Low to High)</option>
+                            <option value="price_desc">Price (High to Low)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Products (<span id="productCount">0</span>)</h3>
+                </div>
+                <div class="p-6">
+                    <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Products will be loaded here -->
+                    </div>
+                    <div id="loadingState" class="text-center py-12">
+                        <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-500">Loading products...</p>
+                    </div>
+                    <div id="noDataState" class="text-center py-12 hidden">
+                        <i class="fas fa-inbox text-4xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-500 mb-2">No product data found</p>
+                        <p class="text-sm text-gray-400">Please run the scraper first to collect product data</p>
+                        <button onclick="runScraper()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-play mr-2"></i>Run Scraper
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Price Analysis Page -->
+        <div id="price-analysis-page" class="page-content hidden">
+            <!-- Controls Section -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Global Parameters</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">USD-EUR Rate</label>
+                        <input type="number" id="usdEurRateGlobal" value="0.92" min="0" step="0.001"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               onchange="updateAllCalculations()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Partner Discount (%)</label>
+                        <input type="number" id="partnerDiscountGlobal" value="15" min="0" max="100" step="0.1"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               onchange="updateAllCalculations()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Duty (%)</label>
+                        <input type="number" id="dutyRateGlobal" value="12" min="0" max="100" step="0.1"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               onchange="updateAllCalculations()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Markup (%)</label>
+                        <input type="number" id="markupGlobal" value="50" min="0" step="0.1"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               onchange="updateAllCalculations()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">VAT (%)</label>
+                        <input type="number" id="vatGlobal" value="21" min="0" max="100" step="0.1"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               onchange="updateAllCalculations()">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Delivery to Client (€)</label>
+                        <input type="number" id="deliveryGlobal" value="5.00" min="0" step="0.01"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               onchange="updateAllCalculations()">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Transport (€)</label>
+                        <input type="number" id="transportGlobal" value="2.50" min="0" step="0.01"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               onchange="updateAllCalculations()">
+                    </div>
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+                        <i class="fas fa-download mr-2"></i>Export to CSV
+                    </button>
+                    <button onclick="resetToDefaults()" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+                        <i class="fas fa-undo mr-2"></i>Reset to Defaults
+                    </button>
+                </div>
+            </div>
+
+            <!-- Price Analysis Table -->
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Price Analysis (<span id="analysisCount">0</span> products)</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200" id="priceAnalysisTable">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10">
+                                    Product Name
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Retail Price US ($)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Partner Discount (%)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Purchasing Price US ($)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Purchasing Price US (€)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Transport (€)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Duty (%)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Duty (€)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Base Price LT (€)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Markup (%)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Retail Price LT (€)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    VAT (%)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    VAT from Sale (€)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Delivery to Client (€)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-green-50">
+                                    Net Revenue (€)
+                                </th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-yellow-50">
+                                    Margin Coefficient
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="priceAnalysisBody">
+                            <!-- Table rows will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="analysisLoadingState" class="text-center py-12">
+                    <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-500">Loading price analysis...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="settings-page" class="page-content hidden">
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-900">Product Management</h2>
+                    <p class="text-gray-600 mt-1">Manage categories, goals, flavors, and product attributes</p>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Goals & Sub-Goals Hierarchy Section -->
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-medium text-gray-900">Goals & Sub-Goals</h3>
+                                <button onclick="app.addParentGoal()" class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                    <i class="fas fa-plus mr-1"></i> Add Goal
+                                </button>
+                            </div>
+                            <div class="space-y-4">
+                                <div id="goalsHierarchy" class="space-y-3 max-h-96 overflow-y-auto">
+                                    <!-- Hierarchical Goals will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Flavors Section -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Flavors</h3>
+                            <div class="space-y-4">
+                                <div class="flex">
+                                    <input type="text" id="newFlavor" placeholder="New flavor name..." 
+                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <button onclick="addFlavor()" class="px-4 py-2 bg-purple-600 text-white rounded-r-md hover:bg-purple-700">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div id="flavorsList" class="space-y-2 max-h-64 overflow-y-auto">
+                                    <!-- Flavors will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Authentication Script -->
+    <script>
+        class AuthManager {
+            constructor() {
+                this.token = localStorage.getItem('sessionToken');
+                this.currentUser = localStorage.getItem('currentUser');
+            }
+            
+            async checkAuth() {
+                if (!this.token) {
+                    this.redirectToLogin();
+                    return false;
+                }
+                
+                try {
+                    const response = await fetch('/api/auth/check', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.currentUser = data.user;
+                        localStorage.setItem('currentUser', this.currentUser);
+                        document.getElementById('currentUser').textContent = this.currentUser;
+                        return true;
+                    } else {
+                        this.redirectToLogin();
+                        return false;
+                    }
+                } catch (error) {
+                    console.error('Auth check failed:', error);
+                    this.redirectToLogin();
+                    return false;
+                }
+            }
+            
+            async logout() {
+                try {
+                    await fetch('/api/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                } catch (error) {
+                    console.error('Logout request failed:', error);
+                }
+                
+                localStorage.removeItem('sessionToken');
+                localStorage.removeItem('currentUser');
+                this.redirectToLogin();
+            }
+            
+            redirectToLogin() {
+                window.location.href = '/login.html';
+            }
+            
+            getAuthHeaders() {
+                return {
+                    'Authorization': `Bearer ${this.token}`,
+                    'Content-Type': 'application/json'
+                };
+            }
+        }
+        
+        // Global auth manager
+        window.authManager = new AuthManager();
+        
+        // Check authentication on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            const isAuthenticated = await window.authManager.checkAuth();
+            if (isAuthenticated) {
+                // Set up logout button
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    window.authManager.logout();
+                });
+            }
+        });
+    </script>
+    
+    <script src="app.js?v=10"></script>
+    <script>
+        // Ensure MomentousAnalyzer is available before loading navigation
+        window.addEventListener('load', () => {
+            console.log('Page loaded, MomentousAnalyzer available:', typeof MomentousAnalyzer);
+        });
+    </script>
+    <script src="navigation.js?v=36"></script>
+</body>
+</html>

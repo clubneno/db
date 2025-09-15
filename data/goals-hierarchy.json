@@ -1,0 +1,65 @@
+[
+  {
+    "id": "general-health",
+    "name": "General Health",
+    "subGoals": [
+      "Overall Wellness"
+    ]
+  },
+  {
+    "id": "cognitive-function",
+    "name": "Cognitive Function", 
+    "subGoals": [
+      "Brain Health",
+      "Focus + Performance",
+      "Memory Support"
+    ]
+  },
+  {
+    "id": "athletic-performance",
+    "name": "Athletic Performance",
+    "subGoals": [
+      "Muscle Development",
+      "Sustained Performance", 
+      "Recovery",
+      "Hydration",
+      "Bone + Joint Health"
+    ]
+  },
+  {
+    "id": "foundational-health",
+    "name": "Foundational Health",
+    "subGoals": [
+      "Inflammation",
+      "Multivitamin",
+      "Stress Management",
+      "Metabolism",
+      "Hormone Metabolism"
+    ]
+  },
+  {
+    "id": "sleep",
+    "name": "Sleep",
+    "subGoals": [
+      "Falling Asleep",
+      "Staying Asleep + Sleep Quality", 
+      "Travel + Shift Work"
+    ]
+  },
+  {
+    "id": "hormone-support",
+    "name": "Hormone Support",
+    "subGoals": [
+      "Hormone Support",
+      "Stress Management"
+    ]
+  },
+  {
+    "id": "soft-tissue-health",
+    "name": "Soft Tissue Health", 
+    "subGoals": [
+      "Joint Support",
+      "Muscle Recovery"
+    ]
+  }
+]

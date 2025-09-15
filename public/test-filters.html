@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filter Test</title>
+</head>
+<body>
+    <h1>API Filter Test</h1>
+    
+    <div>
+        <h2>Available Categories:</h2>
+        <div id="categories"></div>
+    </div>
+    
+    <div>
+        <h2>Available Goals:</h2>
+        <div id="goals"></div>
+    </div>
+    
+    <div>
+        <h2>Filter Tests:</h2>
+        <button onclick="testCategoryFilter()">Test Sports Nutrition Filter</button>
+        <button onclick="testGoalFilter()">Test Cognitive Function Filter</button>
+        <button onclick="testSearchFilter()">Test Search "creatine"</button>
+    </div>
+    
+    <div>
+        <h2>Results:</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/analytics');
+                const data = await response.json();
+                
+                document.getElementById('categories').innerHTML = 
+                    Object.keys(data.categories).map(cat => `<li>${cat} (${data.categories[cat]})</li>`).join('');
+                
+                document.getElementById('goals').innerHTML = 
+                    Object.keys(data.goals || {}).map(goal => `<li>${goal} (${data.goals[goal]})</li>`).join('');
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
+        
+        async function testCategoryFilter() {
+            const response = await fetch('/api/products?category=Sports Nutrition');
+            const data = await response.json();
+            document.getElementById('results').innerHTML = 
+                `<h3>Sports Nutrition: ${data.total} products</h3>` +
+                data.products.slice(0,5).map(p => `<li>${p.title}</li>`).join('');
+        }
+        
+        async function testGoalFilter() {
+            const response = await fetch('/api/products?goal=Cognitive Function');
+            const data = await response.json();
+            document.getElementById('results').innerHTML = 
+                `<h3>Cognitive Function: ${data.total} products</h3>` +
+                data.products.slice(0,5).map(p => `<li>${p.title}</li>`).join('');
+        }
+        
+        async function testSearchFilter() {
+            const response = await fetch('/api/products?search=creatine');
+            const data = await response.json();
+            document.getElementById('results').innerHTML = 
+                `<h3>Search "creatine": ${data.total} products</h3>` +
+                data.products.slice(0,5).map(p => `<li>${p.title}</li>`).join('');
+        }
+        
+        loadAnalytics();
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+[
+  {
+    "id": "athletic-performance",
+    "name": "Athletic Performance",
+    "subGoals": [
+      "Bone + Joint Health",
+      "Hydration",
+      "Muscle Development",
+      "Recovery",
+      "Sustained Performance"
+    ]
+  },
+  {
+    "id": "cognitive-function",
+    "name": "Cognitive Function",
+    "subGoals": [
+      "Brain Health",
+      "Focus + Performance"
+    ]
+  },
+  {
+    "id": "expert-favorites",
+    "name": "Expert Favorites",
+    "subGoals": [
+      "Dr. Andrew Huberman",
+      "Dr. Andy Galpin",
+      "Dr. Stacy Sims",
+      "Kelly Starrett"
+    ]
+  },
+  {
+    "id": "foundational-health",
+    "name": "Foundational Health",
+    "subGoals": [
+      "Gut Health",
+      "Hormone Metabolism",
+      "Inflammation",
+      "Metabolism",
+      "Multivitamin",
+      "Stress Management"
+    ]
+  },
+  {
+    "id": "general-health",
+    "name": "General Health",
+    "subGoals": [
+      "Overall Wellness"
+    ]
+  },
+  {
+    "id": "sleep",
+    "name": "Sleep",
+    "subGoals": [
+      "Falling Asleep",
+      "Staying Asleep + Sleep Quality",
+      "Travel + Shift Work"
+    ]
+  },
+  {
+    "id": "soft-tissue-health",
+    "name": "Soft Tissue Health",
+    "subGoals": []
+  }
+]

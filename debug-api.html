@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Debug Test</title>
+</head>
+<body>
+    <h1>API Debug Test</h1>
+    <button onclick="testAPI()">Test API</button>
+    <div id="results"></div>
+
+    <script>
+        async function testAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = 'Testing...';
+            
+            try {
+                console.log('Fetching /api/products...');
+                const response = await fetch('/api/products');
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Data received:', data);
+                
+                results.innerHTML = `
+                    <h3>Success!</h3>
+                    <p>Total products: ${data.total}</p>
+                    <p>Products array length: ${data.products ? data.products.length : 'undefined'}</p>
+                    <p>First product: ${data.products && data.products[0] ? data.products[0].title : 'none'}</p>
+                `;
+            } catch (error) {
+                console.error('Error:', error);
+                results.innerHTML = `<h3>Error:</h3><p>${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

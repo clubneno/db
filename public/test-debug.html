@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+</head>
+<body>
+    <h1>Debug Test Page</h1>
+    <p><strong>Cache buster:</strong> <?php echo time(); ?></p>
+    <p><strong>Last updated:</strong> <span id="timestamp"></span></p>
+    <button onclick="testProducts()">Test Products API</button>
+    <button onclick="testElements()">Test DOM Elements</button>
+    <div id="results"></div>
+    
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toLocaleTimeString();
+        
+        async function testProducts() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h3>Testing Products API...</h3>';
+            
+            try {
+                const response = await fetch('/api/products');
+                const data = await response.json();
+                
+                results.innerHTML = `
+                    <h3>✅ API Test Results:</h3>
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Total products:</strong> ${data.total}</p>
+                    <p><strong>Products count:</strong> ${data.products ? data.products.length : 'N/A'}</p>
+                    <p><strong>First product:</strong> ${data.products && data.products[0] ? data.products[0].title : 'N/A'}</p>
+                    <p><strong>Scraped at:</strong> ${data.scraped_at || 'N/A'}</p>
+                `;
+            } catch (error) {
+                results.innerHTML = `<h3>❌ API Error:</h3><p>${error.message}</p>`;
+            }
+        }
+        
+        function testElements() {
+            const results = document.getElementById('results');
+            const elements = [
+                'productsGrid',
+                'searchInput', 
+                'categoryFilter',
+                'goalFilter',
+                'loadingState',
+                'noDataState',
+                'totalProducts',
+                'productCount'
+            ];
+            
+            let html = '<h3>🔍 DOM Elements Test:</h3>';
+            
+            // Check if products-page exists and is hidden
+            const productsPage = document.getElementById('products-page');
+            html += `<p><strong>products-page div:</strong> ${productsPage ? '✅ Found' : '❌ Not found'}</p>`;
+            if (productsPage) {
+                const isHidden = productsPage.classList.contains('hidden');
+                const computedStyle = window.getComputedStyle(productsPage);
+                html += `<p><strong>products-page hidden class:</strong> ${isHidden ? '✅ Yes' : '❌ No'}</p>`;
+                html += `<p><strong>products-page display:</strong> ${computedStyle.display}</p>`;
+            }
+            
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const computedStyle = window.getComputedStyle(el);
+                    const isVisible = computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden';
+                    html += `<p><strong>${id}:</strong> ✅ Found (visible: ${isVisible})</p>`;
+                } else {
+                    html += `<p><strong>${id}:</strong> ❌ Not found</p>`;
+                }
+            });
+            
+            results.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

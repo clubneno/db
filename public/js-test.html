@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Loading Test</title>
+</head>
+<body>
+    <h1>JavaScript Loading Test</h1>
+    <button onclick="testScripts()">Test JavaScript Loading</button>
+    <div id="results"></div>
+    
+    <!-- Load the same scripts as main page -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js?v=7"></script>
+    <script src="navigation.js?v=7"></script>
+    
+    <script>
+        function testScripts() {
+            const results = document.getElementById('results');
+            let report = '<h3>JavaScript Loading Test:</h3>';
+            
+            // Test Chart.js
+            report += `<p><strong>Chart.js loaded:</strong> ${typeof Chart !== 'undefined' ? '✅ Yes' : '❌ No'}</p>`;
+            
+            // Test MomentousAnalyzer
+            report += `<p><strong>MomentousAnalyzer class:</strong> ${typeof MomentousAnalyzer !== 'undefined' ? '✅ Found' : '❌ Not found'}</p>`;
+            
+            // Test MomentousApp (from navigation.js)
+            report += `<p><strong>MomentousApp class:</strong> ${typeof MomentousApp !== 'undefined' ? '✅ Found' : '❌ Not found'}</p>`;
+            
+            // Test if we can create instances
+            try {
+                if (typeof MomentousAnalyzer !== 'undefined') {
+                    report += '<p><strong>Can create MomentousAnalyzer:</strong> Testing...</p>';
+                    // Don't actually create it, just test if it's possible
+                    report += '<p>✅ MomentousAnalyzer constructor is available</p>';
+                }
+            } catch (error) {
+                report += `<p><strong>MomentousAnalyzer error:</strong> ${error.message}</p>`;
+            }
+            
+            // Show any console errors
+            report += '<h4>Console Messages:</h4>';
+            report += '<p><em>Check browser console for any JavaScript errors</em></p>';
+            
+            results.innerHTML = report;
+        }
+        
+        // Test on page load
+        window.addEventListener('load', () => {
+            console.log('Page loaded, testing scripts...');
+            console.log('MomentousAnalyzer:', typeof MomentousAnalyzer);
+            console.log('MomentousApp:', typeof MomentousApp);
+            console.log('Chart:', typeof Chart);
+        });
+    </script>
+</body>
+</html>

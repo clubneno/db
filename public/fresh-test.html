@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fresh Test - No Cache</title>
+</head>
+<body>
+    <h1>Fresh Test (No Cache)</h1>
+    <p><strong>Current time:</strong> <span id="time"></span></p>
+    <button onclick="checkMainPage()">Check Main Page Elements</button>
+    <div id="results"></div>
+    
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+        
+        async function checkMainPage() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h3>Testing Main Page Elements...</h3>';
+            
+            try {
+                // First, let's fetch the main page HTML and see what's actually there
+                const response = await fetch('/');
+                const html = await response.text();
+                
+                let report = '<h3>Main Page Analysis:</h3>';
+                report += `<p><strong>Response Status:</strong> ${response.status}</p>`;
+                report += `<p><strong>Content Length:</strong> ${html.length} characters</p>`;
+                
+                // Check if key strings exist in the HTML
+                const checks = [
+                    'products-page',
+                    'productsGrid',
+                    'searchInput',
+                    'categoryFilter',
+                    'nav-item',
+                    'MomentousAnalyzer'
+                ];
+                
+                checks.forEach(check => {
+                    const found = html.includes(check);
+                    report += `<p><strong>${check}:</strong> ${found ? '✅ Found in HTML' : '❌ Not in HTML'}</p>`;
+                });
+                
+                // Try to create a temporary iframe to load the main page
+                const iframe = document.createElement('iframe');
+                iframe.src = '/?t=' + Date.now(); // Cache buster
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                
+                iframe.onload = () => {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const productsPage = iframeDoc.getElementById('products-page');
+                        const productsGrid = iframeDoc.getElementById('productsGrid');
+                        
+                        report += '<h4>Iframe Test:</h4>';
+                        report += `<p><strong>products-page in iframe:</strong> ${productsPage ? '✅ Found' : '❌ Not found'}</p>`;
+                        report += `<p><strong>productsGrid in iframe:</strong> ${productsGrid ? '✅ Found' : '❌ Not found'}</p>`;
+                        
+                        results.innerHTML = report;
+                        document.body.removeChild(iframe);
+                    } catch (error) {
+                        report += `<h4>Iframe Error:</h4><p>${error.message}</p>`;
+                        results.innerHTML = report;
+                        document.body.removeChild(iframe);
+                    }
+                };
+                
+                results.innerHTML = report;
+                
+            } catch (error) {
+                results.innerHTML = `<h3>❌ Error:</h3><p>${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
