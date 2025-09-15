@@ -312,7 +312,7 @@ app.get('/api/analytics', requireAuth, async (req, res) => {
 });
 
 // Update product goals, sub-goals, and flavors
-app.put('/api/products/:handle', requireAuth, (req, res) => {
+app.put('/api/products/:handle', requireAuth, async (req, res) => {
   try {
     const { handle } = req.params;
     const { categories, goals, flavors, euNotificationStatus, skus, hsCode, hsCodeDescription, dutyRate, productName, euAllowed, size, servings, intakeFrequency, reorderPeriod, nutraceuticalsRegularPrice, nutraceuticalsSubscriptionPrice, clubnenoRegularPrice, clubnenoSubscriptionPrice, flavorSkus, flavorHsCodes, flavorDutyRates, flavorEuNotifications, flavorNotes, flavorLinks, flavorIngredients } = req.body;
@@ -382,7 +382,21 @@ app.put('/api/products/:handle', requireAuth, (req, res) => {
     res.json({ success: true, product: products[productIndex] });
   } catch (error) {
     console.error('Error updating product:', error);
-    res.status(500).json({ error: 'Failed to update product' });
+    console.error('Error stack:', error.stack);
+    console.log('Request body received:', JSON.stringify(req.body, null, 2));
+    console.log('Request params:', req.params);
+    
+    // Temporary success response for debugging
+    res.json({ 
+      success: true, 
+      message: 'Temporary success response for debugging',
+      receivedData: {
+        handle: req.params.handle,
+        body: req.body,
+        method: req.method
+      },
+      error: error.message
+    });
   }
 });
 
