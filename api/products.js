@@ -1,5 +1,7 @@
 // Products API endpoint
 const { createClient } = require('@supabase/supabase-js');
+const fs = require('fs');
+const path = require('path');
 
 // Initialize Supabase clients
 const supabase = createClient(
@@ -46,7 +48,7 @@ module.exports = async (req, res) => {
         console.log('Auth successful for user:', user.email);
         
         // Get products from Supabase
-        const { data: products, error: dbError } = await supabase
+        const { data: supabaseProducts, error: dbError } = await supabase
             .from('products')
             .select('*');
         
@@ -55,13 +57,79 @@ module.exports = async (req, res) => {
             return res.status(500).json({ error: 'Database error' });
         }
         
-        console.log(`Fetched ${products?.length || 0} products`);
+        console.log(`Fetched ${supabaseProducts?.length || 0} products from Supabase`);
+        
+        // Load local JSON data with rich information
+        let localProducts = [];
+        try {
+            const dataPath = path.join(process.cwd(), 'data', 'latest.json');
+            if (fs.existsSync(dataPath)) {
+                localProducts = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+                console.log(`Loaded ${localProducts.length} products from local JSON`);
+            }
+        } catch (error) {
+            console.log('Could not load local products:', error.message);
+        }
+        
+        // Merge Supabase data with local data
+        const mergedProducts = (supabaseProducts || []).map(supabaseProduct => {
+            // Find matching local product by handle
+            const localProduct = localProducts.find(local => 
+                local.handle === supabaseProduct.handle ||
+                local.title === supabaseProduct.title
+            );
+            
+            if (localProduct) {
+                // Merge: use local data for rich content, Supabase for metadata
+                return {
+                    // From Supabase (IDs, metadata, custom fields)
+                    id: supabaseProduct.id,
+                    eu_notification_status: supabaseProduct.eu_notification_status,
+                    eu_allowed: supabaseProduct.eu_allowed,
+                    hs_code: supabaseProduct.hs_code,
+                    duty_rate: supabaseProduct.duty_rate,
+                    
+                    // From local JSON (rich content)
+                    title: localProduct.title || supabaseProduct.title,
+                    handle: localProduct.handle || supabaseProduct.handle,
+                    price: localProduct.price,
+                    subscriptionPrice: localProduct.subscriptionPrice,
+                    price_amount: localProduct.price ? parseFloat(localProduct.price.replace(/[$,]/g, '')) : null,
+                    subscription_price_amount: localProduct.subscriptionPrice ? parseFloat(localProduct.subscriptionPrice.replace(/[$,]/g, '')) : null,
+                    image: localProduct.image,
+                    images: localProduct.images,
+                    description: localProduct.description,
+                    fullDescription: localProduct.fullDescription,
+                    category: localProduct.category || supabaseProduct.category,
+                    primaryGoal: localProduct.primaryGoal || supabaseProduct.primary_goal,
+                    vendor: localProduct.vendor || supabaseProduct.vendor,
+                    availability: localProduct.availability,
+                    productType: localProduct.productType,
+                    link: localProduct.link,
+                    variants: localProduct.variants,
+                    benefits: localProduct.benefits,
+                    ingredients: localProduct.ingredients,
+                    usage: localProduct.usage,
+                    tags: localProduct.tags,
+                    
+                    // Timestamps
+                    createdAt: localProduct.createdAt,
+                    updatedAt: localProduct.updatedAt,
+                    scraped_at: supabaseProduct.scraped_at
+                };
+            } else {
+                // Only Supabase data available
+                return supabaseProduct;
+            }
+        });
+        
+        console.log(`Merged data for ${mergedProducts.length} products`);
         
         return res.json({
-            products: products || [],
-            total: products?.length || 0,
-            source: 'supabase',
-            message: 'Products endpoint working'
+            products: mergedProducts,
+            total: mergedProducts.length,
+            source: 'hybrid-merged',
+            message: 'Products with merged local and Supabase data'
         });
         
     } catch (error) {
