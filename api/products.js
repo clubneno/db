@@ -48,8 +48,7 @@ module.exports = async (req, res) => {
         // Get products from Supabase
         const { data: products, error: dbError } = await supabase
             .from('products')
-            .select('*')
-            .limit(10);
+            .select('*');
         
         if (dbError) {
             console.error('Database error:', dbError);

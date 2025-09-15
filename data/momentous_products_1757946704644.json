@@ -23,9 +23,14 @@
     "handle": "the-momentous-three-vegan",
     "description": "The Momentous Three™: Protein, Creatine, and Omega-3—the 3 nutrients Momentous’ expert ecosystem identified as daily non-negotiables and the biggest impact drivers for longevity of performance and overall health. Each product was developed to meet The Momentous Standard™ of quality, efficacy, and tr...",
     "fullDescription": "The Momentous Three™: Protein, Creatine, and Omega-3—the 3 nutrients Momentous’ expert ecosystem identified as daily non-negotiables and the biggest impact drivers for longevity of performance and overall health. Each product was developed to meet The Momentous Standard™ of quality, efficacy, and transparency, so you can focus your energy on your goals. Taken daily, this protocol supports muscle strength, growth, and recovery, as well as cognitive function including focus, mental sharpness, and memory recall. This Vegan version, including 100% Plant Protein Powder, Creapure Creatine Monohydrate and Vegan Omega-3, makes plant-based nutrition simple, delicious and effective.",
-    "categories": [],
-    "category": "Stacks",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -57,12 +62,7 @@
     "usage": "Follow package directions",
     "rating": "4.6",
     "reviewsCount": 88,
-    "scraped_at": "2025-09-15T14:31:44.632Z",
-    "flavors": [],
-    "skus": {},
-    "euNotificationStatus": "Not started",
-    "hsCode": "",
-    "hsCodeDescription": ""
+    "scraped_at": "2025-09-15T14:31:44.632Z"
   },
   {
     "title": "Creatine",
@@ -84,15 +84,20 @@
     "description": "At Momentous, we eliminate all the guesswork by using only Creapure® Creatine, the purest + most potent creatine monohydrate available and considered the gold standard in creatine supplementation. Creatine is an amino acid that plays a critical role in cellular energy production by helping boost pho...",
     "fullDescription": "At Momentous, we eliminate all the guesswork by using only Creapure® Creatine, the purest + most potent creatine monohydrate available and considered the gold standard in creatine supplementation. Creatine is an amino acid that plays a critical role in cellular energy production by helping boost phosphate reservoirs and supporting the creation of adenosine triphosphate (ATP) throughout the body. ATP is key to driving energy at the cellular level and supports fundamental functions from muscle movement to nerve cell growth, making creatine a daily non-negotiable.",
     "categories": [
-      "Athletic Performance",
-      "Cognitive Function"
+      "Supplements",
+      "Sports Nutrition",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
     ],
-    "category": "Athletic Performance",
+    "category": "Supplements",
     "goals": [
-      "Sustained Performance",
-      "Brain Health"
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Foundational Health"
     ],
-    "primaryGoal": "Sustained Performance",
+    "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -126,15 +131,7 @@
     "usage": "Follow package directions",
     "rating": "4.9",
     "reviewsCount": 329,
-    "scraped_at": "2025-09-15T14:31:44.634Z",
-    "flavors": [
-      "Unflavored"
-    ],
-    "skus": {},
-    "euNotificationStatus": "Not started",
-    "hsCode": "",
-    "hsCodeDescription": "",
-    "dutyRate": 6.5
+    "scraped_at": "2025-09-15T14:31:44.634Z"
   },
   {
     "title": "Creatine 15-Travel Packs",
@@ -160,15 +157,19 @@
     "description": "We’ve made it easier than ever to stay consistent with conveniently dosed single-serve packs, made with the same Creapure® Creatine that makes ours the gold standard in creatine supplementation—now available in naturally-sweetened Lemon flavor. Creatine is an amino acid that plays a critical role in...",
     "fullDescription": "We’ve made it easier than ever to stay consistent with conveniently dosed single-serve packs, made with the same Creapure® Creatine that makes ours the gold standard in creatine supplementation—now available in naturally-sweetened Lemon flavor. Creatine is an amino acid that plays a critical role in cellular energy production by helping boost phosphate reservoirs and supporting the creation of adenosine triphosphate (ATP) throughout the body. ATP is key to driving energy at the cellular level and supports fundamental functions from muscle movement to nerve cell growth, making creatine a daily non-negotiable.",
     "categories": [
-      "Athletic Performance",
-      "Cognitive Function"
+      "Supplements",
+      "Sports Nutrition",
+      "Foundational Health"
     ],
-    "category": "Athletic Performance",
+    "category": "Supplements",
     "goals": [
-      "Sustained Performance",
-      "Brain Health"
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Foundational Health"
     ],
-    "primaryGoal": "Sustained Performance",
+    "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -208,15 +209,7 @@
     "usage": "Follow package directions",
     "rating": "4.0",
     "reviewsCount": 415,
-    "scraped_at": "2025-09-15T14:31:44.634Z",
-    "flavors": [
-      "Unflavored",
-      "Lemon"
-    ],
-    "skus": {},
-    "euNotificationStatus": "Not started",
-    "hsCode": "",
-    "hsCodeDescription": ""
+    "scraped_at": "2025-09-15T14:31:44.634Z"
   },
   {
     "title": "Grass-Fed Whey Protein Isolate Powder",
@@ -245,10 +238,19 @@
     "handle": "essential-whey-protein",
     "description": "Momentous Whey Protein Isolate delivers 20g of high-quality, grass-fed protein per serving to support muscle recovery, performance, and daily nutrition. Sourced from European dairy farms held to rigorous regulatory standards, our whey comes from grass-fed cows free of hormones, steroids, and rBST. C...",
     "fullDescription": "Momentous Whey Protein Isolate delivers 20g of high-quality, grass-fed protein per serving to support muscle recovery, performance, and daily nutrition. Sourced from European dairy farms held to rigorous regulatory standards, our whey comes from grass-fed cows free of hormones, steroids, and rBST. Cold-processed and micro-filtered to preserve its full amino acid profile, this protein is designed for superior absorption and minimal GI discomfort. We add ProHydrolase®, a clinically studied enzyme, to further enhance digestion and absorption—so you get the most out of your protein routine. NSF Certified for Sport®, our formula is rigorously tested to meet the highest standards of purity and safety.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -328,9 +330,14 @@
     "handle": "100-plant-protein-powder-limited-edition-flavor",
     "description": "Consistency unlocks results, and variety helps you stay consistent. Our limited-edition Vegan Protein Powder in Cappuccino flavor, features the same clean, effective 100% Plant-Based Protein you trust. This smooth, coffee-inspired blend delivers a complete amino acid profile from pea and brown rice ...",
     "fullDescription": "Consistency unlocks results, and variety helps you stay consistent. Our limited-edition Vegan Protein Powder in Cappuccino flavor, features the same clean, effective 100% Plant-Based Protein you trust. This smooth, coffee-inspired blend delivers a complete amino acid profile from pea and brown rice protein, with no artificial sweeteners, gums, or fillers. With a smooth cappuccino taste, it’s perfect for upgrading your post-workout recovery shake or daily coffee ritual—without compromising on quality.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -374,9 +381,13 @@
     "handle": "vegan-omega-3",
     "description": "Momentous Vegan Omega-3 is the most powerful plant-based omega-3 formula available, containing a market-leading 500mg each of EPA + DHA for a total 1,000mg delivery of Omega oil per serving. It’s sourced from Algal Oil—the original source of omegas consumed by fish. The result is a formula that prov...",
     "fullDescription": "Momentous Vegan Omega-3 is the most powerful plant-based omega-3 formula available, containing a market-leading 500mg each of EPA + DHA for a total 1,000mg delivery of Omega oil per serving. It’s sourced from Algal Oil—the original source of omegas consumed by fish. The result is a formula that provides crucial cell membrane support, contributing to improved brain function, muscle recovery, and overall resilience, in a clean, highly effective capsule that’s 100% free of animal products and unnecessary fillers.",
-    "categories": [],
+    "categories": [
+      "Supplements"
+    ],
     "category": "Supplements",
-    "goals": [],
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -421,10 +432,22 @@
     "handle": "omega-3",
     "description": "Momentous Omega-3 delivers a clinically effective dose of 1,600mg of EPA and DHA in a clean 1:1 ratio, sustainably sourced from Norway. Designed to support brain function, cardiovascular health, inflammation balance, and muscle recovery, this formula is NSF Certified for Sport® and tested for purity...",
     "fullDescription": "Momentous Omega-3 delivers a clinically effective dose of 1,600mg of EPA and DHA in a clean 1:1 ratio, sustainably sourced from Norway. Designed to support brain function, cardiovascular health, inflammation balance, and muscle recovery, this formula is NSF Certified for Sport® and tested for purity and heavy metals.Ideal for daily use, Omega-3 helps optimize performance and long-term health—without the fishy aftertaste. It’s foundational support for anyone training hard, thinking hard, or aging well.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Inflammation",
+    "categories": [
+      "Supplements",
+      "Best Sellers",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Bone + Joint Health",
+      "Foundational Health - Inflammation",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -480,10 +503,20 @@
     "handle": "magnesium-threonate",
     "description": "Magnesium L-Threonate is a breakthrough form of magnesium that effectively crosses the blood-brain barrier, making it ideal for cognitive support, sleep quality, and neurological recovery. It has been shown to increase brain magnesium levels, which are critical for synaptic plasticity, memory format...",
     "fullDescription": "Magnesium L-Threonate is a breakthrough form of magnesium that effectively crosses the blood-brain barrier, making it ideal for cognitive support, sleep quality, and neurological recovery. It has been shown to increase brain magnesium levels, which are critical for synaptic plasticity, memory formation, and calm brain activity.Magtein®, the patented form of Magnesium L-Threonate used in clinical studies. It’s ideal for individuals looking to improve focus, reduce stress, and support deep, restorative sleep without sedation.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Sleep - Travel + Shift Work",
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Staying Asleep + Sleep Quality",
+      "Sleep - Travel + Shift Work",
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Sleep - Staying Asleep + Sleep Quality",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -520,14 +553,7 @@
     "usage": "Follow package directions",
     "rating": "4.7",
     "reviewsCount": 205,
-    "scraped_at": "2025-09-15T14:31:44.635Z",
-    "flavors": [
-      "Unflavored"
-    ],
-    "skus": {},
-    "euNotificationStatus": "Not started",
-    "hsCode": "",
-    "hsCodeDescription": ""
+    "scraped_at": "2025-09-15T14:31:44.635Z"
   },
   {
     "title": "Collagen Peptides",
@@ -550,11 +576,23 @@
     "description": "Momentous Collagen Peptides combine 10g of grass-fed bovine collagen with 5g of FORTIGEL®—a clinically researched form shown to promote collagen synthesis in tendons and ligaments. Enhanced with Vitamin C to support absorption, this formula helps strengthen joints, improve skin elasticity, and suppo...",
     "fullDescription": "Momentous Collagen Peptides combine 10g of grass-fed bovine collagen with 5g of FORTIGEL®—a clinically researched form shown to promote collagen synthesis in tendons and ligaments. Enhanced with Vitamin C to support absorption, this formula helps strengthen joints, improve skin elasticity, and support long-term tissue resilience.Free from fat, sugar, cholesterol, and additives, Collagen Peptides are ideal for athletes and active individuals focused on recovery, mobility, and aging well. Mix it easily into your daily routine to support the structure that powers your movement.",
     "categories": [
-      "Soft Tissue Health"
+      "Supplements",
+      "Sports Nutrition",
+      "Best Sellers",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
     ],
-    "category": "Soft Tissue Health",
-    "goals": [],
-    "primaryGoal": "Soft Tissue Health",
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery",
+      "Athletic Performance - Bone + Joint Health",
+      "Soft Tissue Health",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -594,14 +632,7 @@
     "usage": "Follow package directions",
     "rating": "4.2",
     "reviewsCount": 391,
-    "scraped_at": "2025-09-15T14:31:44.635Z",
-    "flavors": [
-      "Unflavored"
-    ],
-    "skus": {},
-    "euNotificationStatus": "Not started",
-    "hsCode": "",
-    "hsCodeDescription": ""
+    "scraped_at": "2025-09-15T14:31:44.635Z"
   },
   {
     "title": "The Women’s Three",
@@ -627,10 +658,24 @@
     "handle": "the-womens-three",
     "description": "The Women’s Three is a daily health system comprised of Iron+, Calcium, and Vitamin D3 2000IU and developed in collaboration with renowned expert Dr. Stacy Sims specifically for female biology—with a targeted AM/PM dosing protocol to maximize absorption in supporting daily energy, maintaining strong...",
     "fullDescription": "The Women’s Three is a daily health system comprised of Iron+, Calcium, and Vitamin D3 2000IU and developed in collaboration with renowned expert Dr. Stacy Sims specifically for female biology—with a targeted AM/PM dosing protocol to maximize absorption in supporting daily energy, maintaining strong, healthy bones, and promoting long-term resilience. LIMITED TIME ONLY: NEVER MISS A DAY Use our travel case—free with your first TW3 order—to support your routine anywhere and everywhere.",
-    "categories": [],
-    "category": "For Women",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Multivitamin",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Stacks",
+      "For Women",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery",
+      "Athletic Performance - Bone + Joint Health",
+      "Foundational Health - Multivitamin",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -692,9 +737,17 @@
     "handle": "hormone-support-stack",
     "description": "The Male Hormone Support Stack combines Tongkat Ali and Zinc to naturally support testosterone production, energy levels, and overall male vitality. This stack is designed to help active men maintain hormonal balance, improve mood, and enhance strength and performance under physical and mental stres...",
     "fullDescription": "The Male Hormone Support Stack combines Tongkat Ali and Zinc to naturally support testosterone production, energy levels, and overall male vitality. This stack is designed to help active men maintain hormonal balance, improve mood, and enhance strength and performance under physical and mental stress.Tongkat Ali is a traditional herb known to help regulate cortisol and support healthy testosterone levels. Zinc plays a key role in hormone metabolism, immune function, and muscle repair. Together, they offer targeted support for stamina, libido, and male hormonal health.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Hormone Metabolism",
+      "Foundational Health - Metabolism"
+    ],
     "primaryGoal": "Hormone Support - Hormone Support",
     "productType": "Product",
     "vendor": "Momentous",
@@ -723,12 +776,7 @@
     "usage": "Follow package directions",
     "rating": "4.4",
     "reviewsCount": 331,
-    "scraped_at": "2025-09-15T14:31:44.636Z",
-    "flavors": [],
-    "skus": {},
-    "euNotificationStatus": "Not started",
-    "hsCode": "",
-    "hsCodeDescription": ""
+    "scraped_at": "2025-09-15T14:31:44.636Z"
   },
   {
     "title": "Tongkat Ali",
@@ -745,9 +793,18 @@
     "handle": "tongkat",
     "description": "Tongkat Ali, also known as Longjack (Eurycoma longifolia), is a traditional Southeast Asian herb known for its ability to support healthy testosterone levels, boost energy, and improve mood. It’s particularly beneficial for men looking to enhance physical performance, muscle growth, and hormonal bal...",
     "fullDescription": "Tongkat Ali, also known as Longjack (Eurycoma longifolia), is a traditional Southeast Asian herb known for its ability to support healthy testosterone levels, boost energy, and improve mood. It’s particularly beneficial for men looking to enhance physical performance, muscle growth, and hormonal balance.Tongkat Ali has also been shown to help regulate stress hormones like cortisol, supporting resilience and recovery during periods of high physical or mental demand. It’s an ideal daily supplement for active individuals seeking natural support for stamina, strength, and overall vitality.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Hormone Metabolism",
+      "Foundational Health - Metabolism",
+      "Foundational Health"
+    ],
     "primaryGoal": "Hormone Support - Hormone Support",
     "productType": "Product",
     "vendor": "Momentous",
@@ -791,12 +848,7 @@
     "usage": "Follow package directions",
     "rating": "4.4",
     "reviewsCount": 334,
-    "scraped_at": "2025-09-15T14:31:44.636Z",
-    "flavors": [],
-    "skus": {},
-    "euNotificationStatus": "Not started",
-    "hsCode": "",
-    "hsCodeDescription": ""
+    "scraped_at": "2025-09-15T14:31:44.636Z"
   },
   {
     "title": "Vitamin D3 5000 IU",
@@ -817,10 +869,21 @@
     "handle": "vitamin-d3-5000-iu",
     "description": "Vitamin D3 5000 IU is a high-potency supplement designed to help maintain healthy vitamin D levels and support bone strength, immune function, and inflammation balance. This fat-soluble nutrient plays a key role in calcium absorption, helping to preserve skeletal health and muscular function—especia...",
     "fullDescription": "Vitamin D3 5000 IU is a high-potency supplement designed to help maintain healthy vitamin D levels and support bone strength, immune function, and inflammation balance. This fat-soluble nutrient plays a key role in calcium absorption, helping to preserve skeletal health and muscular function—especially important for athletes and individuals with low sun exposure.Sourced from lanolin, our D3 5000 IU is ideal for those needing a stronger daily dose to meet their health and performance goals. It’s a simple but powerful tool for maintaining energy, resilience, and recovery.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Hormone Support - Hormone Support",
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Bone + Joint Health",
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Inflammation",
+      "Foundational Health - Multivitamin",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Athletic Performance - Muscle Development",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -881,9 +944,16 @@
     "handle": "essential-multivitamin",
     "description": "The Momentous Multivitamin is a comprehensive blend of essential vitamins, minerals, and phytonutrients designed to fill common dietary gaps and support overall health, energy, and immune function. Sourced from bioavailable forms and modeled after nutrient-dense whole foods, it delivers what your bo...",
     "fullDescription": "The Momentous Multivitamin is a comprehensive blend of essential vitamins, minerals, and phytonutrients designed to fill common dietary gaps and support overall health, energy, and immune function. Sourced from bioavailable forms and modeled after nutrient-dense whole foods, it delivers what your body needs without unnecessary fillers or megadosing.Whether you’re an athlete pushing physical limits or simply looking for balanced daily support, this formula provides the critical micronutrients that fuel cellular function, metabolism, and long-term well-being.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Multivitamin",
+      "Foundational Health"
+    ],
     "primaryGoal": "Hormone Support - Hormone Support",
     "productType": "Product",
     "vendor": "Momentous",
@@ -934,9 +1004,16 @@
     "handle": "sleep-pack",
     "description": "The Sleep 30-Pack delivers a full month of melatonin-free, research-backed sleep support with a calming blend of Magnesium L-Threonate, Apigenin, and L-Theanine. Together, these ingredients help ease the body and mind into a restful state, reduce nighttime wakeups, and promote deeper, higher-quality...",
     "fullDescription": "The Sleep 30-Pack delivers a full month of melatonin-free, research-backed sleep support with a calming blend of Magnesium L-Threonate, Apigenin, and L-Theanine. Together, these ingredients help ease the body and mind into a restful state, reduce nighttime wakeups, and promote deeper, higher-quality sleep.Ideal for anyone seeking consistent, restorative rest without the use of melatonin, this formula supports the natural sleep-wake cycle, reduces stress, and helps you wake up feeling refreshed and mentally clear.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Falling Asleep",
+      "Sleep - Staying Asleep + Sleep Quality",
+      "Sleep - Travel + Shift Work"
+    ],
     "primaryGoal": "Sleep - Falling Asleep",
     "productType": "Product",
     "vendor": "Momentous",
@@ -986,9 +1063,16 @@
     "handle": "apigenin",
     "description": "Apigenin is a naturally occurring flavonoid found in chamomile and other plants, known for its calming effects on the brain and its ability to support deeper, more restorative sleep. It works by activating GABA receptors and reducing neuronal activity in the forebrain—helping to ease the mind and pr...",
     "fullDescription": "Apigenin is a naturally occurring flavonoid found in chamomile and other plants, known for its calming effects on the brain and its ability to support deeper, more restorative sleep. It works by activating GABA receptors and reducing neuronal activity in the forebrain—helping to ease the mind and promote relaxation.Often used as part of a nighttime routine, Apigenin may also help lower cortisol levels and support antioxidant activity in the brain. It’s an effective, non-sedating option for improving sleep quality and managing daily stress.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Falling Asleep",
+      "Sleep - Staying Asleep + Sleep Quality",
+      "Sleep - Travel + Shift Work"
+    ],
     "primaryGoal": "Sleep - Falling Asleep",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1041,9 +1125,16 @@
     "handle": "l-theanine",
     "description": "L-Theanine is a naturally occurring amino acid found in tea leaves that promotes calm, focused mental states without causing drowsiness. It works by increasing alpha brain wave activity and supporting neurotransmitters like GABA and serotonin—helping you stay relaxed yet alert.Often used to reduce a...",
     "fullDescription": "L-Theanine is a naturally occurring amino acid found in tea leaves that promotes calm, focused mental states without causing drowsiness. It works by increasing alpha brain wave activity and supporting neurotransmitters like GABA and serotonin—helping you stay relaxed yet alert.Often used to reduce acute stress, improve focus, and support the transition into restful sleep, L-Theanine is a safe, non-sedating option for managing mental performance and emotional balance throughout the day.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Falling Asleep",
+      "Sleep - Staying Asleep + Sleep Quality",
+      "Sleep - Travel + Shift Work"
+    ],
     "primaryGoal": "Sleep - Falling Asleep",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1096,9 +1187,15 @@
     "handle": "alpha-gpc",
     "description": "Alpha GPC is a highly bioavailable form of choline that supports cognitive performance, focus, and long-term brain health. It quickly crosses the blood-brain barrier to increase acetylcholine levels—a key neurotransmitter involved in memory, attention, and learning.Ideal for athletes, students, and ...",
     "fullDescription": "Alpha GPC is a highly bioavailable form of choline that supports cognitive performance, focus, and long-term brain health. It quickly crosses the blood-brain barrier to increase acetylcholine levels—a key neurotransmitter involved in memory, attention, and learning.Ideal for athletes, students, and professionals, Alpha GPC helps sharpen mental clarity, enhance neural communication, and may reduce cognitive decline over time. It’s a powerful tool for anyone looking to support brain performance and function at their peak.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance"
+    ],
     "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1149,9 +1246,16 @@
     "handle": "huberman-sleep-stack",
     "description": "The Complete Sleep Stack combines four research-backed ingredients—Magnesium L-Threonate, Apigenin, Inositol, and L-Theanine—to promote deep, uninterrupted sleep and next-day clarity. Designed to work synergistically, these ingredients calm the nervous system, regulate neurotransmitters, and help ea...",
     "fullDescription": "The Complete Sleep Stack combines four research-backed ingredients—Magnesium L-Threonate, Apigenin, Inositol, and L-Theanine—to promote deep, uninterrupted sleep and next-day clarity. Designed to work synergistically, these ingredients calm the nervous system, regulate neurotransmitters, and help ease the mind into a restorative sleep cycle.Magnesium L-Threonate enhances cognitive recovery, Apigenin and L-Theanine promote relaxation and stress reduction, and Inositol helps regulate mood and nighttime wakeups. This non-melatonin sleep solution is ideal for those seeking consistent, high-quality rest without next-day grogginess.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Falling Asleep",
+      "Sleep - Staying Asleep + Sleep Quality"
+    ],
     "primaryGoal": "Sleep - Falling Asleep",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1201,10 +1305,22 @@
     "handle": "rhodiola-rosea-extract",
     "description": "Rhodiola Rosea is a natural adaptogen known for its ability to help the body manage physical and mental stress. Sourced from high-altitude environments, this powerful botanical has been shown to improve focus, reduce fatigue, and enhance endurance by supporting the body’s stress response systems.Ide...",
     "fullDescription": "Rhodiola Rosea is a natural adaptogen known for its ability to help the body manage physical and mental stress. Sourced from high-altitude environments, this powerful botanical has been shown to improve focus, reduce fatigue, and enhance endurance by supporting the body’s stress response systems.Ideal for athletes, professionals, and anyone under high cognitive or physical load, Rhodiola helps sustain energy levels, improve resilience, and sharpen mental performance—especially during intense or demanding periods.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Stress Management",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery",
+      "Hormone Support - Stress Management",
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Stress Management"
+    ],
+    "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1255,10 +1371,18 @@
     "handle": "vital-amino",
     "description": "Vital Aminos is a blend of all nine essential amino acids (EAAs) plus four additional aminos that support muscle protein synthesis, recovery, and endurance. Amino acids are the building blocks of muscle, enzymes, hormones, and neurotransmitters—making them critical for both physical performance and ...",
     "fullDescription": "Vital Aminos is a blend of all nine essential amino acids (EAAs) plus four additional aminos that support muscle protein synthesis, recovery, and endurance. Amino acids are the building blocks of muscle, enzymes, hormones, and neurotransmitters—making them critical for both physical performance and overall metabolic health.This formula is ideal for athletes and active individuals looking to enhance muscle repair, reduce soreness, and improve training outcomes. Whether used pre-, intra-, or post-workout, Vital Aminos delivers the support your body needs to perform, recover, and rebuild.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1307,9 +1431,18 @@
     "handle": "zinc-picolinate",
     "description": "Zinc is an essential trace mineral that plays a key role in immune function, cellular repair, and metabolic health. This highly bioavailable form of Zinc supports the body’s ability to defend against illness, repair tissues, and regulate hormone function—making it a vital daily supplement for active...",
     "fullDescription": "Zinc is an essential trace mineral that plays a key role in immune function, cellular repair, and metabolic health. This highly bioavailable form of Zinc supports the body’s ability to defend against illness, repair tissues, and regulate hormone function—making it a vital daily supplement for active individuals.In addition to strengthening immune defenses, Zinc aids in wound healing, skin health, and enzyme activity across hundreds of bodily processes. It’s especially important for athletes, as intensive training can increase Zinc demand and depletion through sweat.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Hormone Metabolism",
+      "Foundational Health - Metabolism",
+      "Foundational Health"
+    ],
     "primaryGoal": "Hormone Support - Hormone Support",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1358,10 +1491,18 @@
     "handle": "recovery-grass-fed-whey-isolate",
     "description": "Momentous Recovery is a performance-focused post-workout formula designed to optimize muscle repair, replenish glycogen stores, and reduce exercise-induced soreness. Featuring a clinically supported 2:1 ratio of fast-acting carbohydrates to grass-fed whey protein, plus amino acids and electrolytes, ...",
     "fullDescription": "Momentous Recovery is a performance-focused post-workout formula designed to optimize muscle repair, replenish glycogen stores, and reduce exercise-induced soreness. Featuring a clinically supported 2:1 ratio of fast-acting carbohydrates to grass-fed whey protein, plus amino acids and electrolytes, it delivers comprehensive recovery support in one simple shake.Ideal for endurance athletes, strength trainers, and anyone serious about recovery, this formula helps your body rebuild and rehydrate efficiently—so you can train consistently and perform at your best.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1420,10 +1561,19 @@
     "handle": "magnesium-malate-1",
     "description": "Magnesium Malate is a highly bioavailable form of magnesium that supports energy production, muscle recovery, and overall metabolic health. As a cofactor in over 600 enzymatic reactions, magnesium is essential for everything from ATP synthesis to nerve transmission and muscle relaxation.This form, b...",
     "fullDescription": "Magnesium Malate is a highly bioavailable form of magnesium that supports energy production, muscle recovery, and overall metabolic health. As a cofactor in over 600 enzymatic reactions, magnesium is essential for everything from ATP synthesis to nerve transmission and muscle relaxation.This form, bound to malic acid, is particularly effective for enhancing stamina, easing post-workout soreness, and supporting cardiovascular and neuromuscular function. Ideal for daily use, it helps keep your body functioning at its peak under stress or heavy training.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery",
+      "Athletic Performance - Bone + Joint Health"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1471,10 +1621,18 @@
     "handle": "turmeric-ultra",
     "description": "Turmeric is a powerful plant-based supplement rich in curcuminoids—natural compounds known for their strong anti-inflammatory and antioxidant effects. Used for centuries in traditional medicine, Turmeric supports joint health, muscle recovery, and a balanced inflammatory response, especially after i...",
     "fullDescription": "Turmeric is a powerful plant-based supplement rich in curcuminoids—natural compounds known for their strong anti-inflammatory and antioxidant effects. Used for centuries in traditional medicine, Turmeric supports joint health, muscle recovery, and a balanced inflammatory response, especially after intense physical activity.Ideal for athletes and active individuals, Turmeric helps reduce soreness and support long-term joint integrity. Its systemic benefits also extend to heart, brain, and immune health, making it a daily staple for those seeking both performance and protection.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Inflammation",
+    "categories": [
+      "Supplements",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Bone + Joint Health",
+      "Foundational Health - Inflammation",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Athletic Performance - Muscle Development",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1523,10 +1681,18 @@
     "handle": "collagen-creatine",
     "description": "The Collagen + Creatine Stack combines two of the most researched supplements for performance and recovery—working together to support strong muscles, durable joints, and connective tissue resilience. This stack includes 10g of Collagen Peptides and 5g of Creatine Monohydrate, ideal for athletes, ac...",
     "fullDescription": "The Collagen + Creatine Stack combines two of the most researched supplements for performance and recovery—working together to support strong muscles, durable joints, and connective tissue resilience. This stack includes 10g of Collagen Peptides and 5g of Creatine Monohydrate, ideal for athletes, active individuals, or anyone focused on aging well and moving pain-free.Creatine fuels muscle energy and performance while supporting cognitive function. Collagen aids in the repair and maintenance of tendons, ligaments, and skin. Taken daily, this pairing supports total body strength and structural integrity from the inside out.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Soft Tissue Health",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Sustained Performance",
+      "Soft Tissue Health"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1568,9 +1734,13 @@
     "handle": "ashwagandha",
     "description": "Momentous Ashwagandha features NooGandha®—a highly concentrated, clinically studied extract designed to support stress management, focus, and cognitive performance. Unlike traditional ashwagandha, NooGandha® promotes calm alertness without sedation, making it ideal for high-performing individuals wh...",
     "fullDescription": "Momentous Ashwagandha features NooGandha®—a highly concentrated, clinically studied extract designed to support stress management, focus, and cognitive performance. Unlike traditional ashwagandha, NooGandha® promotes calm alertness without sedation, making it ideal for high-performing individuals who need to stay clear-headed under pressure.This adaptogen helps balance cortisol levels, improve emotional resilience, and support mental clarity, making it a smart addition for anyone managing stress, training demands, or cognitive fatigue.",
-    "categories": [],
+    "categories": [
+      "Supplements"
+    ],
     "category": "Supplements",
-    "goals": [],
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1610,10 +1780,18 @@
     "handle": "acetyl-l-carnitine",
     "description": "Acetyl L-Carnitine is a naturally occurring amino acid derivative that supports cognitive function, energy metabolism, and cellular health. It plays a key role in transporting fatty acids into the mitochondria—where they're converted into usable energy—making it especially valuable for brain and ner...",
     "fullDescription": "Acetyl L-Carnitine is a naturally occurring amino acid derivative that supports cognitive function, energy metabolism, and cellular health. It plays a key role in transporting fatty acids into the mitochondria—where they're converted into usable energy—making it especially valuable for brain and nerve cells with high energy demands.This compound also acts as a potent antioxidant, helping protect the brain from oxidative stress while supporting focus, memory, and mental clarity. It’s ideal for individuals looking to boost cognitive performance, mood, and mitochondrial function.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Metabolism",
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Foundational Health - Metabolism",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1663,10 +1841,17 @@
     "handle": "brain-drive",
     "description": "Brain Drive is a daily nootropic formula designed to enhance mental clarity, motivation, and long-term brain health. It combines Acetyl L-Carnitine, Bacopa Monnieri, Tyrosine, and B vitamins—ingredients that support neurotransmitter production, blood flow, and cognitive resilience under stress.Ideal...",
     "fullDescription": "Brain Drive is a daily nootropic formula designed to enhance mental clarity, motivation, and long-term brain health. It combines Acetyl L-Carnitine, Bacopa Monnieri, Tyrosine, and B vitamins—ingredients that support neurotransmitter production, blood flow, and cognitive resilience under stress.Ideal for athletes, professionals, and high performers, Brain Drive helps you stay sharp, focused, and mentally energized throughout the day. Whether you're training, working, or problem-solving, it’s a powerful tool for unlocking sustained mental performance.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Foundational Health",
+    "categories": [
+      "Supplements",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1720,10 +1905,19 @@
     "handle": "100-plant-protein-powder",
     "description": "Momentous 100% Plant Protein delivers 20g of complete, plant-based protein sourced from pea and rice—providing a full amino acid profile to support muscle repair, recovery, and daily performance. Sourced exclusively from the U.S. and Canada, this formula is smooth, easy to mix, and free from artific...",
     "fullDescription": "Momentous 100% Plant Protein delivers 20g of complete, plant-based protein sourced from pea and rice—providing a full amino acid profile to support muscle repair, recovery, and daily performance. Sourced exclusively from the U.S. and Canada, this formula is smooth, easy to mix, and free from artificial ingredients, gums, or fillers.NSF Certified for Sport®, it’s trusted by elite athletes and everyday performers alike. Whether post-workout or as a daily nutrition boost, this protein supports strength, satiety, and clean fuel for your goals.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1784,9 +1978,14 @@
     "handle": "inositol",
     "description": "Inositol is a naturally occurring carbohydrate that plays a key role in brain signaling, mood regulation, and sleep quality. As a precursor to serotonin, dopamine, and melatonin pathways, Inositol supports a calm mind, balanced mood, and healthy circadian rhythm—making it especially useful for those...",
     "fullDescription": "Inositol is a naturally occurring carbohydrate that plays a key role in brain signaling, mood regulation, and sleep quality. As a precursor to serotonin, dopamine, and melatonin pathways, Inositol supports a calm mind, balanced mood, and healthy circadian rhythm—making it especially useful for those struggling with nighttime wakeups or anxious thinking. Each capsule contains pure Inositol to support relaxation, improve sleep continuity, and promote mental clarity. It's a gentle, non-sedating option for managing stress and improving overall sleep health.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Staying Asleep + Sleep Quality"
+    ],
     "primaryGoal": "Sleep - Staying Asleep + Sleep Quality",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1834,10 +2033,20 @@
     "handle": "l-glutamine",
     "description": "L-Glutamine is a conditionally essential amino acid that plays a critical role in muscle repair, immune function, and gut health. It’s the most abundant amino acid in the body and becomes especially important during times of physical stress, intense training, or illness.This supplement helps support...",
     "fullDescription": "L-Glutamine is a conditionally essential amino acid that plays a critical role in muscle repair, immune function, and gut health. It’s the most abundant amino acid in the body and becomes especially important during times of physical stress, intense training, or illness.This supplement helps support post-exercise recovery by reducing muscle breakdown, maintaining gut lining integrity, and fueling immune cells. It’s an ideal addition for athletes, endurance trainers, or anyone focused on performance and recovery from the inside out.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Foundational Health",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -1889,9 +2098,15 @@
     "handle": "tyrosine",
     "description": "Tyrosine is a conditionally essential amino acid that supports mental performance by aiding in the production of dopamine, norepinephrine, and epinephrine—key neurotransmitters involved in focus, motivation, and stress response. It’s particularly effective in helping maintain cognitive function duri...",
     "fullDescription": "Tyrosine is a conditionally essential amino acid that supports mental performance by aiding in the production of dopamine, norepinephrine, and epinephrine—key neurotransmitters involved in focus, motivation, and stress response. It’s particularly effective in helping maintain cognitive function during periods of physical exertion, sleep deprivation, or acute stress.Ideal for athletes, professionals, and students alike, Tyrosine helps enhance alertness and working memory under pressure. Taken regularly or in moments of mental fatigue, it’s a reliable tool to stay sharp, calm, and focused.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance"
+    ],
     "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1943,9 +2158,16 @@
     "handle": "elite-sleep",
     "description": "Elite Sleep is a research-backed, melatonin-based sleep aid designed to help you fall asleep faster, stay asleep longer, and support nighttime recovery. Formulated with a blend of Melatonin, Tart Cherry, L-Theanine, and Valerian Root, it helps regulate your body’s natural sleep-wake cycle while prom...",
     "fullDescription": "Elite Sleep is a research-backed, melatonin-based sleep aid designed to help you fall asleep faster, stay asleep longer, and support nighttime recovery. Formulated with a blend of Melatonin, Tart Cherry, L-Theanine, and Valerian Root, it helps regulate your body’s natural sleep-wake cycle while promoting a calm, relaxed state before bed.This formula is ideal for athletes, shift workers, frequent travelers, or anyone needing short-term support to reset their sleep rhythm. Elite Sleep is not intended for daily use but is perfect for periods of disrupted or irregular sleep.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Falling Asleep",
+      "Sleep - Travel + Shift Work",
+      "Athletic Performance - Recovery"
+    ],
     "primaryGoal": "Sleep - Falling Asleep",
     "productType": "Product",
     "vendor": "Momentous",
@@ -1994,10 +2216,19 @@
     "handle": "resveratrol-30-serving-jar",
     "description": "Resveratrol is a potent polyphenol found in the skin of red grapes and certain berries, known for its antioxidant and anti-inflammatory properties. It supports cellular health, promotes healthy aging, and helps defend against oxidative stress—making it a valuable daily supplement for long-term vital...",
     "fullDescription": "Resveratrol is a potent polyphenol found in the skin of red grapes and certain berries, known for its antioxidant and anti-inflammatory properties. It supports cellular health, promotes healthy aging, and helps defend against oxidative stress—making it a valuable daily supplement for long-term vitality and performance.Often associated with cardiovascular and brain health, Resveratrol helps protect cells from damage, support metabolic function, and maintain healthy inflammation levels. It’s an ideal addition for anyone looking to promote longevity and protect against the wear and tear of daily stress.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Inflammation",
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Foundational Health - Inflammation",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2043,10 +2274,18 @@
     "handle": "pr-lotion-bottle",
     "description": "PR Lotion® delivers sodium bicarbonate directly through the skin to help buffer lactic acid, reduce muscle soreness, and improve training capacity. Used by elite athletes across endurance and power sports, this topical formula supports high-intensity performance without the GI discomfort often assoc...",
     "fullDescription": "PR Lotion® delivers sodium bicarbonate directly through the skin to help buffer lactic acid, reduce muscle soreness, and improve training capacity. Used by elite athletes across endurance and power sports, this topical formula supports high-intensity performance without the GI discomfort often associated with oral bicarbonate.Ideal for hard training days, races, or heavy lifting sessions, PR Lotion® helps you push longer, recover faster, and adapt better—giving your muscles the support they need, exactly where they need it.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2103,9 +2342,16 @@
     "handle": "focus-cognition-stack",
     "description": "The Focus &amp; Cognition Stack combines Tyrosine, Omega-3, and Alpha GPC to support mental clarity, attention, and long-term brain health. Ideal for high performers, students, or athletes, this stack is designed to enhance focus, reduce cognitive fatigue, and improve processing speed. Tyrosine supp...",
     "fullDescription": "The Focus &amp; Cognition Stack combines Tyrosine, Omega-3, and Alpha GPC to support mental clarity, attention, and long-term brain health. Ideal for high performers, students, or athletes, this stack is designed to enhance focus, reduce cognitive fatigue, and improve processing speed. Tyrosine supports neurotransmitter production for motivation and stress resilience. Omega-3s aid neural communication and protect against inflammation, while Alpha GPC delivers bioavailable choline to fuel memory and cognitive performance. Together, these ingredients create a powerful daily formula for sharper thinking and sustained mental energy.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance"
+    ],
     "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -2163,9 +2409,14 @@
     "handle": "the-momentous-three",
     "description": "The Momentous Three combines Protein, Creatine, and Omega-3—three essential nutrients shown to support long-term health, performance, and cognitive function. This trio forms the foundation of daily supplementation for athletes, high performers, and anyone looking to improve energy, recovery, and men...",
     "fullDescription": "The Momentous Three combines Protein, Creatine, and Omega-3—three essential nutrients shown to support long-term health, performance, and cognitive function. This trio forms the foundation of daily supplementation for athletes, high performers, and anyone looking to improve energy, recovery, and mental clarity, giving performance for life™.Protein aids muscle repair and immune support, Creatine boosts physical strength and brain energy, and Omega-3s help reduce inflammation while supporting joint and brain health. Together, they work synergistically to power both mind and body at the cellular level.",
-    "categories": [],
-    "category": "Stacks",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -2234,10 +2485,18 @@
     "handle": "momentous-fuel",
     "description": "Momentous Fuel is an expertly designed carb + electrolyte formula built to sustain prolonged workouts, training, and gametime intensity, making it a top choice for pro sports teams, first responders, and human performance leaders. It embodies what makes us, us: clean ingredients, rigorous testing, a...",
     "fullDescription": "Momentous Fuel is an expertly designed carb + electrolyte formula built to sustain prolonged workouts, training, and gametime intensity, making it a top choice for pro sports teams, first responders, and human performance leaders. It embodies what makes us, us: clean ingredients, rigorous testing, and performance without compromise.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Hydration",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Travel + Shift Work",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Hydration"
+    ],
+    "primaryGoal": "Sleep - Travel + Shift Work",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2313,9 +2572,13 @@
     "handle": "promixx-pill-case",
     "description": "The Promixx Pill Case is a compact, durable solution for organizing your daily supplements. Designed with portability in mind, it features secure, easy-to-open compartments that keep capsules and tablets protected while you're at work, at the gym, or on the go.Whether you're managing multiple produc...",
     "fullDescription": "The Promixx Pill Case is a compact, durable solution for organizing your daily supplements. Designed with portability in mind, it features secure, easy-to-open compartments that keep capsules and tablets protected while you're at work, at the gym, or on the go.Whether you're managing multiple products in your stack or just want a cleaner way to carry your essentials, this case helps streamline your routine—so you never miss a dose.",
-    "categories": [],
+    "categories": [
+      "Supplements"
+    ],
     "category": "Supplements",
-    "goals": [],
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Merch",
     "vendor": "Momentous",
@@ -2364,10 +2627,21 @@
     "handle": "collagen-shot-15-packs",
     "description": "Collagen Shot 15-Packs provide 10g of hydrolyzed bovine collagen peptides and 35mg of vitamin C in a convenient, ready-to-drink format, scientifically formulated to support joint health, tendon and ligament strength, and faster recovery. Taken daily, especially before training, this NSF Certified fo...",
     "fullDescription": "Collagen Shot 15-Packs provide 10g of hydrolyzed bovine collagen peptides and 35mg of vitamin C in a convenient, ready-to-drink format, scientifically formulated to support joint health, tendon and ligament strength, and faster recovery. Taken daily, especially before training, this NSF Certified for Sport® collagen supplement promotes collagen synthesis, improves mobility, and helps maintain the structural integrity of connective tissues for long-term performance and injury prevention. Ideal for athletes, active individuals, and anyone seeking to protect joints, enhance recovery, and support healthy aging.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
-    "primaryGoal": "Soft Tissue Health",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery",
+      "Athletic Performance - Bone + Joint Health",
+      "Soft Tissue Health"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2441,9 +2715,18 @@
     "handle": "grass-fed-whey-protein-10-travel-packs",
     "description": "The most efficacious Whey Protein Isolate available, in convenient single-serving travel packs. Protein is a must for everyone, every day when Performance for Life™ is the goal, and our travel packs make that easier than ever, so you can focus more energy on the next goal to hit. 20g of high-quality...",
     "fullDescription": "The most efficacious Whey Protein Isolate available, in convenient single-serving travel packs. Protein is a must for everyone, every day when Performance for Life™ is the goal, and our travel packs make that easier than ever, so you can focus more energy on the next goal to hit. 20g of high-quality, grass-fed whey protein per pack supports muscle recovery, performance, and daily nutrition wherever life takes you. NSF Certified for Sport®, our formula is rigorously tested to meet the highest standards of purity and safety.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Travel + Shift Work",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
     "primaryGoal": "Sleep - Travel + Shift Work",
     "productType": "Product",
     "vendor": "Momentous",
@@ -2516,10 +2799,21 @@
     "handle": "ubiquinol",
     "description": "Ubiquinol is the most bioavailable and active form of CoQ10, a powerful antioxidant that plays a key role in cellular energy production. This supplement supports mitochondrial function, helping your body produce ATP—the energy currency of your cells—more efficiently and with less oxidative stress.Ub...",
     "fullDescription": "Ubiquinol is the most bioavailable and active form of CoQ10, a powerful antioxidant that plays a key role in cellular energy production. This supplement supports mitochondrial function, helping your body produce ATP—the energy currency of your cells—more efficiently and with less oxidative stress.Ubiquinol is especially beneficial for cognitive performance, endurance, and overall vitality, making it ideal for aging individuals, athletes, and anyone with high physical or mental demands. It also helps defend against cellular damage by neutralizing free radicals at the source of energy production.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Hormone Support - Hormone Support",
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Bone + Joint Health",
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Inflammation",
+      "Foundational Health - Multivitamin",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Athletic Performance - Muscle Development",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2580,10 +2874,21 @@
     "handle": "vitamin-d3-2000-iu",
     "description": "Vitamin D3 2000 IU is a vegan-friendly, allergen-free formula delivered in organic extra virgin olive oil for optimal bioavailability. Designed for daily use, this supplement supports bone health, immune defense, muscle function, and a healthy inflammatory response.Vitamin D3 plays a vital role in c...",
     "fullDescription": "Vitamin D3 2000 IU is a vegan-friendly, allergen-free formula delivered in organic extra virgin olive oil for optimal bioavailability. Designed for daily use, this supplement supports bone health, immune defense, muscle function, and a healthy inflammatory response.Vitamin D3 plays a vital role in calcium absorption, hormonal balance, and overall vitality. With 2000 IU per serving, this moderate-dose option is ideal for those looking to maintain steady vitamin D levels as part of a balanced wellness routine.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Hormone Support - Hormone Support",
+    "categories": [
+      "Supplements",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Bone + Joint Health",
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Inflammation",
+      "Foundational Health - Multivitamin",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Athletic Performance - Muscle Development",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2646,10 +2951,21 @@
     "handle": "collagen-10-single-serving-bundle",
     "description": "Collagen Peptides helps promote natural collagen synthesis and supports soft tissue for long-term joint health and resilience against injury.† Collagen Peptides powder delivers 10 grams of grass-fed bovine collagen peptides plus 5g of FORTIGEL®, a patented, clinically researched collagen peptide sou...",
     "fullDescription": "Collagen Peptides helps promote natural collagen synthesis and supports soft tissue for long-term joint health and resilience against injury.† Collagen Peptides powder delivers 10 grams of grass-fed bovine collagen peptides plus 5g of FORTIGEL®, a patented, clinically researched collagen peptide source designed to promote collagen synthesis in tendons and ligaments.† Vitamin C is included to help increase collagen formation and aid in the development of stronger collagen.† Our formula is free from fat, sugar, cholesterol, purines, and additives for a clean nutritional profile.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Soft Tissue Health",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Travel + Shift Work",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery",
+      "Athletic Performance - Bone + Joint Health",
+      "Soft Tissue Health"
+    ],
+    "primaryGoal": "Sleep - Travel + Shift Work",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2720,10 +3036,19 @@
     "handle": "grass-fed-whey-protein-isolate-powder-limited-edition-flavors",
     "description": "Consistency is the cornerstone of progress, and hitting your daily protein goals is foundational to you achieving Performance for Life™. We’re here to make that even easier, and more delicious, with new limited-edition flavors. Momentous Whey Protein Isolate has long been trusted by those striving f...",
     "fullDescription": "Consistency is the cornerstone of progress, and hitting your daily protein goals is foundational to you achieving Performance for Life™. We’re here to make that even easier, and more delicious, with new limited-edition flavors. Momentous Whey Protein Isolate has long been trusted by those striving for more; backed by The Momentous Standard™, our #1 product delivers the highest quality ingredients and flavors with no compromise—no artificial ingredients, sweeteners, gums or fillers, just naturally-flavored options to keep your protein routine easy and fresh.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2804,9 +3129,16 @@
     "handle": "nightly-sleep-stack",
     "description": "The Nightly Sleep Stack is a science-backed combination of Magnesium L-Threonate, Apigenin, and L-Theanine designed to promote deep, restorative sleep and next-day mental clarity. Created in collaboration with Dr. Andrew Huberman, this stack targets the brain’s natural calming pathways to help you f...",
     "fullDescription": "The Nightly Sleep Stack is a science-backed combination of Magnesium L-Threonate, Apigenin, and L-Theanine designed to promote deep, restorative sleep and next-day mental clarity. Created in collaboration with Dr. Andrew Huberman, this stack targets the brain’s natural calming pathways to help you fall asleep faster, stay asleep longer, and wake up feeling refreshed.Magnesium L-Threonate supports cognitive recovery and sleep quality by increasing magnesium levels in the brain. Apigenin and L-Theanine work together to calm the nervous system, reduce stress, and enhance the transition into sleep. Perfect for anyone seeking a non-melatonin solution to improve both sleep depth and mental performance.",
-    "categories": [],
-    "category": "Best Sellers",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "Best Sellers"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Falling Asleep",
+      "Sleep - Staying Asleep + Sleep Quality"
+    ],
     "primaryGoal": "Sleep - Falling Asleep",
     "productType": "Product",
     "vendor": "Momentous",
@@ -2855,10 +3187,17 @@
     "handle": "athletic-stack",
     "description": "The Athletic Stack, developed with Dr. Andy Galpin, provides daily foundational support for active individuals through three key supplements: Multivitamin, Omega-3, and Magnesium Malate. Together, these ingredients help optimize nutrient intake, reduce inflammation, and support energy production at ...",
     "fullDescription": "The Athletic Stack, developed with Dr. Andy Galpin, provides daily foundational support for active individuals through three key supplements: Multivitamin, Omega-3, and Magnesium Malate. Together, these ingredients help optimize nutrient intake, reduce inflammation, and support energy production at the cellular level.The Multivitamin delivers essential vitamins, minerals, and phytonutrients in highly bioavailable forms to fill common dietary gaps. Omega-3s support cardiovascular and brain health while reducing exercise-induced inflammation, and Magnesium Malate aids in muscle function, recovery, and over 600 enzymatic processes. It's a powerful baseline for long-term performance and well-being.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Sustained Performance",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Sustained Performance"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -2899,9 +3238,14 @@
     "handle": "omega-3-and-multi-stack",
     "description": "The Omega-3 &amp; Multi Stack provides foundational daily support for overall health, performance, and recovery. Combining a high-quality Multivitamin with sustainably sourced Omega-3s, this stack helps fill common nutrient gaps while promoting cardiovascular health, cognitive function, and a health...",
     "fullDescription": "The Omega-3 &amp; Multi Stack provides foundational daily support for overall health, performance, and recovery. Combining a high-quality Multivitamin with sustainably sourced Omega-3s, this stack helps fill common nutrient gaps while promoting cardiovascular health, cognitive function, and a healthy inflammatory response.The Multivitamin delivers essential vitamins, minerals, and phytonutrients in bioavailable forms to support energy production, immune defense, and cellular function. Paired with 1600mg of EPA and DHA from Omega-3s, this daily duo is ideal for those seeking comprehensive, baseline nutritional support to feel and perform their best.",
-    "categories": [],
-    "category": "Stacks",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -2948,10 +3292,18 @@
     "handle": "100-plant-protein-powder-10-travel-packs",
     "description": "The 100% Plant Protein 10-Travel Packs offer convenient, single-serve portions of our smooth, complete plant-based protein—perfect for travel, races, or busy days on the go. Each pack delivers 20g of protein from a balanced blend of pea and rice, supporting muscle recovery and daily performance with...",
     "fullDescription": "The 100% Plant Protein 10-Travel Packs offer convenient, single-serve portions of our smooth, complete plant-based protein—perfect for travel, races, or busy days on the go. Each pack delivers 20g of protein from a balanced blend of pea and rice, supporting muscle recovery and daily performance without compromising on taste or texture.Free from artificial additives and NSF Certified for Sport®, these portable packs make it easy to stay consistent with your nutrition wherever life takes you.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -3005,9 +3357,15 @@
     "handle": "brain-drive-elite-sleep",
     "description": "The Brain Drive + Elite Sleep Stack provides targeted support for both daytime performance and nighttime recovery. Brain Drive delivers research-backed nootropics like Acetyl L-Carnitine, Bacopa Monnieri, Tyrosine, and B vitamins to sharpen focus, enhance motivation, and support brain health. Elite ...",
     "fullDescription": "The Brain Drive + Elite Sleep Stack provides targeted support for both daytime performance and nighttime recovery. Brain Drive delivers research-backed nootropics like Acetyl L-Carnitine, Bacopa Monnieri, Tyrosine, and B vitamins to sharpen focus, enhance motivation, and support brain health. Elite Sleep promotes deeper, more restful sleep with calming ingredients like Melatonin, Tart Cherry, Valerian Root, and L-Theanine.This stack helps you stay alert and mentally dialed in during the day—while ensuring your body and brain recover overnight. Ideal for high performers looking to optimize productivity, mood, and recovery on a daily basis.",
-    "categories": [],
-    "category": "Stacks",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Falling Asleep",
+      "Cognitive Function - Brain Health"
+    ],
     "primaryGoal": "Sleep - Falling Asleep",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3049,10 +3407,24 @@
     "handle": "full-huberman-product-stack",
     "description": "The Complete Expert Stack is a comprehensive collection of products designed to support cognitive function, sleep, hormone balance, and overall health. This comprehensive suite of supplements—from Omega-3 to Acetyl-L-Carnitine— helps you ensure every corner of your well-being is addressed, optimized...",
     "fullDescription": "The Complete Expert Stack is a comprehensive collection of products designed to support cognitive function, sleep, hormone balance, and overall health. This comprehensive suite of supplements—from Omega-3 to Acetyl-L-Carnitine— helps you ensure every corner of your well-being is addressed, optimized, and harmonized.",
-    "categories": [],
-    "category": "Dr. Andrew Huberman Collection",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Stress Management",
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "Dr. Andrew Huberman Collection"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Falling Asleep",
+      "Sleep - Staying Asleep + Sleep Quality",
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Hormone Support - Stress Management",
+      "Hormone Support - Hormone Support",
+      "Foundational Health - Hormone Metabolism",
+      "Foundational Health - Stress Management",
+      "Foundational Health - Metabolism"
+    ],
+    "primaryGoal": "Sleep - Falling Asleep",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -3101,9 +3473,14 @@
     "handle": "pr-lotion-5kit",
     "description": "PR Lotion® is the world's first and only lotion that delivers the natural electrolyte sodium bicarbonate to your working muscles directly via your skin using patented technology. By buffering rising acidity levels in your working muscles, PR Lotion® helps to increase power output, combat fatigue, an...",
     "fullDescription": "PR Lotion® is the world's first and only lotion that delivers the natural electrolyte sodium bicarbonate to your working muscles directly via your skin using patented technology. By buffering rising acidity levels in your working muscles, PR Lotion® helps to increase power output, combat fatigue, and decrease post-workout muscle soreness.",
-    "categories": [],
-    "category": "Stacks",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3156,9 +3533,18 @@
     "handle": "recovery-14-single-serving-bundle",
     "description": "Recovery Travel Packs offer 14 convenient, single-serve portions of Momentous Recovery—a clinically backed formula designed to accelerate muscle repair, replenish glycogen, and reduce soreness post-exercise. Each serving includes a precise ratio of fast-digesting carbohydrates and grass-fed whey pro...",
     "fullDescription": "Recovery Travel Packs offer 14 convenient, single-serve portions of Momentous Recovery—a clinically backed formula designed to accelerate muscle repair, replenish glycogen, and reduce soreness post-exercise. Each serving includes a precise ratio of fast-digesting carbohydrates and grass-fed whey protein, along with essential amino acids and electrolytes to restore what training depletes.Perfect for athletes on the go, these travel packs make it easy to stay consistent with recovery nutrition whether you’re traveling, racing, or training away from home. Just mix, shake, and recover.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Travel + Shift Work",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
     "primaryGoal": "Sleep - Travel + Shift Work",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3217,9 +3603,15 @@
     "handle": "female-athlete-stack",
     "description": "The Female Athlete Stack was developed with Dr. Stacy Sims to meet the unique physiological needs of women in training. Featuring Grass-Fed Whey Protein, Collagen Peptides, and Creatine, this stack supports muscle recovery, connective tissue health, and cognitive performance—while addressing the low...",
     "fullDescription": "The Female Athlete Stack was developed with Dr. Stacy Sims to meet the unique physiological needs of women in training. Featuring Grass-Fed Whey Protein, Collagen Peptides, and Creatine, this stack supports muscle recovery, connective tissue health, and cognitive performance—while addressing the lower natural creatine stores often found in women.Whey Protein helps build and repair lean muscle, Collagen Peptides support joint and ligament integrity, and Creatine enhances energy availability and brain function. Together, these ingredients form a powerful foundation for female athletes looking to optimize strength, resilience, and overall performance.",
-    "categories": [],
-    "category": "For Women",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "For Women"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3276,9 +3668,13 @@
     "handle": "promixx-shaker-bottle",
     "description": "The PROMiXX PURSUITClassic Shaker Bottle is your go-to companion for clean, effortless mixing—whether you're at the gym, at work, or on the move. Made from ECOZEN, a premium plant-based plastic, it’s BPA-free, odor-resistant, and built to last. The leakproof design and carry loop make it easy to tos...",
     "fullDescription": "The PROMiXX PURSUITClassic Shaker Bottle is your go-to companion for clean, effortless mixing—whether you're at the gym, at work, or on the move. Made from ECOZEN, a premium plant-based plastic, it’s BPA-free, odor-resistant, and built to last. The leakproof design and carry loop make it easy to toss in your bag and take anywhere. What really sets it apart? The snap-fit agitator. No noisy wire balls or clumpy shakes—just smooth, consistent results every time. With its sleek, durable design and sustainable materials, the Pursuit shaker brings together performance, convenience, and style in one essential bottle.",
-    "categories": [],
+    "categories": [
+      "Supplements"
+    ],
     "category": "Supplements",
-    "goals": [],
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Merch",
     "vendor": "Momentous",
@@ -3323,10 +3719,22 @@
     "handle": "omega-3-travel-packs",
     "description": "The Omega-3 Travel Packs deliver the same high-quality, sustainably sourced EPA and DHA—1,600mg per serving—in a convenient single-serve format. These softgel packs are ideal for athletes, travelers, or anyone who needs Omega-3 support on the go without compromising purity or potency.Each serving he...",
     "fullDescription": "The Omega-3 Travel Packs deliver the same high-quality, sustainably sourced EPA and DHA—1,600mg per serving—in a convenient single-serve format. These softgel packs are ideal for athletes, travelers, or anyone who needs Omega-3 support on the go without compromising purity or potency.Each serving helps reduce inflammation, support brain and cardiovascular health, and promote joint recovery. NSF Certified for Sport® and free of fishy aftertaste, these travel packs make daily Omega-3s simple, portable, and effective.",
-    "categories": [],
-    "category": "Foundational Health",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Inflammation",
+    "categories": [
+      "Supplements",
+      "Best Sellers",
+      "Dr. Andrew Huberman Collection",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Brain Health",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Bone + Joint Health",
+      "Foundational Health - Inflammation",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Brain Health",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -3395,10 +3803,18 @@
     "handle": "fuel-10-travel-packs",
     "description": "Momentous Fuel is an expertly designed carb + electrolyte formula built to sustain prolonged workouts, training, and gametime intensity, making it a top choice for pro sports teams, first responders, and human performance leaders. It embodies what makes us, us: clean ingredients, rigorous testing, a...",
     "fullDescription": "Momentous Fuel is an expertly designed carb + electrolyte formula built to sustain prolonged workouts, training, and gametime intensity, making it a top choice for pro sports teams, first responders, and human performance leaders. It embodies what makes us, us: clean ingredients, rigorous testing, and performance without compromise.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Hydration",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Sleep - Travel + Shift Work",
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Hydration"
+    ],
+    "primaryGoal": "Sleep - Travel + Shift Work",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -3475,9 +3891,14 @@
     "handle": "cognitive-power-stack",
     "description": "The Cognitive Power Stack is a targeted nootropic trio—Alpha GPC, Tyrosine, and Acetyl L-Carnitine—designed to enhance mental clarity, focus, and energy metabolism. These ingredients work synergistically to support neurotransmitter production, improve brain cell communication, and reduce mental fati...",
     "fullDescription": "The Cognitive Power Stack is a targeted nootropic trio—Alpha GPC, Tyrosine, and Acetyl L-Carnitine—designed to enhance mental clarity, focus, and energy metabolism. These ingredients work synergistically to support neurotransmitter production, improve brain cell communication, and reduce mental fatigue.Alpha GPC provides bioavailable choline to support memory and cognition. Tyrosine helps maintain focus under stress by supporting dopamine and norepinephrine levels. Acetyl L-Carnitine fuels mitochondrial energy in the brain, supporting mood, memory, and long-term brain health. This stack is ideal for high-performance professionals, athletes, and anyone looking to stay sharp and focused.",
-    "categories": [],
-    "category": "Stacks",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3516,9 +3937,15 @@
     "handle": "follicular-phase-support-stack",
     "description": "The Follicular Phase Support Stack is designed with Dr. Stacy Sims to help female athletes perform at their best during the first half of the menstrual cycle. This phase, which begins on the first day of menstruation and ends at ovulation, is marked by fluctuating estrogen and increased risk of iron...",
     "fullDescription": "The Follicular Phase Support Stack is designed with Dr. Stacy Sims to help female athletes perform at their best during the first half of the menstrual cycle. This phase, which begins on the first day of menstruation and ends at ovulation, is marked by fluctuating estrogen and increased risk of iron deficiency. This stack combines Vitamin D3 and Omega-3 to target those specific needs. Vitamin D3 helps boost iron absorption—essential for maintaining energy and performance—while Omega-3 supports a healthy inflammatory response and joint function. Together, they help reduce fatigue, improve recovery, and support hormonal balance for women training through the follicular phase.",
-    "categories": [],
-    "category": "For Women",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "For Women"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3562,10 +3989,17 @@
     "handle": "adaptogen-stack",
     "description": "The Adaptogen Stack is a calming, resilience-building blend of Ashwagandha, Rhodiola Rosea, and L-Theanine—three well-studied ingredients that help your body and mind adapt to stress, promote emotional balance, and support steady energy and focus throughout the day.Ashwagandha and Rhodiola help regu...",
     "fullDescription": "The Adaptogen Stack is a calming, resilience-building blend of Ashwagandha, Rhodiola Rosea, and L-Theanine—three well-studied ingredients that help your body and mind adapt to stress, promote emotional balance, and support steady energy and focus throughout the day.Ashwagandha and Rhodiola help regulate cortisol levels and reduce physical and mental fatigue, while L-Theanine promotes calm without sedation by supporting alpha brainwave activity. Together, they create a daily foundation for stress resilience, cognitive clarity, and improved mood—ideal for anyone balancing training, work, and high performance.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Sustained Performance",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Sustained Performance"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -3606,9 +4040,15 @@
     "handle": "complete-female-athlete-stack",
     "description": "The Complete Female Athlete Stack was developed with Dr. Andy Galpin to support the unique performance and recovery needs of women. This comprehensive stack includes Creatine, Omega-3, Vitamin D3, and Collagen Peptides—each selected to optimize strength, support joint health, and promote long-term r...",
     "fullDescription": "The Complete Female Athlete Stack was developed with Dr. Andy Galpin to support the unique performance and recovery needs of women. This comprehensive stack includes Creatine, Omega-3, Vitamin D3, and Collagen Peptides—each selected to optimize strength, support joint health, and promote long-term resilience.Creatine enhances muscle energy and brain function, Omega-3 and Vitamin D3 support immune and hormonal balance, and Collagen strengthens connective tissues like tendons and ligaments. Together, these ingredients help female athletes train harder, recover faster, and maintain peak performance over time.",
-    "categories": [],
-    "category": "For Women",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "For Women"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3650,9 +4090,15 @@
     "handle": "anti-inflammatory-stack",
     "description": "The Anti-Inflammatory Stack for Women was developed with Dr. Stacy Sims to address inflammation and oxidative stress—particularly in women using hormonal birth control. This stack includes Creatine, Turmeric, and Vitamin D3, each selected for its role in supporting immune function, recovery, and hor...",
     "fullDescription": "The Anti-Inflammatory Stack for Women was developed with Dr. Stacy Sims to address inflammation and oxidative stress—particularly in women using hormonal birth control. This stack includes Creatine, Turmeric, and Vitamin D3, each selected for its role in supporting immune function, recovery, and hormone-related health.Creatine supports cellular energy production and enhances the body's antioxidant defense. Turmeric provides powerful inflammation-fighting compounds like curcumin, while Vitamin D3 aids in immune regulation and overall resilience. Together, these ingredients help active women train harder, recover faster, and protect long-term health from the inside out.",
-    "categories": [],
-    "category": "For Women",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "For Women"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3698,10 +4144,22 @@
     "handle": "iron-b-complex-supplement",
     "description": "Momentous Iron+, with Vitamin C to enhance absorption and B Complex to support energy, is a once-daily supplement critical to the support of daily energy levels as well as physical and cognitive performance. Keeping levels sufficient is crucial to avoiding deficiency, as iron is the most common nutr...",
     "fullDescription": "Momentous Iron+, with Vitamin C to enhance absorption and B Complex to support energy, is a once-daily supplement critical to the support of daily energy levels as well as physical and cognitive performance. Keeping levels sufficient is crucial to avoiding deficiency, as iron is the most common nutrient deficiency worldwide. Momentous uses patented Ferrochel® iron (as ferrous bisglycinate chelate) to ensure maximum absorption and minimize stomach upset often caused by iron supplements.",
-    "categories": [],
-    "category": "For Women",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Multivitamin",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "For Women",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Recovery",
+      "Athletic Performance - Bone + Joint Health",
+      "Foundational Health - Multivitamin",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -3760,9 +4218,15 @@
     "handle": "womens-gi-support-stack",
     "description": "The Women’s GI Support Stack is designed to support digestive health in active women, particularly those experiencing estrogen-related GI sensitivity. Developed in collaboration with Dr. Stacy Sims, this targeted blend includes Creatine, L-Glutamine, Alpha GPC, Turmeric, Tyrosine, and Vitamin D3—ing...",
     "fullDescription": "The Women’s GI Support Stack is designed to support digestive health in active women, particularly those experiencing estrogen-related GI sensitivity. Developed in collaboration with Dr. Stacy Sims, this targeted blend includes Creatine, L-Glutamine, Alpha GPC, Turmeric, Tyrosine, and Vitamin D3—ingredients shown to reduce inflammation, strengthen the intestinal lining, and support optimal gut function.Whether you're dealing with hormone-driven digestive distress or simply want to optimize gut health for performance and recovery, this stack delivers foundational support for the GI tract, cognitive health, and systemic inflammation. Ideal for women navigating the physical demands of training and hormonal fluctuation.",
-    "categories": [],
-    "category": "For Women",
-    "goals": [],
+    "categories": [
+      "Supplements",
+      "Stacks",
+      "For Women"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "General Health"
+    ],
     "primaryGoal": "General Health",
     "productType": "Product",
     "vendor": "Momentous",
@@ -3808,10 +4272,22 @@
     "handle": "calcium-supplement",
     "description": "For anyone with increased calcium needs, from athletes and aging adults to those with dairy-free or plant-forward diets, Momentous Calcium offers effective support without compromise. Each single-capsule serving delivers 250 mg of elemental calcium using DimaCal®, a highly absorbable, digestive-frie...",
     "fullDescription": "For anyone with increased calcium needs, from athletes and aging adults to those with dairy-free or plant-forward diets, Momentous Calcium offers effective support without compromise. Each single-capsule serving delivers 250 mg of elemental calcium using DimaCal®, a highly absorbable, digestive-friendly form. Our quick-dissolving capsule ensures rapid absorption and minimal GI discomfort. Backed by clinical research and NSF Certified for Sport®, this formula supports bone strength, muscle contraction, nerve signaling, and electrolyte balance—while meeting the highest standards for purity and performance.",
-    "categories": [],
-    "category": "For Women",
-    "goals": [],
-    "primaryGoal": "Foundational Health - Multivitamin",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "For Women",
+      "Foundational Health"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Recovery",
+      "Athletic Performance - Bone + Joint Health",
+      "Foundational Health - Multivitamin",
+      "Foundational Health"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
@@ -3871,10 +4347,19 @@
     "handle": "athletic-resilience-stack",
     "description": "The Athletic Resilience Stack, created in partnership with Dr. Andy Galpin, is a comprehensive system for full-body recovery, cognitive support, and immune health. This five-product stack includes Grass-Fed Whey Protein, Recovery, Collagen Peptides, Magnesium L-Threonate, and Zinc—each selected for ...",
     "fullDescription": "The Athletic Resilience Stack, created in partnership with Dr. Andy Galpin, is a comprehensive system for full-body recovery, cognitive support, and immune health. This five-product stack includes Grass-Fed Whey Protein, Recovery, Collagen Peptides, Magnesium L-Threonate, and Zinc—each selected for their role in rebuilding the body and restoring the mind.Whey Protein and Recovery fuel muscle repair and replenish nutrients post-training. Collagen Peptides support joint and tendon health, while Magnesium L-Threonate enhances cognitive recovery and sleep quality. Zinc helps support immune function and cellular repair. This stack is designed for athletes who push their limits and need to recover smarter.",
-    "categories": [],
-    "category": "Sports Nutrition",
-    "goals": [],
-    "primaryGoal": "Athletic Performance - Recovery",
+    "categories": [
+      "Supplements",
+      "Sports Nutrition",
+      "Stacks"
+    ],
+    "category": "Supplements",
+    "goals": [
+      "Cognitive Function - Focus + Performance",
+      "Athletic Performance - Muscle Development",
+      "Athletic Performance - Sustained Performance",
+      "Athletic Performance - Recovery"
+    ],
+    "primaryGoal": "Cognitive Function - Focus + Performance",
     "productType": "Product",
     "vendor": "Momentous",
     "availability": "Limited Stock",
