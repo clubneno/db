@@ -417,12 +417,34 @@ async function handleProductUpdate(req, res) {
         // Check if the update actually happened by comparing timestamps
         const newUpdatedAt = data[0]?.updated_at;
         console.log('PUT /api/products - New updated_at:', newUpdatedAt);
+        console.log('PUT /api/products - Updated data returned:', JSON.stringify(data[0], null, 2));
         
-        if (newUpdatedAt && previousUpdatedAt && newUpdatedAt === previousUpdatedAt) {
-            console.error('PUT /api/products - Database update failed silently - timestamps unchanged');
+        // More robust check: verify that at least one field we tried to update actually changed
+        // Check if the title was supposed to be updated and if it actually changed
+        let updateSuccessful = false;
+        
+        if (updateData.productName && data[0]?.title === updateData.productName) {
+            updateSuccessful = true;
+            console.log('PUT /api/products - Title update verified');
+        } else if (updateData.euAllowed && data[0]?.eu_allowed === updateData.euAllowed) {
+            updateSuccessful = true;
+            console.log('PUT /api/products - EU allowed update verified');
+        } else if (newUpdatedAt && previousUpdatedAt && newUpdatedAt !== previousUpdatedAt) {
+            updateSuccessful = true;
+            console.log('PUT /api/products - Timestamp update verified');
+        }
+        
+        if (!updateSuccessful) {
+            console.error('PUT /api/products - Database update failed silently - no fields actually changed');
             return res.status(500).json({ 
                 error: 'Database update failed - data not persisted', 
-                details: 'The database update operation completed but no changes were saved. This may be due to database constraints or triggers.' 
+                details: 'The database update operation completed but no changes were saved. This may be due to database constraints, missing columns, or triggers preventing updates.',
+                debugInfo: {
+                    attempted: Object.keys(updateObject),
+                    returned: data[0] ? Object.keys(data[0]) : [],
+                    previousTimestamp: previousUpdatedAt,
+                    newTimestamp: newUpdatedAt
+                }
             });
         }
         
