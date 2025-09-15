@@ -645,10 +645,29 @@
                     }
                 }
                 
-                if (this.session && this.currentUser) {
-                    this.updateUserDisplay();
-                    return true;
-                } else {
+                // Get current session from Supabase
+                try {
+                    const { data: { session }, error } = await this.supabase.auth.getSession();
+                    
+                    if (error) {
+                        console.error('Error getting session:', error);
+                        this.redirectToLogin();
+                        return false;
+                    }
+                    
+                    if (session && session.user) {
+                        // Update local state
+                        this.session = session;
+                        this.currentUser = session.user;
+                        this.updateUserDisplay();
+                        return true;
+                    } else {
+                        // No valid session
+                        this.redirectToLogin();
+                        return false;
+                    }
+                } catch (error) {
+                    console.error('Authentication check failed:', error);
                     this.redirectToLogin();
                     return false;
                 }
