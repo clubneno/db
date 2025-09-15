@@ -33,7 +33,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2025-08-04T09:08:54-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 45142273458359,
@@ -55,12 +55,12 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health",
     "ingredients": "Creatine, Protein, Omega-3",
     "usage": "Follow package directions",
-    "rating": "4.3",
-    "reviewsCount": 466,
-    "scraped_at": "2025-09-15T10:33:31.726Z",
+    "rating": "4.7",
+    "reviewsCount": 64,
+    "scraped_at": "2025-09-11T19:18:35.190Z",
+    "euNotificationStatus": "Not started",
     "flavors": [],
     "skus": {},
-    "euNotificationStatus": "Not started",
     "hsCode": "",
     "hsCodeDescription": ""
   },
@@ -110,7 +110,7 @@
     ],
     "tagsString": "90 Day Cycle, athletic performance, boost your performance, Brain Health, cognitive function, foundational health, Huberman, long term cognitive health, strength, Sustained Performance",
     "createdAt": "2023-01-03T09:00:06-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41634821079223,
@@ -124,17 +124,48 @@
     "benefits": "Muscle & Strength, Energy & Performance, Sleep Quality, Brain Health",
     "ingredients": "Creatine",
     "usage": "Follow package directions",
-    "rating": "4.4",
-    "reviewsCount": 324,
-    "scraped_at": "2025-09-15T10:33:31.727Z",
+    "rating": "4.6",
+    "reviewsCount": 475,
+    "scraped_at": "2025-09-11T19:18:35.192Z",
+    "euNotificationStatus": "Not started",
     "flavors": [
       "Unflavored"
     ],
     "skus": {},
-    "euNotificationStatus": "Not started",
     "hsCode": "",
     "hsCodeDescription": "",
-    "dutyRate": 6.5
+    "dutyRate": 6.5,
+    "flavorDutyRates": {
+      "Unflavored": 6.5
+    },
+    "flavorEuNotifications": {
+      "Unflavored": "Not started"
+    },
+    "flavorNotes": {
+      "Unflavored": "As the product is made of pure creatine powder, it is suggested to import it as a pure chemical structure, rather than supplement. Thus, Pure creatine monohydrate = Chemical compound.\n2925 - Junginiai, kurių molekulėse yra karboksiimido funkcinė grupė (įskaitant sachariną ir jo druskas), taip pat junginiai, kurių molekulėse yra imino funkcinė grupė;\n− Iminai ir jų dariniai; jų druskos:\n2925 29 00 - Kiti"
+    },
+    "flavorSkus": {
+      "Unflavored": "850243008796"
+    },
+    "flavorHsCodes": {
+      "Unflavored": "2925290090"
+    },
+    "flavorLinks": {
+      "Unflavored": [
+        "https://litarweb.lrmuitine.lt/portal/browsetariff?date=2025-09-12&country=US&tradeDirection=IMPORT&productCode=2925290090"
+      ]
+    },
+    "flavorIngredients": {
+      "Unflavored": "Creapure® Creatine Monohydrate 450g\n*5g per serving"
+    },
+    "size": "450g",
+    "servings": "90",
+    "reorderPeriod": "90",
+    "intakeFrequency": "1x, Daily",
+    "nutraceuticalsRegularPrice": "39.95",
+    "nutraceuticalsSubscriptionPrice": "N/A",
+    "clubnenoRegularPrice": "44.95",
+    "clubnenoSubscriptionPrice": "39.95"
   },
   {
     "title": "Creatine 15-Travel Packs",
@@ -184,7 +215,7 @@
     ],
     "tagsString": "athletic performance, boost your performance, Brain Health, cognitive function, foundational health, long term cognitive health, strength, Sustained Performance",
     "createdAt": "2024-09-18T13:11:24-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44831961153719,
@@ -206,17 +237,56 @@
     "benefits": "Muscle & Strength, Energy & Performance, Brain Health",
     "ingredients": "Creatine",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 472,
-    "scraped_at": "2025-09-15T10:33:31.728Z",
+    "rating": "4.7",
+    "reviewsCount": 122,
+    "scraped_at": "2025-09-11T19:18:35.192Z",
     "flavors": [
       "Unflavored",
       "Lemon"
     ],
-    "skus": {},
     "euNotificationStatus": "Not started",
+    "skus": {},
     "hsCode": "",
-    "hsCodeDescription": ""
+    "hsCodeDescription": "",
+    "size": "15 packs",
+    "servings": "15",
+    "intakeFrequency": "1x, Daily",
+    "reorderPeriod": "15",
+    "nutraceuticalsRegularPrice": "22.95",
+    "nutraceuticalsSubscriptionPrice": "N/A",
+    "clubnenoRegularPrice": "24.95",
+    "clubnenoSubscriptionPrice": "22.95",
+    "flavorSkus": {
+      "Lemon": "850030796899"
+    },
+    "flavorDutyRates": {
+      "Unflavored": 6.5,
+      "Lemon": 9
+    },
+    "flavorEuNotifications": {
+      "Unflavored": "Not started",
+      "Lemon": "Not started"
+    },
+    "flavorNotes": {
+      "Unflavored": "As the product is made of pure creatine powder, it is suggested to import it as a pure chemical structure, rather than supplement. Thus, Pure creatine monohydrate = Chemical compound.\n2925 - Junginiai, kurių molekulėse yra karboksiimido funkcinė grupė (įskaitant sachariną ir jo druskas), taip pat junginiai, kurių molekulėse yra imino funkcinė grupė;\n− Iminai ir jų dariniai; jų druskos:\n2925 29 00 - Kiti",
+      "Lemon": "Flavored creatine with additives = Food preparation."
+    },
+    "flavorLinks": {
+      "Unflavored": [
+        "https://litarweb.lrmuitine.lt/portal/browsetariff?date=2025-09-12&country=US&tradeDirection=IMPORT&productCode=2925290090"
+      ],
+      "Lemon": [
+        "https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?Lang=en&SimDate=20250914&Area=US&MeasType=&StartPub=&EndPub=&MeasText=&GoodsText=&op=&Taric=2106909869&AdditionalCode=&search_text=goods&textSearch=&LangDescr=en&OrderNum=&Regulation=&measStartDat=&measEndDat=&DatePicker=14-09-2025"
+      ]
+    },
+    "flavorIngredients": {
+      "Unflavored": "Creapure® Creatine Monohydrate 5g",
+      "Lemon": "Creapure® Creatine Monohydrate 5g\nOther Ingredients: Citric Acid, Natural Lemon Flavor, Stevia"
+    },
+    "flavorHsCodes": {
+      "Unflavored": "2925290090",
+      "Lemon": "2106909869"
+    }
   },
   {
     "title": "Grass-Fed Whey Protein Isolate Powder",
@@ -269,7 +339,7 @@
     ],
     "tagsString": "30 Day Cycle, athletic performance, Huberman, label: New Container, Momentous, Muscle Development, Muscle Growth, protein, recover faster, Recovery, sports nutrition, strength, Subscribe & Save",
     "createdAt": "2021-06-27T22:43:53-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40138095689911,
@@ -307,9 +377,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support",
     "ingredients": "Protein, Whey",
     "usage": "Follow serving instructions on package",
-    "rating": "4.8",
-    "reviewsCount": 66,
-    "scraped_at": "2025-09-15T10:33:31.728Z"
+    "rating": "4.9",
+    "reviewsCount": 379,
+    "scraped_at": "2025-09-11T19:18:35.192Z"
   },
   {
     "title": "100% Plant Protein Powder - Limited Edition Flavor",
@@ -338,7 +408,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2025-06-26T12:55:58-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 45036544262327,
@@ -352,9 +422,9 @@
     "benefits": "Recovery Support",
     "ingredients": "Protein",
     "usage": "Follow package directions",
-    "rating": "4.5",
-    "reviewsCount": 463,
-    "scraped_at": "2025-09-15T10:33:31.728Z"
+    "rating": "4.6",
+    "reviewsCount": 504,
+    "scraped_at": "2025-09-11T19:18:35.193Z"
   },
   {
     "title": "Vegan Omega-3",
@@ -384,7 +454,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2025-06-09T09:35:58-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44985721159863,
@@ -398,9 +468,9 @@
     "benefits": "Muscle & Strength, Recovery Support, Brain Health",
     "ingredients": "Omega-3, Epa, Dha",
     "usage": "Take 1-2 capsules daily",
-    "rating": "4.4",
-    "reviewsCount": 385,
-    "scraped_at": "2025-09-15T10:33:31.728Z"
+    "rating": "5.0",
+    "reviewsCount": 363,
+    "scraped_at": "2025-09-11T19:18:35.193Z"
   },
   {
     "title": "Omega-3",
@@ -448,7 +518,7 @@
     ],
     "tagsString": "30 Day Cycle, Brain Health, cognitive function, cognitive performance, Daily Essentials, foundational health, Huberman, inflammation, Joint and Bone Strength, label:best-seller, long term cognitive health, Momentous, Shop All, Subscribe & Save, Supplements, Under 50",
     "createdAt": "2021-06-27T22:46:11-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40138109354167,
@@ -462,9 +532,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Joint & Bone Health, Heart Health, Anti-Inflammatory",
     "ingredients": "Omega-3, Epa, Dha",
     "usage": "Follow package directions",
-    "rating": "4.7",
-    "reviewsCount": 200,
-    "scraped_at": "2025-09-15T10:33:31.728Z"
+    "rating": "4.9",
+    "reviewsCount": 158,
+    "scraped_at": "2025-09-11T19:18:35.193Z"
   },
   {
     "title": "Magnesium L-Threonate",
@@ -504,7 +574,7 @@
     ],
     "tagsString": "30 Day Cycle, cognitive performance, Daily Essentials, Huberman, label:new, Momentous, new, quality sleep, Shop All, sleep, Staying Asleep + Sleep Quality, Supplements, Travel + Shift Work",
     "createdAt": "2022-03-09T10:47:45-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41127755251895,
@@ -518,16 +588,41 @@
     "benefits": "Energy & Performance, Recovery Support, Sleep Quality, Brain Health, Stress Management",
     "ingredients": "Magnesium",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 31,
-    "scraped_at": "2025-09-15T10:33:31.728Z",
+    "rating": "4.8",
+    "reviewsCount": 38,
+    "scraped_at": "2025-09-11T19:18:35.193Z",
     "flavors": [
       "Unflavored"
     ],
     "skus": {},
     "euNotificationStatus": "Not started",
     "hsCode": "",
-    "hsCodeDescription": ""
+    "hsCodeDescription": "",
+    "size": null,
+    "servings": null,
+    "intakeFrequency": null,
+    "reorderPeriod": null,
+    "nutraceuticalsRegularPrice": null,
+    "nutraceuticalsSubscriptionPrice": null,
+    "clubnenoRegularPrice": null,
+    "clubnenoSubscriptionPrice": null,
+    "flavorSkus": {
+      "Unflavored": "850030796042"
+    },
+    "flavorEuNotifications": {
+      "Unflavored": "Not started"
+    },
+    "flavorNotes": {
+      "Unflavored": ""
+    },
+    "flavorLinks": {},
+    "flavorIngredients": {
+      "Unflavored": ""
+    },
+    "flavorHsCodes": {
+      "Unflavored": "2106909869"
+    },
+    "euAllowed": "yes"
   },
   {
     "title": "Collagen Peptides",
@@ -578,7 +673,7 @@
     ],
     "tagsString": "30 Day Cycle, athletic performance, Collagen, Daily Essentials, foundational health, Huberman, Joint and Bone Strength, joint health, label:best-seller, Momentous, recover faster, Recovery, Soft Tissue Health, sports nutrition, Subscribe & Save, Supplements",
     "createdAt": "2021-06-25T12:28:20-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40124892577975,
@@ -593,15 +688,46 @@
     "ingredients": "Vitamin c, Collagen",
     "usage": "Follow package directions",
     "rating": "4.4",
-    "reviewsCount": 489,
-    "scraped_at": "2025-09-15T10:33:31.728Z",
+    "reviewsCount": 66,
+    "scraped_at": "2025-09-11T19:18:35.193Z",
     "flavors": [
       "Unflavored"
     ],
     "skus": {},
     "euNotificationStatus": "Not started",
     "hsCode": "",
-    "hsCodeDescription": ""
+    "hsCodeDescription": "",
+    "size": "507g",
+    "servings": "30",
+    "intakeFrequency": "1x, Daily",
+    "reorderPeriod": "30",
+    "nutraceuticalsRegularPrice": "54.95",
+    "nutraceuticalsSubscriptionPrice": "N/A",
+    "clubnenoRegularPrice": "59.95",
+    "clubnenoSubscriptionPrice": "54.95",
+    "flavorSkus": {
+      "Unflavored": "850030796226"
+    },
+    "flavorEuNotifications": {
+      "Unflavored": "Not started"
+    },
+    "flavorNotes": {
+      "Unflavored": ""
+    },
+    "flavorLinks": {
+      "Unflavored": [
+        "https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?PageName=TARIC+Measures+Information&StartPub=&GoodsText=&Taric=210690&LangDescr=&OrderNum=&MeasType=&measEndDat=&op=&MeasText=&AdditionalCode=&DomainName=TARIC&Lang=en&Offset=0&Area=US&textSearch=&callbackuri=CBU-10&SimDate=20250914&EndPub=&measStartDat=&Regulation=&DatePicker=14-09-2025&ShowMatchingGoods=&Domain=TARIC&ExpandAll=&DomainNameLink=measures.jsp&search_text=goods"
+      ]
+    },
+    "flavorIngredients": {
+      "Unflavored": "Collagen Peptide 11.6g FORTIGEL® Collagen Hydrolysate 5.2g Vitamin C 50mg Sodium 60mg"
+    },
+    "flavorHsCodes": {
+      "Unflavored": "2106909838"
+    },
+    "flavorDutyRates": {
+      "Unflavored": 9
+    }
   },
   {
     "title": "The Women’s Three",
@@ -661,7 +787,7 @@
     ],
     "tagsString": "30 Day Cycle, all, athletic performance, Bone + Joint Health, boost your performance, Daily Essentials, endurance, Endurance & Energy, foundational health, health longevity, Immune Support, Joint and Bone Strength, joint health, Momentous, new, recover faster, Recovery, Shop All, sports nutrition, strength, vitamins, Women, womens health",
     "createdAt": "2025-05-16T13:43:22-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44923608039607,
@@ -675,9 +801,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Immune Support, Joint & Bone Health",
     "ingredients": "Calcium, Iron, Vitamin d",
     "usage": "Follow package directions",
-    "rating": "4.3",
-    "reviewsCount": 523,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "rating": "4.9",
+    "reviewsCount": 57,
+    "scraped_at": "2025-09-11T19:18:35.193Z"
   },
   {
     "title": "Male Hormone Support Stack",
@@ -707,7 +833,7 @@
     ],
     "tagsString": "75 Day Cycle, Hormone Metabolism, hormone support, Huberman",
     "createdAt": "2022-08-28T18:09:21-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41365573632183,
@@ -721,14 +847,33 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Immune Support, Stress Management",
     "ingredients": "Epa, Zinc",
     "usage": "Follow package directions",
-    "rating": "4.0",
-    "reviewsCount": 290,
-    "scraped_at": "2025-09-15T10:33:31.729Z",
+    "rating": "4.5",
+    "reviewsCount": 497,
+    "scraped_at": "2025-09-11T19:18:35.193Z",
     "flavors": [],
     "skus": {},
     "euNotificationStatus": "Not started",
     "hsCode": "",
-    "hsCodeDescription": ""
+    "hsCodeDescription": "",
+    "euAllowed": "no",
+    "size": null,
+    "servings": null,
+    "intakeFrequency": null,
+    "reorderPeriod": null,
+    "nutraceuticalsRegularPrice": null,
+    "nutraceuticalsSubscriptionPrice": null,
+    "clubnenoRegularPrice": null,
+    "clubnenoSubscriptionPrice": null,
+    "flavorEuNotifications": {
+      "Unflavored": "Not started"
+    },
+    "flavorNotes": {
+      "Unflavored": ""
+    },
+    "flavorLinks": {},
+    "flavorIngredients": {
+      "Unflavored": ""
+    }
   },
   {
     "title": "Tongkat Ali",
@@ -767,7 +912,7 @@
     ],
     "tagsString": "75 Day Cycle, foundational health, Hormone Metabolism, hormone support, Huberman, label:new, Momentous, Shop All, Subscribe & Save, Subscription, Supplements",
     "createdAt": "2022-03-09T10:55:19-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41325780631735,
@@ -789,14 +934,33 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Stress Management",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.3",
-    "reviewsCount": 222,
-    "scraped_at": "2025-09-15T10:33:31.729Z",
+    "rating": "4.2",
+    "reviewsCount": 234,
+    "scraped_at": "2025-09-11T19:18:35.193Z",
+    "euAllowed": "no",
     "flavors": [],
     "skus": {},
     "euNotificationStatus": "Not started",
     "hsCode": "",
-    "hsCodeDescription": ""
+    "hsCodeDescription": "",
+    "size": null,
+    "servings": null,
+    "intakeFrequency": null,
+    "reorderPeriod": null,
+    "nutraceuticalsRegularPrice": null,
+    "nutraceuticalsSubscriptionPrice": null,
+    "clubnenoRegularPrice": null,
+    "clubnenoSubscriptionPrice": null,
+    "flavorEuNotifications": {
+      "Unflavored": "Not started"
+    },
+    "flavorNotes": {
+      "Unflavored": ""
+    },
+    "flavorLinks": {},
+    "flavorIngredients": {
+      "Unflavored": ""
+    }
   },
   {
     "title": "Vitamin D3 5000 IU",
@@ -844,7 +1008,7 @@
     ],
     "tagsString": "60 Day Cycle, Amp Human, Bone + Joint Health, Daily Essentials, foundational health, hormone support, Huberman, Immune Support, inflammation, Joint and Bone Strength, joint health, marketing samples, Momentous, Supplements, vitamins, Wholesale Store",
     "createdAt": "2021-08-31T20:27:40-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40593533141175,
@@ -859,8 +1023,8 @@
     "ingredients": "Calcium, Vitamin d",
     "usage": "Follow package directions",
     "rating": "4.7",
-    "reviewsCount": 32,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "reviewsCount": 104,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Multivitamin",
@@ -901,7 +1065,7 @@
     ],
     "tagsString": "30 Day Cycle, Daily Essentials, foundational health, hormone support, Momentous, Stocking Stuffers, Subscribe & Save, Supplements, vitamins",
     "createdAt": "2021-06-27T22:47:44-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40138116006071,
@@ -915,9 +1079,9 @@
     "benefits": "Energy & Performance, Immune Support",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.8",
-    "reviewsCount": 177,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "rating": "4.9",
+    "reviewsCount": 262,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Sleep",
@@ -954,7 +1118,7 @@
     ],
     "tagsString": "30 Day Cycle, Falling Asleep, Huberman, Shop All, sleep, Staying Asleep + Sleep Quality, Supplements, travel, Travel + Shift Work",
     "createdAt": "2022-10-04T10:34:41-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41472821067959,
@@ -968,9 +1132,9 @@
     "benefits": "Sleep Quality, Stress Management",
     "ingredients": "Magnesium",
     "usage": "Follow package directions",
-    "rating": "4.9",
-    "reviewsCount": 471,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "rating": "4.4",
+    "reviewsCount": 112,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Apigenin",
@@ -1009,7 +1173,7 @@
     ],
     "tagsString": "60 Day Cycle, Falling Asleep, hidden, Huberman, label:new, Momentous, new, Shop All, sleep, Staying Asleep + Sleep Quality, Supplements, Travel + Shift Work",
     "createdAt": "2022-03-09T10:59:11-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41127762526391,
@@ -1023,9 +1187,9 @@
     "benefits": "Sleep Quality, Brain Health, Stress Management",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.4",
-    "reviewsCount": 203,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "rating": "4.9",
+    "reviewsCount": 114,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "L-Theanine",
@@ -1064,7 +1228,7 @@
     ],
     "tagsString": "60 Day Cycle, Falling Asleep, Huberman, label:new, Momentous, new, quality sleep, Shop All, sleep, Staying Asleep + Sleep Quality, Supplements, Travel + Shift Work",
     "createdAt": "2022-03-09T10:51:07-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41127756791991,
@@ -1078,9 +1242,9 @@
     "benefits": "Energy & Performance, Sleep Quality, Brain Health, Stress Management",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.3",
-    "reviewsCount": 129,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "rating": "4.4",
+    "reviewsCount": 410,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Alpha GPC",
@@ -1118,7 +1282,7 @@
     ],
     "tagsString": "60 Day Cycle, cognitive function, cognitive performance, energy + focus, Focus + Performance, Huberman, label:new, Momentous, new, Shop All, Supplements",
     "createdAt": "2022-03-09T10:52:11-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41127757086903,
@@ -1133,8 +1297,8 @@
     "ingredients": "See product details",
     "usage": "Follow package directions",
     "rating": "4.8",
-    "reviewsCount": 456,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "reviewsCount": 372,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Complete Sleep Stack",
@@ -1169,7 +1333,7 @@
     ],
     "tagsString": "60 Day Cycle, Bundles, Falling Asleep, Huberman, quality sleep, Shop All, sleep, stay asleep, Staying Asleep + Sleep Quality",
     "createdAt": "2022-08-05T09:01:18-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41315435479223,
@@ -1183,9 +1347,9 @@
     "benefits": "Recovery Support, Sleep Quality, Brain Health, Stress Management",
     "ingredients": "Magnesium",
     "usage": "Follow package directions",
-    "rating": "4.0",
-    "reviewsCount": 268,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "rating": "4.8",
+    "reviewsCount": 465,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Rhodiola Rosea",
@@ -1223,7 +1387,7 @@
     ],
     "tagsString": "60 Day Cycle, athletic performance, cognitive health, cognitive performance, hormone support, Huberman, Recovery, Stress Management, stress reduction, Supplements, Sustained Performance",
     "createdAt": "2023-01-11T19:33:36-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41649897406647,
@@ -1237,9 +1401,9 @@
     "benefits": "Energy & Performance, Recovery Support, Brain Health, Stress Management",
     "ingredients": "Iron, Rhodiola",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 516,
-    "scraped_at": "2025-09-15T10:33:31.729Z"
+    "rating": "5.0",
+    "reviewsCount": 387,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Vital Aminos",
@@ -1275,7 +1439,7 @@
     ],
     "tagsString": "athletic performance, green-badge:new, Muscle Development, protein, recover faster, Recovery, Shop All, sports nutrition, strength",
     "createdAt": "2023-04-13T11:44:44-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41773240516791,
@@ -1289,9 +1453,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support",
     "ingredients": "Protein, Epa, Amino acids",
     "usage": "Follow package directions",
-    "rating": "4.8",
-    "reviewsCount": 98,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.1",
+    "reviewsCount": 348,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Zinc",
@@ -1324,7 +1488,7 @@
     ],
     "tagsString": "60 Day Cycle, foundational health, Hormone Metabolism, hormone support, Huberman, Supplements",
     "createdAt": "2022-08-16T15:11:22-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41340775071927,
@@ -1338,9 +1502,9 @@
     "benefits": "Muscle & Strength, Recovery Support, Immune Support",
     "ingredients": "Epa, Zinc",
     "usage": "Follow package directions",
-    "rating": "4.9",
-    "reviewsCount": 83,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.3",
+    "reviewsCount": 261,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Recovery",
@@ -1380,7 +1544,7 @@
     ],
     "tagsString": "30 Day Cycle, athletic performance, Momentous, Muscle Development, muscle growth, protein, recover faster, Recovery, sports nutrition, strength, Subscribe & Save",
     "createdAt": "2021-06-27T22:48:33-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40138118299831,
@@ -1402,9 +1566,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health",
     "ingredients": "Protein, Whey, Epa, Amino acids",
     "usage": "Follow package directions",
-    "rating": "4.8",
-    "reviewsCount": 494,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.6",
+    "reviewsCount": 146,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Magnesium Malate",
@@ -1439,7 +1603,7 @@
     ],
     "tagsString": "30 Day Cycle, athletic performance, Bone + Joint Health, joint health, Muscle Development, Recovery, Supplements, Sustained Performance",
     "createdAt": "2022-09-21T15:17:08-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41438834622647,
@@ -1453,9 +1617,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Joint & Bone Health, Heart Health, Stress Management",
     "ingredients": "Magnesium",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 493,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.7",
+    "reviewsCount": 209,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Turmeric",
@@ -1492,7 +1656,7 @@
     ],
     "tagsString": "30 Day Cycle, Amp Human, Daily Essentials, foundational health, inflammation, Joint and Bone Strength, marketing samples, Momentous, Supplements, Wholesale Store",
     "createdAt": "2021-08-31T20:28:45-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40593535762615,
@@ -1506,9 +1670,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Immune Support, Joint & Bone Health, Heart Health, Anti-Inflammatory",
     "ingredients": "Turmeric, Curcumin",
     "usage": "Follow package directions",
-    "rating": "4.6",
-    "reviewsCount": 312,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.7",
+    "reviewsCount": 502,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Collagen + Creatine Stack",
@@ -1536,7 +1700,7 @@
     ],
     "tagsString": "athletic performance, Bundles",
     "createdAt": "2022-04-14T08:12:39-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41171240190135,
@@ -1550,9 +1714,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Joint & Bone Health",
     "ingredients": "Creatine, Epa, Collagen",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 218,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "5.0",
+    "reviewsCount": 382,
+    "scraped_at": "2025-09-11T19:18:35.194Z"
   },
   {
     "title": "Ashwagandha",
@@ -1578,7 +1742,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2024-05-23T08:39:46-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 42867668091063,
@@ -1592,9 +1756,9 @@
     "benefits": "Energy & Performance, Brain Health, Stress Management",
     "ingredients": "Dha, Ashwagandha",
     "usage": "Follow package directions",
-    "rating": "4.7",
-    "reviewsCount": 169,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.5",
+    "reviewsCount": 377,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Acetyl L-Carnitine",
@@ -1631,7 +1795,7 @@
     ],
     "tagsString": "60 Day Cycle, cognitive function, foundational health, Huberman, label:new, Metabolism, Momentous, new, Shop All, Supplements",
     "createdAt": "2022-03-09T10:53:36-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41127757349047,
@@ -1645,9 +1809,9 @@
     "benefits": "Energy & Performance, Brain Health, Stress Management",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.5",
-    "reviewsCount": 441,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.0",
+    "reviewsCount": 182,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Brain Drive",
@@ -1683,7 +1847,7 @@
     ],
     "tagsString": "30 Day Cycle, cognitive function, cognitive health, Daily Essentials, energy + focus, Focus + Performance, Momentous, Subscribe & Save, Supplements",
     "createdAt": "2021-07-26T17:12:22-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40354110341303,
@@ -1697,9 +1861,9 @@
     "benefits": "Energy & Performance, Brain Health, Stress Management",
     "ingredients": "B vitamins",
     "usage": "Follow package directions",
-    "rating": "4.9",
-    "reviewsCount": 33,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.0",
+    "reviewsCount": 289,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "100% Plant Protein Powder",
@@ -1744,7 +1908,7 @@
     ],
     "tagsString": "30 Day Cycle, athletic performance, Huberman, label: New Container, Momentous, Muscle Development, Muscle Growth, protein, recover faster, Recovery, sports nutrition, strength, Subscribe & Save",
     "createdAt": "2024-12-18T14:52:27-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44104489828535,
@@ -1766,9 +1930,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support",
     "ingredients": "Protein, Epa",
     "usage": "Follow package directions",
-    "rating": "5.0",
-    "reviewsCount": 102,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.9",
+    "reviewsCount": 423,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Inositol",
@@ -1802,7 +1966,7 @@
     ],
     "tagsString": "90 Day Cycle, Huberman, label:new, quality sleep, sleep, Staying Asleep + Sleep Quality, Supplements",
     "createdAt": "2022-05-16T13:40:26-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41672899297463,
@@ -1816,9 +1980,9 @@
     "benefits": "Sleep Quality, Brain Health, Stress Management",
     "ingredients": "See product details",
     "usage": "Take 1-2 capsules daily",
-    "rating": "4.3",
-    "reviewsCount": 198,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.5",
+    "reviewsCount": 78,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "L-Glutamine",
@@ -1857,7 +2021,7 @@
     ],
     "tagsString": "60 Day Cycle, athletic performance, Daily Essentials, foundational health, Gut Health, Huberman, Immune Support, Momentous, Muscle Development, protein, Shop All, sports nutrition",
     "createdAt": "2022-03-09T10:46:32-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41127754825911,
@@ -1871,9 +2035,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Immune Support, Stress Management",
     "ingredients": "Epa, Glutamine",
     "usage": "Follow package directions",
-    "rating": "4.8",
-    "reviewsCount": 66,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.6",
+    "reviewsCount": 424,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Tyrosine",
@@ -1911,7 +2075,7 @@
     ],
     "tagsString": "60 Day Cycle, cognitive function, cognitive performance, energy + focus, Focus + Performance, Huberman, label:new, Momentous, new, Shop All, Supplements",
     "createdAt": "2022-03-09T10:49:45-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41127756529847,
@@ -1925,9 +2089,9 @@
     "benefits": "Energy & Performance, Sleep Quality, Brain Health, Stress Management",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.8",
-    "reviewsCount": 243,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "rating": "4.4",
+    "reviewsCount": 292,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Elite Sleep",
@@ -1962,7 +2126,7 @@
     ],
     "tagsString": "90 Day Cycle, Label: New Price, Momentous, Recovery, sleep, Subscribe & Save, Supplements, Travel + Shift Work",
     "createdAt": "2021-07-26T17:10:16-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40354106048695,
@@ -1977,8 +2141,8 @@
     "ingredients": "See product details",
     "usage": "Follow package directions",
     "rating": "4.2",
-    "reviewsCount": 171,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "reviewsCount": 125,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Resveratrol",
@@ -2012,7 +2176,7 @@
     ],
     "tagsString": "30 Day Cycle, cognitive performance, foundational health, health longevity, Huberman, inflammation, Supplements",
     "createdAt": "2022-09-14T14:24:41-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41417371123895,
@@ -2027,8 +2191,8 @@
     "ingredients": "See product details",
     "usage": "Follow package directions",
     "rating": "4.4",
-    "reviewsCount": 29,
-    "scraped_at": "2025-09-15T10:33:31.730Z"
+    "reviewsCount": 112,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "PR Lotion® Bottle",
@@ -2072,7 +2236,7 @@
     ],
     "tagsString": "90 Day Cycle, all, Amp Human, athletic performance, boost your performance, endurance, Endurance & Energy, marketing samples, PR Lotion, prlotion, recover faster, Recovery, spo-default, spo-disabled, strength, Subscribe & Save, Sustained Performance, YGroup_lotionprtest",
     "createdAt": "2021-03-17T14:35:23-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 39398430769335,
@@ -2086,9 +2250,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.2",
-    "reviewsCount": 68,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.4",
+    "reviewsCount": 242,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Focus & Cognition Stack",
@@ -2101,8 +2265,8 @@
     ],
     "link": "https://www.livemomentous.com/products/focus-cognition-stack",
     "handle": "focus-cognition-stack",
-    "description": "The Focus &amp; Cognition Stack combines Tyrosine, Omega-3, and Alpha GPC to support mental clarity, attention, and long-term brain health. Ideal for high performers, students, or athletes, this stack is designed to enhance focus, reduce cognitive fatigue, and improve processing speed. Tyrosine supp...",
-    "fullDescription": "The Focus &amp; Cognition Stack combines Tyrosine, Omega-3, and Alpha GPC to support mental clarity, attention, and long-term brain health. Ideal for high performers, students, or athletes, this stack is designed to enhance focus, reduce cognitive fatigue, and improve processing speed. Tyrosine supports neurotransmitter production for motivation and stress resilience. Omega-3s aid neural communication and protect against inflammation, while Alpha GPC delivers bioavailable choline to fuel memory and cognitive performance. Together, these ingredients create a powerful daily formula for sharper thinking and sustained mental energy.",
+    "description": "The Focus &amp; Cognition Stack combines Tyrosine, Omega-3, and Alpha GPC to support mental clarity, attention, and long-term brain health. Ideal for high performers, students, or athletes, this stack is designed to enhance focus, reduce cognitive fatigue, and improve processing speed.Tyrosine suppo...",
+    "fullDescription": "The Focus &amp; Cognition Stack combines Tyrosine, Omega-3, and Alpha GPC to support mental clarity, attention, and long-term brain health. Ideal for high performers, students, or athletes, this stack is designed to enhance focus, reduce cognitive fatigue, and improve processing speed.Tyrosine supports neurotransmitter production for motivation and stress resilience. Omega-3s aid neural communication and protect against inflammation, while Alpha GPC delivers bioavailable choline to fuel memory and cognitive performance. Together, these ingredients create a powerful daily formula for sharper thinking and sustained mental energy.",
     "categories": [],
     "category": "Dr. Andrew Huberman Collection",
     "goals": [],
@@ -2120,7 +2284,7 @@
     ],
     "tagsString": "60 Day Cycle, cognitive function, Focus, Focus + Performance, Huberman, hubermanlab",
     "createdAt": "2022-09-07T10:13:35-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41397976826039,
@@ -2135,8 +2299,8 @@
     "ingredients": "Omega-3",
     "usage": "Follow package directions",
     "rating": "4.5",
-    "reviewsCount": 424,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "reviewsCount": 394,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "The Momentous Three",
@@ -2173,7 +2337,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2024-07-24T15:23:36-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 43180188958903,
@@ -2203,9 +2367,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Immune Support, Joint & Bone Health, Anti-Inflammatory",
     "ingredients": "Creatine, Protein, Omega-3, Epa",
     "usage": "Follow package directions",
-    "rating": "4.3",
-    "reviewsCount": 502,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.5",
+    "reviewsCount": 291,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Fuel",
@@ -2256,7 +2420,7 @@
     ],
     "tagsString": "45 Day Cycle, athletic performance, boost your performance, endurance, Hydration, marketing samples, Momentous, sports nutrition, Sustained Performance, travel, Wholesale Store",
     "createdAt": "2022-09-29T22:44:17-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 45111805345975,
@@ -2294,9 +2458,9 @@
     "benefits": "Energy & Performance",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.9",
-    "reviewsCount": 109,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.8",
+    "reviewsCount": 161,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Promixx Pill Case",
@@ -2323,7 +2487,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2024-05-08T10:25:30-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 42781413605559,
@@ -2337,9 +2501,9 @@
     "benefits": "General Health Support",
     "ingredients": "See product details",
     "usage": "Take 1-2 capsules daily",
-    "rating": "4.5",
-    "reviewsCount": 370,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.4",
+    "reviewsCount": 411,
+    "scraped_at": "2025-09-11T19:18:35.195Z"
   },
   {
     "title": "Collagen Shot 15-Packs",
@@ -2389,7 +2553,7 @@
     ],
     "tagsString": "45 Day Cycle, athletic performance, Collagen, Huberman, Joint and Bone Strength, joint health, recover faster, Recovery, Soft, Soft Tissue Health, sports nutrition, Stocking Stuffer, Supplements, Under 50",
     "createdAt": "2022-02-04T10:45:28-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 45158979010743,
@@ -2411,9 +2575,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Joint & Bone Health",
     "ingredients": "Vitamin c, Collagen",
     "usage": "Follow package directions",
-    "rating": "4.5",
-    "reviewsCount": 117,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.7",
+    "reviewsCount": 508,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Grass-Fed Whey Protein 10-Travel Packs",
@@ -2462,7 +2626,7 @@
     ],
     "tagsString": "60 Day Cycle, athletic performance, Gifts Under $50, Muscle Development, Muscle Growth, protein, Recovery, sports nutrition, Stocking Stuffers, travel",
     "createdAt": "2024-10-21T10:06:25-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 43759555313847,
@@ -2492,9 +2656,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health",
     "ingredients": "Protein, Whey",
     "usage": "Follow serving instructions on package",
-    "rating": "4.2",
-    "reviewsCount": 348,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.3",
+    "reviewsCount": 506,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Ubiquinol",
@@ -2542,7 +2706,7 @@
     ],
     "tagsString": "Amp Human, Bone + Joint Health, Daily Essentials, foundational health, hormone support, Huberman, Immune Support, inflammation, Joint and Bone Strength, joint health, marketing samples, Momentous, Supplements, vitamins, Wholesale Store",
     "createdAt": "2025-02-20T14:39:33-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44478116921527,
@@ -2556,9 +2720,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Brain Health, Immune Support, Joint & Bone Health, Stress Management, Anti-Inflammatory",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.2",
-    "reviewsCount": 253,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.0",
+    "reviewsCount": 194,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Vitamin D3 2000 IU",
@@ -2607,7 +2771,7 @@
     ],
     "tagsString": "60 Day Cycle, Amp Human, Bone + Joint Health, Daily Essentials, foundational health, hormone support, Huberman, Immune Support, inflammation, Joint and Bone Strength, joint health, marketing samples, Momentous, Supplements, vitamins, Wholesale Store",
     "createdAt": "2025-01-02T14:04:37-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44189738631351,
@@ -2621,9 +2785,9 @@
     "benefits": "Muscle & Strength, Immune Support, Joint & Bone Health, Anti-Inflammatory",
     "ingredients": "Calcium, Vitamin d",
     "usage": "Follow serving instructions on package",
-    "rating": "4.5",
-    "reviewsCount": 234,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.7",
+    "reviewsCount": 307,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Collagen Peptides 10-Travel Packs",
@@ -2672,7 +2836,7 @@
     ],
     "tagsString": "60 Day Cycle, athletic performance, Bone + Joint Health, Collagen, Gifts Under $50, hidden, Joint and Bone Strength, recover faster, Recovery, Soft Tissue Health, sports nutrition, Stocking Stuffers, Subscribe & Save, Supplements, travel",
     "createdAt": "2021-12-23T12:21:34-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41028235624631,
@@ -2686,9 +2850,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Joint & Bone Health",
     "ingredients": "Vitamin c, Collagen",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 516,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.0",
+    "reviewsCount": 102,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Grass-Fed Whey Protein Isolate Powder - Limited Edition Flavors",
@@ -2741,7 +2905,7 @@
     ],
     "tagsString": "athletic performance, Huberman, Momentous, Muscle Development, Muscle Growth, protein, recover faster, Recovery, sports nutrition, strength",
     "createdAt": "2025-03-27T10:43:46-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44818561007799,
@@ -2787,9 +2951,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support",
     "ingredients": "Protein, Whey",
     "usage": "Follow package directions",
-    "rating": "4.6",
-    "reviewsCount": 428,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.0",
+    "reviewsCount": 51,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Nightly Sleep Stack",
@@ -2824,7 +2988,7 @@
     ],
     "tagsString": "Bundles, fall asleep faster, Falling Asleep, label:best-seller, Label:save15, quality sleep, Shop All, sleep, Staying Asleep + Sleep Quality",
     "createdAt": "2024-01-11T11:50:30-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 42177938194615,
@@ -2838,9 +3002,9 @@
     "benefits": "Energy & Performance, Recovery Support, Sleep Quality, Brain Health, Stress Management",
     "ingredients": "Magnesium",
     "usage": "Follow package directions",
-    "rating": "4.6",
-    "reviewsCount": 164,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.0",
+    "reviewsCount": 263,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Athletic Stack",
@@ -2868,7 +3032,7 @@
     ],
     "tagsString": "athletic performance, Bundles",
     "createdAt": "2022-10-10T13:03:43-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41500254503095,
@@ -2882,9 +3046,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Heart Health, Anti-Inflammatory",
     "ingredients": "Omega-3, Magnesium, Vitamin d",
     "usage": "Follow package directions",
-    "rating": "4.0",
-    "reviewsCount": 113,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.2",
+    "reviewsCount": 410,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Omega-3 & Multi Stack",
@@ -2909,7 +3073,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2023-10-31T14:51:27-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 42001466196151,
@@ -2923,9 +3087,9 @@
     "benefits": "Energy & Performance, Recovery Support, Brain Health, Immune Support, Heart Health",
     "ingredients": "Omega-3, Epa, Dha, Vitamin d",
     "usage": "Follow package directions",
-    "rating": "4.4",
-    "reviewsCount": 251,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.6",
+    "reviewsCount": 125,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "100% Plant Protein 10-Travel Packs",
@@ -2966,7 +3130,7 @@
     ],
     "tagsString": "athletic performance, Gifts Under $50, Muscle Development, Muscle Growth, protein, Recovery, sports nutrition",
     "createdAt": "2025-01-23T14:13:58-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44314941096119,
@@ -2988,9 +3152,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support",
     "ingredients": "Protein",
     "usage": "Follow package directions",
-    "rating": "4.4",
-    "reviewsCount": 457,
-    "scraped_at": "2025-09-15T10:33:31.731Z"
+    "rating": "4.8",
+    "reviewsCount": 169,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "Brain Drive + Elite Sleep Stack",
@@ -3018,7 +3182,7 @@
     ],
     "tagsString": "Bundles, Supplements",
     "createdAt": "2021-11-03T11:13:53-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 40934665814199,
@@ -3032,9 +3196,9 @@
     "benefits": "Energy & Performance, Recovery Support, Sleep Quality, Brain Health, Stress Management",
     "ingredients": "B vitamins",
     "usage": "Follow package directions",
-    "rating": "5.0",
-    "reviewsCount": 293,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.5",
+    "reviewsCount": 401,
+    "scraped_at": "2025-09-11T19:18:35.196Z"
   },
   {
     "title": "The Complete Expert Stack",
@@ -3070,7 +3234,7 @@
     ],
     "tagsString": "Brain Health, cognitive function, Falling Asleep, Focus + Performance, Hormone Metabolism, hormone support, Huberman, sleep, Staying Asleep + Sleep Quality, Stress Management",
     "createdAt": "2022-08-29T20:08:35-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41370063700151,
@@ -3084,9 +3248,9 @@
     "benefits": "Energy & Performance, Sleep Quality, Brain Health, Stress Management",
     "ingredients": "Omega-3",
     "usage": "Follow package directions",
-    "rating": "4.7",
-    "reviewsCount": 42,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.3",
+    "reviewsCount": 508,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "PR Lotion® Buy 4, Get 1 Free. $175 Value",
@@ -3122,7 +3286,7 @@
     ],
     "tagsString": "Amp Human, Bundles, next gen kit, next gen lotion, PR Lotion, prlotion, spo-default, spo-disabled, YGroup_lotionprtest, YGroup_prlotion",
     "createdAt": "2019-12-18T12:28:27-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 31354650820695,
@@ -3136,9 +3300,9 @@
     "benefits": "Muscle & Strength",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.2",
-    "reviewsCount": 186,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.8",
+    "reviewsCount": 436,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Recovery 14-Travel Packs",
@@ -3176,7 +3340,7 @@
     ],
     "tagsString": "60 Day Cycle, athletic performance, Muscle Development, Muscle Growth, protein, Recovery, sports nutrition, Stocking Stuffers, travel",
     "createdAt": "2022-04-20T12:38:32-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41180666822839,
@@ -3198,9 +3362,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Sleep Quality",
     "ingredients": "Protein, Whey, Epa, Amino acids",
     "usage": "Follow serving instructions on package",
-    "rating": "4.7",
-    "reviewsCount": 78,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.0",
+    "reviewsCount": 71,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Female Athlete Stack",
@@ -3229,7 +3393,7 @@
     ],
     "tagsString": "womens health",
     "createdAt": "2022-10-16T22:12:17-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41514375676087,
@@ -3259,9 +3423,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Joint & Bone Health",
     "ingredients": "Creatine, Protein, Whey, Epa, Collagen",
     "usage": "Follow package directions",
-    "rating": "4.2",
-    "reviewsCount": 80,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.3",
+    "reviewsCount": 320,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Promixx Pursuit Shaker Bottle",
@@ -3286,7 +3450,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2024-09-04T12:29:54-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44921428082871,
@@ -3300,9 +3464,9 @@
     "benefits": "Energy & Performance",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.0",
-    "reviewsCount": 470,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.8",
+    "reviewsCount": 308,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Omega-3 Travel Packs",
@@ -3350,7 +3514,7 @@
     ],
     "tagsString": "30 Day Cycle, Brain Health, cognitive function, cognitive performance, Daily Essentials, foundational health, Huberman, inflammation, Joint and Bone Strength, label:best-seller, long term cognitive health, Momentous, Shop All, Subscribe & Save, Supplements, Under 50",
     "createdAt": "2024-12-11T14:25:09-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44061618307255,
@@ -3364,9 +3528,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Joint & Bone Health, Heart Health, Anti-Inflammatory",
     "ingredients": "Omega-3, Epa, Dha",
     "usage": "Follow serving instructions on package",
-    "rating": "4.8",
-    "reviewsCount": 123,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.3",
+    "reviewsCount": 315,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Fuel 10-Travel Packs",
@@ -3417,7 +3581,7 @@
     ],
     "tagsString": "45 Day Cycle, athletic performance, boost your performance, endurance, Hydration, marketing samples, Momentous, sports nutrition, Sustained Performance, travel, Wholesale Store",
     "createdAt": "2024-11-22T14:09:50-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 45162682122423,
@@ -3456,8 +3620,8 @@
     "ingredients": "See product details",
     "usage": "Follow package directions",
     "rating": "4.2",
-    "reviewsCount": 95,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "reviewsCount": 460,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Cognitive Power Stack",
@@ -3485,7 +3649,7 @@
     "tags": [],
     "tagsString": "",
     "createdAt": "2024-11-11T08:35:12-07:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 43887702081719,
@@ -3499,9 +3663,9 @@
     "benefits": "Energy & Performance, Brain Health, Stress Management",
     "ingredients": "See product details",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 410,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.6",
+    "reviewsCount": 156,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Follicular Phase Support Stack",
@@ -3515,7 +3679,7 @@
     "link": "https://www.livemomentous.com/products/follicular-phase-support-stack",
     "handle": "follicular-phase-support-stack",
     "description": "The Follicular Phase Support Stack is designed with Dr. Stacy Sims to help female athletes perform at their best during the first half of the menstrual cycle. This phase, which begins on the first day of menstruation and ends at ovulation, is marked by fluctuating estrogen and increased risk of iron...",
-    "fullDescription": "The Follicular Phase Support Stack is designed with Dr. Stacy Sims to help female athletes perform at their best during the first half of the menstrual cycle. This phase, which begins on the first day of menstruation and ends at ovulation, is marked by fluctuating estrogen and increased risk of iron deficiency. This stack combines Vitamin D3 and Omega-3 to target those specific needs. Vitamin D3 helps boost iron absorption—essential for maintaining energy and performance—while Omega-3 supports a healthy inflammatory response and joint function. Together, they help reduce fatigue, improve recovery, and support hormonal balance for women training through the follicular phase.",
+    "fullDescription": "The Follicular Phase Support Stack is designed with Dr. Stacy Sims to help female athletes perform at their best during the first half of the menstrual cycle. This phase, which begins on the first day of menstruation and ends at ovulation, is marked by fluctuating estrogen and increased risk of iron deficiency. This stack combines Vitamin D3 and Omega-3 to target those specific needs.Vitamin D3 helps boost iron absorption—essential for maintaining energy and performance—while Omega-3 supports a healthy inflammatory response and joint function. Together, they help reduce fatigue, improve recovery, and support hormonal balance for women training through the follicular phase.",
     "categories": [],
     "category": "For Women",
     "goals": [],
@@ -3528,7 +3692,7 @@
     ],
     "tagsString": "womens health",
     "createdAt": "2022-10-16T22:24:26-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41514382885047,
@@ -3542,9 +3706,9 @@
     "benefits": "Energy & Performance, Recovery Support, Joint & Bone Health",
     "ingredients": "Omega-3, Iron, Vitamin d",
     "usage": "Follow package directions",
-    "rating": "4.7",
-    "reviewsCount": 175,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.3",
+    "reviewsCount": 310,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Adaptogen Stack",
@@ -3575,7 +3739,7 @@
     ],
     "tagsString": "athletic performance, Bundles",
     "createdAt": "2024-10-25T11:53:41-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 43786263560375,
@@ -3589,9 +3753,9 @@
     "benefits": "Energy & Performance, Brain Health, Stress Management",
     "ingredients": "Dha, Ashwagandha, Rhodiola",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 85,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.2",
+    "reviewsCount": 507,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Complete Female Athlete Stack",
@@ -3619,7 +3783,7 @@
     ],
     "tagsString": "Bundles, womens health",
     "createdAt": "2022-10-10T13:02:19-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41500249882807,
@@ -3633,9 +3797,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Immune Support, Joint & Bone Health",
     "ingredients": "Creatine, Omega-3, Vitamin d, Collagen",
     "usage": "Follow package directions",
-    "rating": "4.4",
-    "reviewsCount": 39,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.9",
+    "reviewsCount": 205,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Anti-Inflammatory Stack for Women",
@@ -3662,7 +3826,7 @@
     ],
     "tagsString": "womens health",
     "createdAt": "2022-10-16T22:33:57-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41514395926711,
@@ -3676,9 +3840,9 @@
     "benefits": "Energy & Performance, Recovery Support, Immune Support, Stress Management, Anti-Inflammatory",
     "ingredients": "Creatine, Vitamin d, Turmeric, Curcumin",
     "usage": "Follow package directions",
-    "rating": "4.5",
-    "reviewsCount": 63,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.7",
+    "reviewsCount": 121,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Iron+",
@@ -3729,7 +3893,7 @@
     ],
     "tagsString": "Bone + Joint Health, boost your performance, Daily Essentials, endurance, Endurance & Energy, foundational health, health longevity, Immune Support, Joint and Bone Strength, joint health, Momentous, new, recover faster, Recovery, Shop All, sports nutrition, strength, vitamins, Women, womens health",
     "createdAt": "2025-05-16T13:51:10-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44923618820279,
@@ -3743,9 +3907,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Immune Support, Joint & Bone Health",
     "ingredients": "Iron, Vitamin c",
     "usage": "Follow package directions",
-    "rating": "4.9",
-    "reviewsCount": 112,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.5",
+    "reviewsCount": 142,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Womens GI Support Stack",
@@ -3772,7 +3936,7 @@
     ],
     "tagsString": "womens health",
     "createdAt": "2022-10-16T22:19:31-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41514377085111,
@@ -3786,9 +3950,9 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Brain Health, Stress Management, Anti-Inflammatory",
     "ingredients": "Creatine, Vitamin d, Glutamine, Turmeric",
     "usage": "Follow package directions",
-    "rating": "4.1",
-    "reviewsCount": 225,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "rating": "4.2",
+    "reviewsCount": 399,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Calcium",
@@ -3839,7 +4003,7 @@
     ],
     "tagsString": "Bone + Joint Health, boost your performance, Daily Essentials, endurance, Endurance & Energy, foundational health, health longevity, Immune Support, Joint and Bone Strength, joint health, Momentous, new, recover faster, Recovery, Shop All, sports nutrition, strength, vitamins, Women, womens health",
     "createdAt": "2025-05-16T13:30:56-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 44923601354935,
@@ -3854,8 +4018,8 @@
     "ingredients": "Calcium",
     "usage": "Take 1-2 capsules daily",
     "rating": "4.4",
-    "reviewsCount": 145,
-    "scraped_at": "2025-09-15T10:33:31.732Z"
+    "reviewsCount": 155,
+    "scraped_at": "2025-09-11T19:18:35.197Z"
   },
   {
     "title": "Athletic Resilience Stack",
@@ -3887,7 +4051,7 @@
     ],
     "tagsString": "athletic performance, Momentous, muscle growth, Recovery, Subscribe & Save",
     "createdAt": "2022-10-10T13:00:41-06:00",
-    "updatedAt": "2025-09-15T04:33:31-06:00",
+    "updatedAt": "2025-09-11T13:18:35-06:00",
     "variants": [
       {
         "id": 41500245590199,
@@ -3909,8 +4073,8 @@
     "benefits": "Muscle & Strength, Energy & Performance, Recovery Support, Sleep Quality, Brain Health, Immune Support, Joint & Bone Health",
     "ingredients": "Protein, Whey, Epa, Magnesium, Zinc, Collagen",
     "usage": "Follow package directions",
-    "rating": "4.7",
-    "reviewsCount": 367,
-    "scraped_at": "2025-09-15T10:33:31.733Z"
+    "rating": "4.1",
+    "reviewsCount": 179,
+    "scraped_at": "2025-09-11T19:18:35.198Z"
   }
 ]
