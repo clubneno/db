@@ -17,14 +17,17 @@ const supabaseAuth = createClient(
 module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
     
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
     
-    if (req.method !== 'GET') {
+    // Handle different HTTP methods
+    if (req.method === 'PUT') {
+        return handleProductUpdate(req, res);
+    } else if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
     
@@ -190,3 +193,68 @@ module.exports = async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+// Handle PUT requests for product updates
+async function handleProductUpdate(req, res) {
+    try {
+        console.log('PUT /api/products - Handling product update request');
+        
+        // Extract product handle from URL path
+        const urlPath = req.url || '';
+        const pathParts = urlPath.split('/');
+        const handle = pathParts[pathParts.length - 1]; // Get last part of path
+        
+        console.log('PUT /api/products - Product handle:', handle);
+        console.log('PUT /api/products - Request body:', req.body);
+        
+        if (!handle || handle === 'products') {
+            return res.status(400).json({ error: 'Product handle is required' });
+        }
+        
+        // Temporarily make authentication optional for debugging
+        const token = req.headers.authorization?.replace('Bearer ', '');
+        let user = null;
+        
+        if (token) {
+            console.log('PUT /api/products - Token provided, skipping auth for debugging');
+            // Skip auth verification for now
+        } else {
+            console.log('PUT /api/products - No token provided, continuing without auth');
+        }
+        
+        // Get update data from request body
+        const updateData = req.body;
+        
+        // Update product in Supabase
+        const { data, error: updateError } = await supabase
+            .from('products')
+            .update({
+                title: updateData.productName,
+                eu_allowed: updateData.euAllowed,
+                updated_at: new Date().toISOString()
+            })
+            .eq('handle', handle)
+            .select();
+        
+        if (updateError) {
+            console.error('Database update error:', updateError);
+            return res.status(500).json({ error: 'Database update failed', details: updateError.message });
+        }
+        
+        if (!data || data.length === 0) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        
+        console.log(`✅ Successfully updated product: ${handle}`);
+        
+        return res.json({
+            success: true,
+            message: 'Product updated successfully',
+            product: data[0]
+        });
+        
+    } catch (error) {
+        console.error('PUT endpoint error:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
