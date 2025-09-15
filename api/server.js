@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,78 +12,40 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// Simple authentication (in production, use proper session management)
-const sessions = new Map();
-const users = {
-    'admin': 'password123',
-    'user': 'pass123'
-};
+// Initialize Supabase client
+const supabase = createClient(
+    process.env.SUPABASE_URL, 
+    process.env.SUPABASE_ANON_KEY
+);
 
-// Authentication middleware
-const requireAuth = (req, res, next) => {
-    const token = req.headers.authorization?.replace('Bearer ', '') || 
-                 req.body.token || 
-                 req.query.token;
-    
-    if (!token || !sessions.has(token)) {
-        return res.status(401).json({ error: 'Authentication required' });
+// Supabase authentication middleware
+const requireAuth = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ error: 'Authentication required - missing token' });
+        }
+        
+        const token = authHeader.replace('Bearer ', '');
+        
+        // Verify the JWT token with Supabase
+        const { data: { user }, error } = await supabase.auth.getUser(token);
+        
+        if (error || !user) {
+            console.error('Authentication error:', error);
+            return res.status(401).json({ error: 'Invalid or expired token' });
+        }
+        
+        req.user = user;
+        next();
+    } catch (error) {
+        console.error('Authentication middleware error:', error);
+        return res.status(401).json({ error: 'Authentication failed' });
     }
-    
-    const session = sessions.get(token);
-    if (Date.now() > session.expires) {
-        sessions.delete(token);
-        return res.status(401).json({ error: 'Session expired' });
-    }
-    
-    req.user = session.user;
-    next();
 };
-
-// Generate simple token
-function generateToken() {
-    return Math.random().toString(36).substring(2) + Date.now().toString(36);
-}
 
 // Authentication Routes
-app.post('/api/login', (req, res) => {
-    const { username, password } = req.body;
-    
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Username and password required' });
-    }
-    
-    if (users[username] && users[username] === password) {
-        const token = generateToken();
-        const expires = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
-        
-        sessions.set(token, {
-            user: username,
-            expires: expires
-        });
-        
-        res.json({ 
-            success: true, 
-            token: token,
-            user: username,
-            message: 'Login successful'
-        });
-    } else {
-        res.status(401).json({ error: 'Invalid credentials' });
-    }
-});
-
-app.post('/api/logout', requireAuth, (req, res) => {
-    const token = req.headers.authorization?.replace('Bearer ', '') || 
-                 req.body.token || 
-                 req.query.token;
-    
-    if (token && sessions.has(token)) {
-        sessions.delete(token);
-    }
-    
-    res.json({ success: true, message: 'Logout successful' });
-});
-
 app.get('/api/auth/check', requireAuth, (req, res) => {
     res.json({ 
         authenticated: true, 
