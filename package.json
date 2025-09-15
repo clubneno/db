@@ -1,7 +1,7 @@
 {
-  "name": "momentous-scraper",
+  "name": "clubneno-db",
   "version": "1.0.0",
-  "description": "A beautiful product scraper and analysis tool for Momentous supplements",
+  "description": "A beautiful product scraper and analysis tool for Clubneno supplements",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
