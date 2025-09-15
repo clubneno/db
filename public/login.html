@@ -80,22 +80,25 @@
     </div>
 
     <script>
-        // Initialize Supabase client
-        const supabaseUrl = 'https://your-project.supabase.co'
-        const supabaseKey = 'your-anon-key'
-        
-        // We'll get these from the environment
+        // Initialize Supabase client with environment variables
         let supabase;
         
-        // Initialize Supabase client with environment variables
+        // Get config from a meta tag or embedded script
         async function initSupabase() {
             try {
+                // Try to get config from API first
                 const response = await fetch('/api/config');
                 const config = await response.json();
-                supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
+                
+                if (config.supabaseUrl && config.supabaseKey) {
+                    supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseKey);
+                } else {
+                    throw new Error('Invalid configuration');
+                }
             } catch (error) {
-                console.error('Failed to initialize Supabase:', error);
-                document.getElementById('errorText').textContent = 'Configuration error. Please contact support.';
+                console.error('Failed to get config from API, using fallback:', error);
+                // Fallback: Use environment variables if available or show setup message
+                document.getElementById('errorText').textContent = 'Please set up Supabase credentials in Vercel environment variables.';
                 document.getElementById('errorMessage').classList.remove('hidden');
             }
         }
