@@ -314,7 +314,88 @@ async function handleProductUpdate(req, res) {
             updateObject.duty_rate = updateData.dutyRate;
         }
         
+        // Add all the additional fields that frontend sends
+        if (updateData.categories !== undefined) {
+            updateObject.categories = JSON.stringify(updateData.categories);
+        }
+        if (updateData.goals !== undefined) {
+            updateObject.goals = JSON.stringify(updateData.goals);
+        }
+        if (updateData.flavors !== undefined) {
+            updateObject.flavors = JSON.stringify(updateData.flavors);
+        }
+        if (updateData.skus !== undefined) {
+            updateObject.skus = JSON.stringify(updateData.skus);
+        }
+        
+        // Basic product information
+        if (updateData.size !== undefined) {
+            updateObject.size = updateData.size;
+        }
+        if (updateData.servings !== undefined) {
+            updateObject.servings = updateData.servings;
+        }
+        if (updateData.intakeFrequency !== undefined) {
+            updateObject.intake_frequency = updateData.intakeFrequency;
+        }
+        if (updateData.reorderPeriod !== undefined) {
+            updateObject.reorder_period = updateData.reorderPeriod;
+        }
+        
+        // Pricing information
+        if (updateData.nutraceuticalsRegularPrice !== undefined) {
+            updateObject.nutraceuticals_regular_price = updateData.nutraceuticalsRegularPrice;
+        }
+        if (updateData.nutraceuticalsSubscriptionPrice !== undefined) {
+            updateObject.nutraceuticals_subscription_price = updateData.nutraceuticalsSubscriptionPrice;
+        }
+        if (updateData.clubnenoRegularPrice !== undefined) {
+            updateObject.clubneno_regular_price = updateData.clubnenoRegularPrice;
+        }
+        if (updateData.clubnenoSubscriptionPrice !== undefined) {
+            updateObject.clubneno_subscription_price = updateData.clubnenoSubscriptionPrice;
+        }
+        
+        // Per-flavor data
+        if (updateData.flavorSkus !== undefined) {
+            updateObject.flavor_skus = JSON.stringify(updateData.flavorSkus);
+        }
+        if (updateData.flavorHsCodes !== undefined) {
+            updateObject.flavor_hs_codes = JSON.stringify(updateData.flavorHsCodes);
+        }
+        if (updateData.flavorDutyRates !== undefined) {
+            updateObject.flavor_duty_rates = JSON.stringify(updateData.flavorDutyRates);
+        }
+        if (updateData.flavorEuNotifications !== undefined) {
+            updateObject.flavor_eu_notifications = JSON.stringify(updateData.flavorEuNotifications);
+        }
+        if (updateData.flavorNotes !== undefined) {
+            updateObject.flavor_notes = JSON.stringify(updateData.flavorNotes);
+        }
+        if (updateData.flavorLinks !== undefined) {
+            updateObject.flavor_links = JSON.stringify(updateData.flavorLinks);
+        }
+        if (updateData.flavorIngredients !== undefined) {
+            updateObject.flavor_ingredients = JSON.stringify(updateData.flavorIngredients);
+        }
+        
         console.log('PUT /api/products - Supabase update object:', updateObject);
+        console.log('PUT /api/products - Number of fields to update:', Object.keys(updateObject).length);
+        
+        // First get the current product to compare timestamps later
+        const { data: currentData, error: getCurrentError } = await supabase
+            .from('products')
+            .select('updated_at')
+            .eq('handle', handle)
+            .single();
+        
+        if (getCurrentError) {
+            console.error('PUT /api/products - Error fetching current product:', getCurrentError);
+            return res.status(500).json({ error: 'Failed to fetch current product', details: getCurrentError.message });
+        }
+        
+        const previousUpdatedAt = currentData?.updated_at;
+        console.log('PUT /api/products - Previous updated_at:', previousUpdatedAt);
         
         // Update product in Supabase
         const { data, error: updateError } = await supabase
@@ -331,6 +412,18 @@ async function handleProductUpdate(req, res) {
         if (!data || data.length === 0) {
             console.log('PUT /api/products - Product not found for handle:', handle);
             return res.status(404).json({ error: 'Product not found' });
+        }
+        
+        // Check if the update actually happened by comparing timestamps
+        const newUpdatedAt = data[0]?.updated_at;
+        console.log('PUT /api/products - New updated_at:', newUpdatedAt);
+        
+        if (newUpdatedAt && previousUpdatedAt && newUpdatedAt === previousUpdatedAt) {
+            console.error('PUT /api/products - Database update failed silently - timestamps unchanged');
+            return res.status(500).json({ 
+                error: 'Database update failed - data not persisted', 
+                details: 'The database update operation completed but no changes were saved. This may be due to database constraints or triggers.' 
+            });
         }
         
         console.log(`✅ PUT /api/products - Successfully updated product: ${handle}`);
