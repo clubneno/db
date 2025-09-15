@@ -1,98 +1,72 @@
-// Simple products endpoint for Vercel serverless functions
+// Products API endpoint
 const { createClient } = require('@supabase/supabase-js');
 
-// Simple session-based authentication store (in-memory for serverless)
-const sessions = new Map();
-const users = {
-    'admin': 'password123',
-    'user': 'pass123'
-};
-
-// Initialize Supabase client
+// Initialize Supabase clients
 const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY
+  process.env.SUPABASE_URL || 'https://baqdzabfkhtgnxzhoyax.supabase.co',
+  process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhcWR6YWJma2h0Z254emhveWF4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzkxNjk4OSwiZXhwIjoyMDczNDkyOTg5fQ.SZmjBrkLRJ0jjNEiRUgXl2mLuTOqzU78t9abfojWixU'
 );
 
-// Simple auth check
-function requireAuth(req, res, callback) {
-    const token = req.headers.authorization?.replace('Bearer ', '') || 
-                 req.body?.token || 
-                 req.query?.token;
-    
-    if (!token || !sessions.has(token)) {
-        return res.status(401).json({ error: 'Authentication required' });
-    }
-    
-    const session = sessions.get(token);
-    if (Date.now() > session.expires) {
-        sessions.delete(token);
-        return res.status(401).json({ error: 'Session expired' });
-    }
-    
-    callback();
-}
+const supabaseAuth = createClient(
+  process.env.SUPABASE_URL || 'https://baqdzabfkhtgnxzhoyax.supabase.co',
+  process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhcWR6YWJma2h0Z254emhveWF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTY5ODksImV4cCI6MjA3MzQ5Mjk4OX0.qJZBWBApyQf8xgV0EuIZkGOy5pDbNhLXfzHklOL_V5o'
+);
 
 module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    
+    if (req.method !== 'GET') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
     
     try {
-        if (req.method === 'POST' && req.url === '/api/login') {
-            const { username, password } = req.body || {};
-            
-            if (!username || !password) {
-                return res.status(400).json({ error: 'Username and password required' });
-            }
-            
-            if (users[username] && users[username] === password) {
-                const token = Math.random().toString(36).substring(2) + Date.now().toString(36);
-                const expires = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
-                
-                sessions.set(token, {
-                    user: username,
-                    expires: expires
-                });
-                
-                return res.json({ 
-                    success: true, 
-                    token: token,
-                    user: username,
-                    message: 'Login successful'
-                });
-            } else {
-                return res.status(401).json({ error: 'Invalid credentials' });
-            }
+        // Check authentication
+        const token = req.headers.authorization?.replace('Bearer ', '');
+        
+        if (!token) {
+            console.log('No token provided');
+            return res.status(401).json({ error: 'Authentication required' });
         }
         
-        if (req.method === 'GET' && req.url.startsWith('/api/products')) {
-            return requireAuth(req, res, async () => {
-                console.log('🔍 Fetching products from Supabase...');
-                
-                const { data: products, error } = await supabase
-                    .from('products')
-                    .select('*')
-                    .order('title', { ascending: true });
-                
-                if (error) {
-                    console.error('❌ Supabase error:', error);
-                    return res.status(500).json({ error: 'Failed to fetch products from database' });
-                }
-                
-                console.log(`✅ Fetched ${products?.length || 0} products from Supabase`);
-                
-                return res.json({
-                    products: products || [],
-                    total: products?.length || 0,
-                    source: 'supabase'
-                });
-            });
+        // Verify token
+        const { data: { user }, error } = await supabaseAuth.auth.getUser(token);
+        
+        if (error || !user) {
+            console.log('Auth verification failed:', error?.message);
+            return res.status(401).json({ error: 'Invalid or expired token' });
         }
         
-        // Default response
-        res.status(404).json({ error: 'Not found' });
+        console.log('Auth successful for user:', user.email);
+        
+        // Get products from Supabase
+        const { data: products, error: dbError } = await supabase
+            .from('products')
+            .select('*')
+            .limit(10);
+        
+        if (dbError) {
+            console.error('Database error:', dbError);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        
+        console.log(`Fetched ${products?.length || 0} products`);
+        
+        return res.json({
+            products: products || [],
+            total: products?.length || 0,
+            source: 'supabase',
+            message: 'Products endpoint working'
+        });
         
     } catch (error) {
-        console.error('💥 Error in products endpoint:', error);
-        res.status(500).json({ error: 'Server error' });
+        console.error('Endpoint error:', error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };
