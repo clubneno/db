@@ -2023,13 +2023,8 @@ class MomentousApp {
         });
         
         try {
-            const token = localStorage.getItem('sessionToken');
-            const response = await fetch(`/api/products/${encodeURIComponent(productHandle)}`, {
+            const response = await this.authFetch(`/api/products/${encodeURIComponent(productHandle)}`, {
                 method: 'PUT',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
                 body: JSON.stringify({ 
                     categories, 
                     goals, 
