@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
         // Get products for analytics
         const { data: products, error: dbError } = await supabase
             .from('products')
-            .select('price_amount, category, primary_goal, categories, goals');
+            .select('price_amount, category, primary_goal');
         
         if (dbError) {
             console.error('Analytics database error:', dbError);
