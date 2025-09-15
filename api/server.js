@@ -346,22 +346,9 @@ app.put('/api/products/:handle', requireAuth, async (req, res) => {
     
     console.log('Server PUT - Supabase update object:', updateObject);
     
-    // Temporary workaround: Database has constraint issues, so we'll return success
-    // but note that the actual database update is not working due to schema issues
-    console.log('Server PUT - Would update product with object:', updateObject);
-    console.log('Server PUT - Database schema issue detected - returning simulated success');
+    // Database update now works - db_updated_at column has been added
+    console.log('Server PUT - Performing actual database update with object:', updateObject);
     
-    return res.json({ 
-      success: true, 
-      message: 'Product update received successfully',
-      note: 'Database update temporarily disabled due to schema constraint (db_updated_at field missing)',
-      productHandle: handle,
-      receivedUpdates: updateObject,
-      recommendation: 'Database schema needs to be reviewed - missing db_updated_at column or trigger issue'
-    });
-    
-    // Commented out actual Supabase update due to database constraint issue
-    /*
     const { data, error: updateError } = await supabase
       .from('products')
       .update(updateObject)
@@ -378,9 +365,13 @@ app.put('/api/products/:handle', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
     
-    console.log('✅ Server PUT - Successfully updated product:', handle);
-    return res.json({ success: true, product: data[0] });
-    */
+    console.log(`✅ Server PUT - Successfully updated product: ${handle}`);
+    
+    return res.json({
+      success: true,
+      message: 'Product updated successfully',
+      product: data[0]
+    });
     
     // Old file-based logic below (commented out for serverless compatibility)
     /*
