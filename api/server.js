@@ -1,51 +1,98 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL || 'https://baqdzabfkhtgnxzhoyax.supabase.co',
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhcWR6YWJma2h0Z254emhveWF4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzkxNjk4OSwiZXhwIjoyMDczNDkyOTg5fQ.SZmjBrkLRJ0jjNEiRUgXl2mLuTOqzU78t9abfojWixU'
+);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// Initialize Supabase client with service role for database operations
-const supabase = createClient(
-    process.env.SUPABASE_URL, 
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY
-);
+// Mount debug routes
+const debugRouter = require('./debug');
+app.use('/api', debugRouter);
 
-// Supabase authentication middleware
-const requireAuth = async (req, res, next) => {
-    try {
-        const authHeader = req.headers.authorization;
-        
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return res.status(401).json({ error: 'Authentication required - missing token' });
-        }
-        
-        const token = authHeader.replace('Bearer ', '');
-        
-        // Verify the JWT token with Supabase
-        const { data: { user }, error } = await supabase.auth.getUser(token);
-        
-        if (error || !user) {
-            console.error('Authentication error:', error);
-            return res.status(401).json({ error: 'Invalid or expired token' });
-        }
-        
-        req.user = user;
-        next();
-    } catch (error) {
-        console.error('Authentication middleware error:', error);
-        return res.status(401).json({ error: 'Authentication failed' });
-    }
+// Simple authentication (in production, use proper session management)
+const sessions = new Map();
+const users = {
+    'admin': 'password123',
+    'user': 'pass123'
 };
 
+// Authentication middleware
+const requireAuth = (req, res, next) => {
+    const token = req.headers.authorization?.replace('Bearer ', '') || 
+                 req.body.token || 
+                 req.query.token;
+    
+    if (!token || !sessions.has(token)) {
+        return res.status(401).json({ error: 'Authentication required' });
+    }
+    
+    const session = sessions.get(token);
+    if (Date.now() > session.expires) {
+        sessions.delete(token);
+        return res.status(401).json({ error: 'Session expired' });
+    }
+    
+    req.user = session.user;
+    next();
+};
+
+// Generate simple token
+function generateToken() {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+}
+
 // Authentication Routes
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Username and password required' });
+    }
+    
+    if (users[username] && users[username] === password) {
+        const token = generateToken();
+        const expires = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+        
+        sessions.set(token, {
+            user: username,
+            expires: expires
+        });
+        
+        res.json({ 
+            success: true, 
+            token: token,
+            user: username,
+            message: 'Login successful'
+        });
+    } else {
+        res.status(401).json({ error: 'Invalid credentials' });
+    }
+});
+
+app.post('/api/logout', requireAuth, (req, res) => {
+    const token = req.headers.authorization?.replace('Bearer ', '') || 
+                 req.body.token || 
+                 req.query.token;
+    
+    if (token && sessions.has(token)) {
+        sessions.delete(token);
+    }
+    
+    res.json({ success: true, message: 'Logout successful' });
+});
+
 app.get('/api/auth/check', requireAuth, (req, res) => {
     res.json({ 
         authenticated: true, 
@@ -53,15 +100,14 @@ app.get('/api/auth/check', requireAuth, (req, res) => {
     });
 });
 
-// Protected Routes
+// Protected Routes - Supabase powered
 app.get('/api/products', requireAuth, async (req, res) => {
   try {
-    const { category, goal, minPrice, maxPrice, search, sortBy, euNotificationStatus } = req.query;
+    console.log('🔍 Fetching products from Supabase...');
     
-    // Build Supabase query
-    let query = supabase
-      .from('products')
-      .select('*');
+    let query = supabase.from('products').select('*');
+    
+    const { category, goal, minPrice, maxPrice, search, sortBy, euNotificationStatus } = req.query;
     
     // Apply search filter
     if (search) {
@@ -70,20 +116,25 @@ app.get('/api/products', requireAuth, async (req, res) => {
     
     // Apply category filter
     if (category) {
-      query = query.or(`category.ilike.%${category}%`);
+      query = query.or(`category.ilike.%${category}%,categories.cs.["%{category}"]`);
     }
     
-    // Apply primary goal filter
+    // Apply goal filter
     if (goal) {
-      query = query.or(`primary_goal.ilike.%${goal}%`);
+      query = query.or(`primary_goal.ilike.%${goal}%,goals.cs.["%{goal}"]`);
     }
     
-    // Apply price range filters
+    // Apply price filters
     if (minPrice) {
       query = query.gte('price_amount', parseFloat(minPrice));
     }
     if (maxPrice) {
       query = query.lte('price_amount', parseFloat(maxPrice));
+    }
+    
+    // Apply EU notification status filter
+    if (euNotificationStatus) {
+      query = query.eq('eu_notification_status', euNotificationStatus);
     }
     
     // Apply sorting
@@ -111,42 +162,46 @@ app.get('/api/products', requireAuth, async (req, res) => {
     const { data: products, error } = await query;
     
     if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Failed to load product data from database' });
+      console.error('❌ Supabase error:', error);
+      return res.status(500).json({ error: 'Failed to fetch products from database' });
     }
     
-    // Transform data to match expected format
-    const transformedProducts = products.map(product => ({
-      ...product,
-      price: product.price_display || `$${product.price_amount || 0}`,
-      subscriptionPrice: product.subscription_price_display || `$${product.subscription_price_amount || 0}`,
-      primaryGoal: product.primary_goal,
-      euAllowed: product.eu_allowed,
-      createdAt: product.created_at,
-      updatedAt: product.updated_at || product.created_at
-    }));
+    console.log(`✅ Fetched ${products?.length || 0} products from Supabase`);
     
     res.json({
-      products: transformedProducts,
-      total: transformedProducts.length,
-      scraped_at: new Date().toISOString()
+      products: products || [],
+      total: products?.length || 0,
+      source: 'supabase'
     });
     
   } catch (error) {
-    console.error('Error loading products:', error);
-    res.status(500).json({ error: 'Failed to load product data' });
+    console.error('💥 Error loading products from Supabase:', error);
+    res.status(500).json({ error: 'Failed to load product data from database' });
   }
 });
 
 app.get('/api/analytics', requireAuth, async (req, res) => {
   try {
+    console.log('📊 Generating analytics from Supabase...');
+    
     const { data: products, error } = await supabase
       .from('products')
-      .select('price_amount, category, primary_goal, created_at');
+      .select('price_amount, category, primary_goal, categories, goals, db_created_at');
     
     if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Failed to load product data from database' });
+      console.error('❌ Supabase analytics error:', error);
+      return res.status(500).json({ error: 'Failed to fetch analytics data' });
+    }
+    
+    if (!products || products.length === 0) {
+      return res.json({
+        total_products: 0,
+        price_stats: { min: 0, max: 0, average: 0, median: 0 },
+        categories: {},
+        goals: {},
+        price_ranges: { '$0-25': 0, '$26-50': 0, '$51-100': 0, '$100+': 0 },
+        source: 'supabase'
+      });
     }
     
     // Generate analytics
@@ -158,12 +213,22 @@ app.get('/api/analytics', requireAuth, async (req, res) => {
     const goals = {};
     
     products.forEach(product => {
-      // Count categories
+      // Handle multiple categories per product
+      if (product.categories && Array.isArray(product.categories)) {
+        product.categories.forEach(category => {
+          if (category) categories[category] = (categories[category] || 0) + 1;
+        });
+      }
       if (product.category) {
         categories[product.category] = (categories[product.category] || 0) + 1;
       }
       
-      // Count goals
+      // Handle multiple goals per product
+      if (product.goals && Array.isArray(product.goals)) {
+        product.goals.forEach(goal => {
+          if (goal) goals[goal] = (goals[goal] || 0) + 1;
+        });
+      }
       if (product.primary_goal) {
         goals[product.primary_goal] = (goals[product.primary_goal] || 0) + 1;
       }
@@ -179,20 +244,21 @@ app.get('/api/analytics', requireAuth, async (req, res) => {
       } : { min: 0, max: 0, average: 0, median: 0 },
       categories,
       goals,
-      price_ranges: {
+      price_ranges: prices.length > 0 ? {
         '$0-25': prices.filter(p => p <= 25).length,
         '$26-50': prices.filter(p => p > 25 && p <= 50).length,
         '$51-100': prices.filter(p => p > 50 && p <= 100).length,
         '$100+': prices.filter(p => p > 100).length
-      },
-      last_updated: new Date().toISOString()
+      } : { '$0-25': 0, '$26-50': 0, '$51-100': 0, '$100+': 0 },
+      source: 'supabase'
     };
     
+    console.log(`✅ Analytics generated for ${products.length} products`);
     res.json(analytics);
     
   } catch (error) {
-    console.error('Error generating analytics:', error);
-    res.status(500).json({ error: 'Failed to generate analytics' });
+    console.error('💥 Error generating analytics:', error);
+    res.status(500).json({ error: 'Failed to generate analytics from database' });
   }
 });
 
@@ -209,7 +275,7 @@ app.put('/api/products/:handle', requireAuth, (req, res) => {
     console.log('Server received basic product info:', { size, servings, intakeFrequency, reorderPeriod });
     console.log('Server received pricing info:', { nutraceuticalsRegularPrice, nutraceuticalsSubscriptionPrice, clubnenoRegularPrice, clubnenoSubscriptionPrice });
     
-    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
+    const dataPath = path.join(__dirname, 'data', 'latest.json');
     if (!fs.existsSync(dataPath)) {
       return res.status(404).json({ error: 'No product data found' });
     }
@@ -280,7 +346,7 @@ app.post('/api/categories', requireAuth, (req, res) => {
     }
 
     // Load existing categories
-    const categoriesPath = path.join(__dirname, '..', 'data', 'categories.json');
+    const categoriesPath = path.join(__dirname, 'data', 'categories.json');
     let categories = [];
     if (fs.existsSync(categoriesPath)) {
       categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
@@ -334,7 +400,7 @@ app.post('/api/goals', requireAuth, (req, res) => {
     }
 
     // Load existing goals
-    const goalsPath = path.join(__dirname, '..', 'data', 'goals.json');
+    const goalsPath = path.join(__dirname, 'data', 'goals.json');
     let goals = [];
     if (fs.existsSync(goalsPath)) {
       goals = JSON.parse(fs.readFileSync(goalsPath, 'utf8'));
@@ -388,7 +454,7 @@ app.post('/api/flavors', requireAuth, (req, res) => {
     }
 
     // Load existing flavors
-    const flavorsPath = path.join(__dirname, '..', 'data', 'flavors.json');
+    const flavorsPath = path.join(__dirname, 'data', 'flavors.json');
     let flavors = [];
     if (fs.existsSync(flavorsPath)) {
       flavors = JSON.parse(fs.readFileSync(flavorsPath, 'utf8'));
@@ -419,7 +485,7 @@ app.delete('/api/categories/:name', requireAuth, (req, res) => {
     const { name } = req.params;
     
     // Remove from categories.json (persistent storage)
-    const categoriesPath = path.join(__dirname, '..', 'data', 'categories.json');
+    const categoriesPath = path.join(__dirname, 'data', 'categories.json');
     let categories = [];
     if (fs.existsSync(categoriesPath)) {
       categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
@@ -447,7 +513,7 @@ app.delete('/api/categories/:name', requireAuth, (req, res) => {
     }
 
     // Remove category from all products in latest.json
-    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
+    const dataPath = path.join(__dirname, 'data', 'latest.json');
     if (fs.existsSync(dataPath)) {
       const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
       
@@ -476,7 +542,7 @@ app.delete('/api/goals/:name', requireAuth, (req, res) => {
     const { name } = req.params;
     
     // Remove from goals.json (persistent storage)
-    const goalsPath = path.join(__dirname, '..', 'data', 'goals.json');
+    const goalsPath = path.join(__dirname, 'data', 'goals.json');
     let goals = [];
     if (fs.existsSync(goalsPath)) {
       goals = JSON.parse(fs.readFileSync(goalsPath, 'utf8'));
@@ -504,7 +570,7 @@ app.delete('/api/goals/:name', requireAuth, (req, res) => {
     }
 
     // Remove goal from all products in latest.json
-    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
+    const dataPath = path.join(__dirname, 'data', 'latest.json');
     if (fs.existsSync(dataPath)) {
       const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
       
@@ -528,18 +594,13 @@ app.delete('/api/goals/:name', requireAuth, (req, res) => {
 });
 
 // Get categories
-app.get('/api/categories', requireAuth, async (req, res) => {
+app.get('/api/categories', requireAuth, (req, res) => {
   try {
-    const { data: categories, error } = await supabase
-      .from('categories')
-      .select('*')
-      .order('name');
-    
-    if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Failed to load categories from database' });
+    const categoriesPath = path.join(__dirname, 'data', 'categories.json');
+    let categories = [];
+    if (fs.existsSync(categoriesPath)) {
+      categories = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
     }
-    
     res.json({ categories });
   } catch (error) {
     console.error('Error loading categories:', error);
@@ -548,18 +609,13 @@ app.get('/api/categories', requireAuth, async (req, res) => {
 });
 
 // Get goals
-app.get('/api/goals', requireAuth, async (req, res) => {
+app.get('/api/goals', requireAuth, (req, res) => {
   try {
-    const { data: goals, error } = await supabase
-      .from('goals')
-      .select('*')
-      .order('name');
-    
-    if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Failed to load goals from database' });
+    const goalsPath = path.join(__dirname, 'data', 'goals.json');
+    let goals = [];
+    if (fs.existsSync(goalsPath)) {
+      goals = JSON.parse(fs.readFileSync(goalsPath, 'utf8'));
     }
-    
     res.json({ goals });
   } catch (error) {
     console.error('Error loading goals:', error);
@@ -568,18 +624,13 @@ app.get('/api/goals', requireAuth, async (req, res) => {
 });
 
 // Get flavors
-app.get('/api/flavors', requireAuth, async (req, res) => {
+app.get('/api/flavors', requireAuth, (req, res) => {
   try {
-    const { data: flavors, error } = await supabase
-      .from('flavors')
-      .select('*')
-      .order('name');
-    
-    if (error) {
-      console.error('Supabase error:', error);
-      return res.status(500).json({ error: 'Failed to load flavors from database' });
+    const flavorsPath = path.join(__dirname, 'data', 'flavors.json');
+    let flavors = [];
+    if (fs.existsSync(flavorsPath)) {
+      flavors = JSON.parse(fs.readFileSync(flavorsPath, 'utf8'));
     }
-    
     res.json({ flavors });
   } catch (error) {
     console.error('Error loading flavors:', error);
@@ -593,7 +644,7 @@ app.delete('/api/flavors/:name', requireAuth, (req, res) => {
     const { name } = req.params;
     
     // Remove from flavors.json
-    const flavorsPath = path.join(__dirname, '..', 'data', 'flavors.json');
+    const flavorsPath = path.join(__dirname, 'data', 'flavors.json');
     let flavors = [];
     if (fs.existsSync(flavorsPath)) {
       flavors = JSON.parse(fs.readFileSync(flavorsPath, 'utf8'));
@@ -602,7 +653,7 @@ app.delete('/api/flavors/:name', requireAuth, (req, res) => {
     }
 
     // Remove flavor from all products
-    const dataPath = path.join(__dirname, '..', 'data', 'latest.json');
+    const dataPath = path.join(__dirname, 'data', 'latest.json');
     if (fs.existsSync(dataPath)) {
       const products = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
       
