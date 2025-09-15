@@ -29,23 +29,46 @@ const users = {
 };
 
 // Authentication middleware
-const requireAuth = (req, res, next) => {
+const requireAuth = async (req, res, next) => {
     const token = req.headers.authorization?.replace('Bearer ', '') || 
                  req.body.token || 
                  req.query.token;
     
-    if (!token || !sessions.has(token)) {
+    if (!token) {
         return res.status(401).json({ error: 'Authentication required' });
     }
     
-    const session = sessions.get(token);
-    if (Date.now() > session.expires) {
-        sessions.delete(token);
-        return res.status(401).json({ error: 'Session expired' });
+    // Check if it's a simple session token first
+    if (sessions.has(token)) {
+        const session = sessions.get(token);
+        if (Date.now() > session.expires) {
+            sessions.delete(token);
+            return res.status(401).json({ error: 'Session expired' });
+        }
+        req.user = session.user;
+        return next();
     }
     
-    req.user = session.user;
-    next();
+    // If not a session token, try to verify as Supabase token
+    try {
+        const { createClient } = require('@supabase/supabase-js');
+        const supabaseAuth = createClient(
+            process.env.SUPABASE_URL || 'https://baqdzabfkhtgnxzhoyax.supabase.co',
+            process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhcWR6YWJma2h0Z254emhveWF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTY5ODksImV4cCI6MjA3MzQ5Mjk4OX0.qJZBWBApyQf8xgV0EuIZkGOy5pDbNhLXfzHklOL_V5o'
+        );
+        
+        const { data: { user }, error } = await supabaseAuth.auth.getUser(token);
+        
+        if (error || !user) {
+            return res.status(401).json({ error: 'Invalid or expired token' });
+        }
+        
+        req.user = user.email || user.id;
+        next();
+    } catch (authError) {
+        console.log('Auth error:', authError.message);
+        return res.status(401).json({ error: 'Authentication failed' });
+    }
 };
 
 // Generate simple token
