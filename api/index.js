@@ -89,14 +89,28 @@ module.exports = async (req, res) => {
     if (path === '/api/products' && method === 'GET') {
       const { search, category, goal, minPrice, maxPrice, sortBy, limit } = req.query;
       
-      let query = supabase.from('products').select('*');
+      // First, try to use the new junction table structure
+      let query = supabase
+        .from('products')
+        .select(`
+          *,
+          product_categories (
+            categories (
+              id,
+              name,
+              is_sub_category,
+              parent_id
+            )
+          )
+        `);
       
       // Apply filters
       if (search) {
         query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
       }
       if (category) {
-        query = query.eq('category', category);
+        // Filter by category through junction table
+        query = query.eq('product_categories.categories.name', category);
       }
       if (goal) {
         query = query.eq('primary_goal', goal);
@@ -131,7 +145,56 @@ module.exports = async (req, res) => {
         query = query.limit(parseInt(limit));
       }
       
-      const { data, error } = await query;
+      let { data, error } = await query;
+      
+      // If junction table doesn't exist yet, fall back to old structure
+      if (error && error.message?.includes('product_categories')) {
+        let fallbackQuery = supabase.from('products').select('*');
+        
+        // Apply same filters but using old category column
+        if (search) {
+          fallbackQuery = fallbackQuery.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+        }
+        if (category) {
+          fallbackQuery = fallbackQuery.eq('category', category);
+        }
+        if (goal) {
+          fallbackQuery = fallbackQuery.eq('primary_goal', goal);
+        }
+        if (minPrice) {
+          fallbackQuery = fallbackQuery.gte('price_amount', parseFloat(minPrice));
+        }
+        if (maxPrice) {
+          fallbackQuery = fallbackQuery.lte('price_amount', parseFloat(maxPrice));
+        }
+        
+        // Apply same sorting
+        if (sortBy) {
+          switch (sortBy) {
+            case 'price_asc':
+              fallbackQuery = fallbackQuery.order('price_amount', { ascending: true });
+              break;
+            case 'price_desc':
+              fallbackQuery = fallbackQuery.order('price_amount', { ascending: false });
+              break;
+            case 'title_desc':
+              fallbackQuery = fallbackQuery.order('title', { ascending: false });
+              break;
+            default:
+              fallbackQuery = fallbackQuery.order('title', { ascending: true });
+          }
+        } else {
+          fallbackQuery = fallbackQuery.order('title', { ascending: true });
+        }
+        
+        if (limit) {
+          fallbackQuery = fallbackQuery.limit(parseInt(limit));
+        }
+        
+        const fallbackResult = await fallbackQuery;
+        data = fallbackResult.data;
+        error = fallbackResult.error;
+      }
       
       if (error) {
         return handleError(res, error, 'Failed to fetch products');
@@ -198,6 +261,74 @@ module.exports = async (req, res) => {
       
       if (error) {
         return handleError(res, error, 'Failed to delete product');
+      }
+      
+      return sendResponse(res, { success: true });
+    }
+
+    // Route: /api/products/:id/categories GET (Get product categories)
+    if (path.match(/^\/api\/products\/\d+\/categories$/) && method === 'GET') {
+      const productId = path.split('/')[3];
+      
+      const { data, error } = await supabase
+        .from('product_categories')
+        .select(`
+          categories (
+            id,
+            name,
+            is_sub_category,
+            parent_id
+          )
+        `)
+        .eq('product_id', productId);
+      
+      if (error) {
+        return handleError(res, error, 'Failed to fetch product categories');
+      }
+      
+      return sendResponse(res, {
+        categories: data?.map(pc => pc.categories) || []
+      });
+    }
+
+    // Route: /api/products/:id/categories POST (Add category to product)
+    if (path.match(/^\/api\/products\/\d+\/categories$/) && method === 'POST') {
+      const productId = path.split('/')[3];
+      const body = await parseBody(req);
+      const { category_id } = body;
+      
+      if (!category_id) {
+        return res.status(400).json({ error: 'category_id is required' });
+      }
+      
+      const { data, error } = await supabase
+        .from('product_categories')
+        .insert([{ product_id: productId, category_id }])
+        .select();
+      
+      if (error) {
+        return handleError(res, error, 'Failed to add category to product');
+      }
+      
+      return sendResponse(res, {
+        success: true,
+        product_category: data[0]
+      });
+    }
+
+    // Route: /api/products/:id/categories/:categoryId DELETE (Remove category from product)
+    if (path.match(/^\/api\/products\/\d+\/categories\/\d+$/) && method === 'DELETE') {
+      const productId = path.split('/')[3];
+      const categoryId = path.split('/')[5];
+      
+      const { error } = await supabase
+        .from('product_categories')
+        .delete()
+        .eq('product_id', productId)
+        .eq('category_id', categoryId);
+      
+      if (error) {
+        return handleError(res, error, 'Failed to remove category from product');
       }
       
       return sendResponse(res, { success: true });

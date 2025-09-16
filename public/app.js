@@ -319,10 +319,16 @@ class ProductManager {
             (product.description.length > 100 ? product.description.substring(0, 100) + '...' : product.description) : 
             'No description available';
         
+        // Generate category display
+        const categoryDisplay = this.generateCategoryDisplay(product);
+        
         return `
             <div class="product-card bg-white rounded-lg shadow overflow-hidden fade-in">
                 <img src="${image}" alt="${title}" class="w-full h-48 object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMjUgNzVIMTc1VjEyNUgxMjVWNzVaIiBmaWxsPSIjOUI5Q0E0Ii8+CjxyZWN0IHg9IjEzNyIgeT0iMTAwIiB3aWR0aD0iMjUiIGhlaWdodD0iNSIgZmlsbD0iIzlCOUNBNCIvPgo8dGV4dCB4PSIxNTAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOUI5Q0E0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ObyBJbWFnZTwvdGV4dD4KPC9zdmc+'">
                 <div class="p-4">
+                    <div class="mb-2">
+                        ${categoryDisplay}
+                    </div>
                     <h4 class="font-heading font-semibold text-lg text-gray-900 mb-2">${title}</h4>
                     <p class="text-gray-600 text-sm mb-3">${description}</p>
                     <div class="flex justify-between items-center">
@@ -335,6 +341,50 @@ class ProductManager {
                 </div>
             </div>
         `;
+    }
+
+    generateCategoryDisplay(product) {
+        // Handle both new structure (with product_categories) and old structure (single category)
+        let categories = [];
+        
+        if (product.product_categories && product.product_categories.length > 0) {
+            // New structure: multiple categories via junction table
+            categories = product.product_categories.map(pc => pc.categories).filter(Boolean);
+        } else if (product.category) {
+            // Old structure: single category field
+            const category = this.categories.find(c => c.name === product.category);
+            if (category) categories = [category];
+        }
+        
+        if (categories.length === 0) {
+            return '<span class="text-xs text-gray-400 italic">No categories</span>';
+        }
+        
+        // Group categories by parent/child relationship
+        const mainCategories = categories.filter(c => !c.is_sub_category);
+        const subCategories = categories.filter(c => c.is_sub_category);
+        
+        const categoryTags = [];
+        
+        // Add main categories
+        mainCategories.forEach(category => {
+            categoryTags.push(`
+                <span class="inline-block px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">
+                    ${category.name}
+                </span>
+            `);
+        });
+        
+        // Add subcategories
+        subCategories.forEach(subCategory => {
+            categoryTags.push(`
+                <span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">
+                    └ ${subCategory.name}
+                </span>
+            `);
+        });
+        
+        return `<div class="flex flex-wrap gap-1 mb-1">${categoryTags.join('')}</div>`;
     }
 
     renderCategories() {
@@ -499,7 +549,115 @@ class ProductManager {
         // Generate form fields
         form.innerHTML = this.generateProductForm(product);
         
+        // Initialize category selection
+        this.initializeCategorySelection(product);
+        
         modal.classList.remove('hidden');
+    }
+
+    initializeCategorySelection(product) {
+        this.selectedCategories = new Set();
+        
+        // Load existing categories for the product
+        if (product && product.id) {
+            this.loadProductCategories(product.id);
+        }
+        
+        // Add event listener for category selection
+        const categorySelect = document.getElementById('categorySelect');
+        if (categorySelect) {
+            categorySelect.addEventListener('change', (e) => {
+                if (e.target.value) {
+                    this.addCategoryToSelection(e.target.value, e.target.options[e.target.selectedIndex].dataset.name);
+                    e.target.value = ''; // Reset select
+                }
+            });
+        }
+    }
+
+    async loadProductCategories(productId) {
+        try {
+            const response = await fetch(`/api/products/${productId}/categories`);
+            if (response.ok) {
+                const data = await response.json();
+                data.categories.forEach(category => {
+                    this.addCategoryToSelection(category.id, category.name, false);
+                });
+            }
+        } catch (error) {
+            console.log('Could not load product categories (junction table may not exist yet)');
+            // Fallback to old single category if available
+            if (this.currentProduct && this.currentProduct.category) {
+                const category = this.categories.find(c => c.name === this.currentProduct.category);
+                if (category) {
+                    this.addCategoryToSelection(category.id, category.name, false);
+                }
+            }
+        }
+    }
+
+    addCategoryToSelection(categoryId, categoryName, shouldSave = true) {
+        if (this.selectedCategories.has(categoryId)) return;
+        
+        this.selectedCategories.add(categoryId);
+        this.renderSelectedCategories();
+        
+        if (shouldSave && this.currentProduct && this.currentProduct.id) {
+            this.saveCategoryToProduct(this.currentProduct.id, categoryId);
+        }
+    }
+
+    removeCategoryFromSelection(categoryId, shouldSave = true) {
+        this.selectedCategories.delete(categoryId);
+        this.renderSelectedCategories();
+        
+        if (shouldSave && this.currentProduct && this.currentProduct.id) {
+            this.removeCategoryFromProduct(this.currentProduct.id, categoryId);
+        }
+    }
+
+    renderSelectedCategories() {
+        const container = document.getElementById('selectedCategories');
+        if (!container) return;
+        
+        const categoryTags = Array.from(this.selectedCategories).map(categoryId => {
+            const category = this.categories.find(c => c.id == categoryId);
+            if (!category) return '';
+            
+            const prefix = category.is_sub_category ? '└ ' : '';
+            return `
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    ${prefix}${category.name}
+                    <button type="button" class="ml-1 text-blue-600 hover:text-blue-800" onclick="app.removeCategoryFromSelection('${categoryId}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </span>
+            `;
+        }).join('');
+        
+        container.innerHTML = categoryTags;
+    }
+
+    async saveCategoryToProduct(productId, categoryId) {
+        try {
+            await fetch(`/api/products/${productId}/categories`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ category_id: categoryId })
+            });
+        } catch (error) {
+            console.error('Failed to save category to product:', error);
+        }
+    }
+
+    async removeCategoryFromProduct(productId, categoryId) {
+        try {
+            await fetch(`/api/products/${productId}/categories/${categoryId}`, {
+                method: 'DELETE'
+            });
+        } catch (error) {
+            console.error('Failed to remove category from product:', error);
+        }
     }
 
     generateProductForm(product) {
@@ -533,15 +691,20 @@ class ProductManager {
                     </select>
                 </div>
                 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select name="category" id="categorySelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                        <option value="">Select category...</option>
-                        ${this.categories.map(cat => {
-                            const prefix = cat.is_sub_category ? '-- ' : '';
-                            return `<option value="${cat.name}" ${data.category === cat.name ? 'selected' : ''}>${prefix}${cat.name}</option>`;
-                        }).join('')}
-                    </select>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Categories</label>
+                    <div class="space-y-2">
+                        <div id="selectedCategories" class="flex flex-wrap gap-2 mb-2">
+                            <!-- Selected categories will appear here as tags -->
+                        </div>
+                        <select id="categorySelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="">Add a category...</option>
+                            ${this.categories.map(cat => {
+                                const prefix = cat.is_sub_category ? '-- ' : '';
+                                return `<option value="${cat.id}" data-name="${cat.name}" data-is-sub="${cat.is_sub_category}">${prefix}${cat.name}</option>`;
+                            }).join('')}
+                        </select>
+                    </div>
                 </div>
                 
                 <div>
