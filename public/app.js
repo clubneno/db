@@ -119,11 +119,16 @@ class ProductManager {
             this.debounce(() => this.filterProducts(), 300)
         );
         
-        ['categoryFilter', 'subcategoryFilter', 'sortFilter'].forEach(id => {
+        ['categoryFilter', 'sortFilter'].forEach(id => {
             document.getElementById(id).addEventListener('change', () => {
                 this.filterProducts();
             });
         });
+        
+        // Goal filter
+        document.getElementById('goalFilter').addEventListener('input', 
+            this.debounce(() => this.filterProducts(), 300)
+        );
 
         // Modal controls
         document.getElementById('closeModalBtn').addEventListener('click', () => {
@@ -391,25 +396,18 @@ class ProductManager {
     }
 
     updateProductFilters() {
-        // Update category filter
+        // Update category filter with all categories (main and sub)
         const categoryFilter = document.getElementById('categoryFilter');
         const uniqueCategories = [...new Set(this.products.map(p => p.category).filter(Boolean))];
         
         categoryFilter.innerHTML = '<option value="">All Categories</option>' + 
             uniqueCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
-
-        // Update subcategory filter  
-        const subcategoryFilter = document.getElementById('subcategoryFilter');
-        const uniqueSubcategories = [...new Set(this.products.map(p => p.subcategory).filter(Boolean))];
-        
-        subcategoryFilter.innerHTML = '<option value="">All Subcategories</option>' + 
-            uniqueSubcategories.map(subcat => `<option value="${subcat}">${subcat}</option>`).join('');
     }
 
     filterProducts() {
         const search = document.getElementById('searchInput').value.toLowerCase();
         const categoryFilter = document.getElementById('categoryFilter').value;
-        const subcategoryFilter = document.getElementById('subcategoryFilter').value;
+        const goalFilter = document.getElementById('goalFilter').value.toLowerCase();
         const sortFilter = document.getElementById('sortFilter').value;
 
         let filtered = [...this.products];
@@ -426,10 +424,12 @@ class ProductManager {
         if (categoryFilter) {
             filtered = filtered.filter(product => product.category === categoryFilter);
         }
-
-        // Apply subcategory filter
-        if (subcategoryFilter) {
-            filtered = filtered.filter(product => product.subcategory === subcategoryFilter);
+        
+        // Apply goal filter
+        if (goalFilter) {
+            filtered = filtered.filter(product => 
+                (product.primary_goal?.toLowerCase() || '').includes(goalFilter)
+            );
         }
 
         // Apply sorting
@@ -535,22 +535,19 @@ class ProductManager {
                 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select name="category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <select name="category" id="categorySelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                         <option value="">Select category...</option>
-                        ${this.categories.filter(cat => !cat.is_sub_category).map(cat => 
-                            `<option value="${cat.name}" ${data.category === cat.name ? 'selected' : ''}>${cat.name}</option>`
-                        ).join('')}
+                        ${this.categories.map(cat => {
+                            const prefix = cat.is_sub_category ? '-- ' : '';
+                            return `<option value="${cat.name}" ${data.category === cat.name ? 'selected' : ''}>${prefix}${cat.name}</option>`;
+                        }).join('')}
                     </select>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Subcategory</label>
-                    <select name="subcategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                        <option value="">Select subcategory...</option>
-                        ${this.categories.filter(cat => cat.is_sub_category).map(subcat => 
-                            `<option value="${subcat.name}" ${data.subcategory === subcat.name ? 'selected' : ''}>${subcat.name}</option>`
-                        ).join('')}
-                    </select>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Primary Goal</label>
+                    <input type="text" name="primary_goal" value="${data.primary_goal || ''}"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                 </div>
                 
                 <div class="md:col-span-2">
