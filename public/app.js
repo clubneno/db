@@ -28,10 +28,13 @@ class MomentousAnalyzer {
         try {
             this.showLoading();
             
+            // Add cache-busting parameter to ensure fresh data
+            const cacheBuster = `?t=${Date.now()}`;
+            
             // Load products and analytics
             const [productsResponse, analyticsResponse] = await Promise.all([
-                fetch('/api/products'),
-                fetch('/api/analytics')
+                fetch(`/api/products${cacheBuster}`),
+                fetch(`/api/analytics${cacheBuster}`)
             ]);
 
             if (!productsResponse.ok || !analyticsResponse.ok) {
@@ -228,7 +231,10 @@ class MomentousAnalyzer {
         if (maxPrice) params.append('maxPrice', maxPrice);
         if (sortBy) params.append('sortBy', sortBy);
 
-        const url = `/api/products?${params.toString()}`;
+        // Add cache-busting to filtered requests too
+        const separator = params.toString() ? '&' : '?';
+        const cacheBuster = `${separator}t=${Date.now()}`;
+        const url = `/api/products?${params.toString()}${cacheBuster}`;
         console.log('Fetching URL:', url);
 
         try {

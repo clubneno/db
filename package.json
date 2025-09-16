@@ -9,7 +9,13 @@
     "scrape": "node enhanced-scraper.js",
     "scrape-basic": "node scraper.js",
     "build": "npm run scrape && npm start",
-    "full-scrape": "node enhanced-scraper.js"
+    "full-scrape": "node enhanced-scraper.js",
+    "migrate": "node migrate-v2.js",
+    "migrate-v2": "node migrate-v2.js",
+    "migrate-resume": "node migrate-v2.js --auto-resume",
+    "migrate-versions": "node migrate-v2.js --list-versions",
+    "migrate-mcp": "node mcp-migration-live.js",
+    "migrate-mcp-demo": "node demo-mcp-migration.js"
   },
   "dependencies": {
     "puppeteer": "^21.0.0",
