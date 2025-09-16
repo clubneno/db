@@ -85,15 +85,8 @@ class ProductManager {
     }
 
     async logout() {
-        try {
-            if (this.supabase) {
-                await this.supabase.auth.signOut();
-            }
-            this.redirectToLogin();
-        } catch (error) {
-            console.error('Logout failed:', error);
-            alert('Logout failed. Please try again.');
-        }
+        // For now, just redirect since we're not using real authentication
+        this.redirectToLogin();
     }
 
     showApp() {
@@ -680,15 +673,20 @@ class ProductManager {
         }
         
         try {
-            const { error } = await this.supabase
-                .from('categories')
-                .insert([{ 
+            const response = await fetch('/api/categories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
                     name: subcategoryName.trim(), 
                     parent_id: parseInt(parentCategoryId), 
                     is_sub_category: true 
-                }]);
-                
-            if (error) throw error;
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP ${response.status}`);
+            }
             
             await this.loadCategories();
             alert('Subcategory added successfully!');
@@ -703,12 +701,14 @@ class ProductManager {
         if (!confirm('Are you sure you want to delete this category?')) return;
         
         try {
-            const { error } = await this.supabase
-                .from('categories')
-                .delete()
-                .eq('id', categoryId);
-                
-            if (error) throw error;
+            const response = await fetch(`/api/categories/${categoryId}`, {
+                method: 'DELETE'
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP ${response.status}`);
+            }
             
             await this.loadCategories();
             alert('Category deleted successfully!');
