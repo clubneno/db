@@ -32,6 +32,27 @@ const sendResponse = (res, data, status = 200) => {
   return res.status(status).json(data);
 };
 
+// Helper function to parse request body
+const parseBody = async (req) => {
+  return new Promise((resolve) => {
+    if (req.body && typeof req.body === 'object') {
+      resolve(req.body);
+    } else {
+      let body = '';
+      req.on('data', (chunk) => {
+        body += chunk.toString();
+      });
+      req.on('end', () => {
+        try {
+          resolve(body ? JSON.parse(body) : {});
+        } catch (error) {
+          resolve({});
+        }
+      });
+    }
+  });
+};
+
 module.exports = async (req, res) => {
   // Set CORS headers
   Object.entries(corsHeaders).forEach(([key, value]) => {
@@ -125,9 +146,11 @@ module.exports = async (req, res) => {
 
     // Route: /api/products POST (Create product)
     if (path === '/api/products' && method === 'POST') {
+      const body = await parseBody(req);
+      
       const { data, error } = await supabase
         .from('products')
-        .insert([req.body])
+        .insert([body])
         .select();
       
       if (error) {
@@ -143,9 +166,11 @@ module.exports = async (req, res) => {
     // Route: /api/products/:id PUT (Update product)
     if (path.match(/^\/api\/products\/\d+$/) && method === 'PUT') {
       const id = path.split('/')[3];
+      const body = await parseBody(req);
+      
       const { data, error } = await supabase
         .from('products')
-        .update(req.body)
+        .update(body)
         .eq('id', id)
         .select();
       
@@ -256,15 +281,20 @@ module.exports = async (req, res) => {
 
     // Route: /api/categories POST (Create category)
     if (path === '/api/categories' && method === 'POST') {
-      const { name } = req.body;
+      const body = await parseBody(req);
+      const { name, parent_id, is_sub_category } = body;
       
       if (!name) {
         return res.status(400).json({ error: 'Category name is required' });
       }
       
+      const insertData = { name: name.trim() };
+      if (parent_id) insertData.parent_id = parent_id;
+      if (is_sub_category !== undefined) insertData.is_sub_category = is_sub_category;
+      
       const { data, error } = await supabase
         .from('categories')
-        .insert([{ name: name.trim() }])
+        .insert([insertData])
         .select();
       
       if (error) {
