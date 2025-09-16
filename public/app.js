@@ -238,18 +238,35 @@ class ProductManager {
 
     async loadProducts() {
         try {
-            const response = await fetch('/api/products');
+            // Use the enhanced endpoint that includes category relationships
+            const response = await fetch('/api/products/with-categories');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             
             const data = await response.json();
             this.products = data.products || [];
+            console.log('Products loaded with categories:', this.products.length);
             this.renderProducts();
             this.updateProductFilters();
             
         } catch (error) {
-            console.error('Failed to load products:', error);
-            this.products = [];
-            this.renderProducts();
+            console.error('Failed to load products with categories:', error);
+            // Fallback to regular products endpoint
+            try {
+                const fallbackResponse = await fetch('/api/products');
+                if (fallbackResponse.ok) {
+                    const fallbackData = await fallbackResponse.json();
+                    this.products = fallbackData.products || [];
+                    console.log('Products loaded (fallback):', this.products.length);
+                } else {
+                    this.products = [];
+                }
+                this.renderProducts();
+                this.updateProductFilters();
+            } catch (fallbackError) {
+                console.error('Fallback also failed:', fallbackError);
+                this.products = [];
+                this.renderProducts();
+            }
         }
     }
 
