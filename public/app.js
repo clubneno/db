@@ -413,26 +413,105 @@ class ProductManager {
             }
         });
 
-        // Generate HTML for each hierarchy path
+        // Color schemes for different category hierarchies
+        const colorSchemes = [
+            {
+                gradient: 'from-blue-50 to-blue-100',
+                border: 'border-blue-200',
+                parentText: 'text-blue-800',
+                arrow: 'text-blue-600',
+                subText: 'text-blue-700',
+                subBg: 'bg-blue-200',
+                parentOnlyBg: 'bg-blue-100',
+                parentOnlyText: 'text-blue-800'
+            },
+            {
+                gradient: 'from-emerald-50 to-emerald-100',
+                border: 'border-emerald-200',
+                parentText: 'text-emerald-800',
+                arrow: 'text-emerald-600',
+                subText: 'text-emerald-700',
+                subBg: 'bg-emerald-200',
+                parentOnlyBg: 'bg-emerald-100',
+                parentOnlyText: 'text-emerald-800'
+            },
+            {
+                gradient: 'from-purple-50 to-purple-100',
+                border: 'border-purple-200',
+                parentText: 'text-purple-800',
+                arrow: 'text-purple-600',
+                subText: 'text-purple-700',
+                subBg: 'bg-purple-200',
+                parentOnlyBg: 'bg-purple-100',
+                parentOnlyText: 'text-purple-800'
+            },
+            {
+                gradient: 'from-amber-50 to-amber-100',
+                border: 'border-amber-200',
+                parentText: 'text-amber-800',
+                arrow: 'text-amber-600',
+                subText: 'text-amber-700',
+                subBg: 'bg-amber-200',
+                parentOnlyBg: 'bg-amber-100',
+                parentOnlyText: 'text-amber-800'
+            },
+            {
+                gradient: 'from-rose-50 to-rose-100',
+                border: 'border-rose-200',
+                parentText: 'text-rose-800',
+                arrow: 'text-rose-600',
+                subText: 'text-rose-700',
+                subBg: 'bg-rose-200',
+                parentOnlyBg: 'bg-rose-100',
+                parentOnlyText: 'text-rose-800'
+            },
+            {
+                gradient: 'from-indigo-50 to-indigo-100',
+                border: 'border-indigo-200',
+                parentText: 'text-indigo-800',
+                arrow: 'text-indigo-600',
+                subText: 'text-indigo-700',
+                subBg: 'bg-indigo-200',
+                parentOnlyBg: 'bg-indigo-100',
+                parentOnlyText: 'text-indigo-800'
+            },
+            {
+                gradient: 'from-teal-50 to-teal-100',
+                border: 'border-teal-200',
+                parentText: 'text-teal-800',
+                arrow: 'text-teal-600',
+                subText: 'text-teal-700',
+                subBg: 'bg-teal-200',
+                parentOnlyBg: 'bg-teal-100',
+                parentOnlyText: 'text-teal-800'
+            }
+        ];
+
+        // Generate HTML for each hierarchy path with different colors
         const hierarchyTags = [];
+        let colorIndex = 0;
+        
         hierarchyMap.forEach(({ parent, subcategories, parentSelected }) => {
+            const colors = colorSchemes[colorIndex % colorSchemes.length];
+            colorIndex++;
+            
             if (subcategories.length > 0) {
-                // Parent → Subcategory structure
+                // Parent → Subcategory structure with unique colors
                 hierarchyTags.push(`
-                    <div class="inline-flex items-center bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg px-2 py-1 mb-1 mr-1">
-                        <span class="text-blue-800 font-medium text-xs">${parent.name}</span>
-                        <i class="fas fa-arrow-right text-blue-600 mx-1 text-xs"></i>
+                    <div class="inline-flex items-center bg-gradient-to-r ${colors.gradient} border ${colors.border} rounded-lg px-2 py-1 mb-1 mr-1">
+                        <span class="${colors.parentText} font-medium text-xs">${parent.name}</span>
+                        <i class="fas fa-arrow-right ${colors.arrow} mx-1 text-xs"></i>
                         <div class="flex flex-wrap">
                             ${subcategories.map(sub => `
-                                <span class="text-blue-700 text-xs bg-blue-200 rounded px-1 ml-1">${sub.name}</span>
+                                <span class="${colors.subText} text-xs ${colors.subBg} rounded px-1 ml-1">${sub.name}</span>
                             `).join('')}
                         </div>
                     </div>
                 `);
             } else if (parentSelected) {
-                // Parent only
+                // Parent only with unique colors
                 hierarchyTags.push(`
-                    <div class="inline-flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-lg text-xs font-medium mb-1 mr-1">
+                    <div class="inline-flex items-center ${colors.parentOnlyBg} ${colors.parentOnlyText} px-2 py-1 rounded-lg text-xs font-medium mb-1 mr-1">
                         ${parent.name}
                     </div>
                 `);
