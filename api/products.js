@@ -103,6 +103,7 @@ module.exports = async (req, res) => {
         }
         
         console.log(`Fetched ${supabaseProducts?.length || 0} products from Supabase`);
+        console.log('First 3 Supabase products:', (supabaseProducts || []).slice(0, 3).map(p => ({ id: p.id, handle: p.handle, title: p.title })));
         
         // Load local JSON data with rich information
         let localProducts = [];
@@ -226,6 +227,7 @@ module.exports = async (req, res) => {
         });
         
         console.log(`Merged data for ${mergedProducts.length} products (local: ${localProducts.length})`);
+        console.log('First 3 merged products:', mergedProducts.slice(0, 3).map(p => ({ id: p.id, handle: p.handle, title: p.title, source: p.source })));
         
         // If no local data was found, return Supabase data with warning
         if (localProducts.length === 0) {
