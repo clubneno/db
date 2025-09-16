@@ -357,34 +357,72 @@ class ProductManager {
         }
         
         if (categories.length === 0) {
-            return '<span class="text-xs text-gray-400 italic">No categories</span>';
+            return '<div class="text-sm text-gray-500 italic">No categories assigned</div>';
         }
         
-        // Group categories by parent/child relationship
-        const mainCategories = categories.filter(c => !c.is_sub_category);
-        const subCategories = categories.filter(c => c.is_sub_category);
+        // Create hierarchical grouping for display
+        return this.generateHierarchicalCategoryDisplay(categories);
+    }
+
+    generateHierarchicalCategoryDisplay(categories) {
+        // Group categories by parent-child relationships
+        const hierarchyMap = new Map();
         
-        const categoryTags = [];
-        
-        // Add main categories
-        mainCategories.forEach(category => {
-            categoryTags.push(`
-                <span class="inline-block px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">
-                    ${category.name}
-                </span>
-            `);
+        categories.forEach(category => {
+            if (category.is_sub_category) {
+                // Find parent category
+                const parent = this.categories.find(cat => cat.id === category.parent_id);
+                if (parent) {
+                    const key = `${parent.id}-${parent.name}`;
+                    if (!hierarchyMap.has(key)) {
+                        hierarchyMap.set(key, {
+                            parent: parent,
+                            subcategories: [],
+                            parentSelected: categories.some(c => c.id === parent.id)
+                        });
+                    }
+                    hierarchyMap.get(key).subcategories.push(category);
+                }
+            } else {
+                // Parent category
+                const key = `${category.id}-${category.name}`;
+                if (!hierarchyMap.has(key)) {
+                    hierarchyMap.set(key, {
+                        parent: category,
+                        subcategories: [],
+                        parentSelected: true
+                    });
+                }
+            }
         });
-        
-        // Add subcategories
-        subCategories.forEach(subCategory => {
-            categoryTags.push(`
-                <span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">
-                    └ ${subCategory.name}
-                </span>
-            `);
+
+        // Generate HTML for each hierarchy path
+        const hierarchyTags = [];
+        hierarchyMap.forEach(({ parent, subcategories, parentSelected }) => {
+            if (subcategories.length > 0) {
+                // Parent → Subcategory structure
+                hierarchyTags.push(`
+                    <div class="inline-flex items-center bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg px-2 py-1 mb-1 mr-1">
+                        <span class="text-blue-800 font-medium text-xs">${parent.name}</span>
+                        <i class="fas fa-arrow-right text-blue-600 mx-1 text-xs"></i>
+                        <div class="flex flex-wrap">
+                            ${subcategories.map(sub => `
+                                <span class="text-blue-700 text-xs bg-blue-200 rounded px-1 ml-1">${sub.name}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                `);
+            } else if (parentSelected) {
+                // Parent only
+                hierarchyTags.push(`
+                    <div class="inline-flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-lg text-xs font-medium mb-1 mr-1">
+                        ${parent.name}
+                    </div>
+                `);
+            }
         });
-        
-        return `<div class="flex flex-wrap gap-1 mb-1">${categoryTags.join('')}</div>`;
+
+        return `<div class="category-hierarchy-display">${hierarchyTags.join('')}</div>`;
     }
 
     renderCategories() {
@@ -395,48 +433,77 @@ class ProductManager {
         const mainCategories = this.categories.filter(cat => !cat.is_sub_category);
         const subcategories = this.categories.filter(cat => cat.is_sub_category);
         
-        // Render main categories
-        if (!mainCategories || mainCategories.length === 0) {
-            mainContainer.innerHTML = '<p class="text-gray-500 text-center py-8">No main categories found</p>';
-        } else {
-            mainContainer.innerHTML = mainCategories.map(category => `
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center">
-                        <i class="fas fa-folder text-primary mr-3"></i>
-                        <span class="font-medium text-gray-900">${category.name}</span>
-                    </div>
-                    <button onclick="app.deleteCategory(${category.id})" 
-                            class="text-red-600 hover:text-red-800 text-sm">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `).join('');
-        }
+        // Render hierarchical category tree
+        this.renderHierarchicalCategories(mainContainer, mainCategories, subcategories);
         
-        // Render subcategories
-        if (!subcategories || subcategories.length === 0) {
-            subContainer.innerHTML = '<p class="text-gray-500 text-center py-8">No subcategories found</p>';
-        } else {
-            subContainer.innerHTML = subcategories.map(subcategory => {
-                const parentCategory = this.categories.find(cat => cat.id === subcategory.parent_id);
-                const parentName = parentCategory ? parentCategory.name : 'Unknown';
-                return `
-                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+        // Hide the old subcategories container since we're showing everything hierarchically
+        if (subContainer) {
+            subContainer.style.display = 'none';
+        }
+    }
+
+    renderHierarchicalCategories(container, mainCategories, subcategories) {
+        if (!mainCategories || mainCategories.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-8">No categories found</p>';
+            return;
+        }
+
+        const hierarchicalHTML = mainCategories.map(mainCategory => {
+            const childSubcategories = subcategories.filter(sub => sub.parent_id === mainCategory.id);
+            
+            return `
+                <div class="border border-gray-200 rounded-lg mb-4">
+                    <!-- Parent Category -->
+                    <div class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 border-b border-blue-200">
                         <div class="flex items-center">
-                            <i class="fas fa-folder-open text-secondary mr-3"></i>
+                            <i class="fas fa-folder text-blue-600 mr-3 text-lg"></i>
                             <div>
-                                <span class="font-medium text-gray-900">${subcategory.name}</span>
-                                <div class="text-xs text-gray-500">under ${parentName}</div>
+                                <span class="font-semibold text-blue-900">${mainCategory.name}</span>
+                                <div class="text-sm text-blue-700">Parent Category</div>
                             </div>
                         </div>
-                        <button onclick="app.deleteCategory(${subcategory.id})" 
-                                class="text-red-600 hover:text-red-800 text-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded-full">
+                                ${childSubcategories.length} subcategories
+                            </span>
+                            <button onclick="app.deleteCategory(${mainCategory.id})" 
+                                    class="text-red-600 hover:text-red-800 text-sm p-2 rounded-full hover:bg-red-100">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
-                `;
-            }).join('');
-        }
+                    
+                    <!-- Subcategories -->
+                    ${childSubcategories.length > 0 ? `
+                        <div class="p-2">
+                            ${childSubcategories.map(subcategory => `
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg mb-2 ml-4">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-arrow-right text-gray-400 mr-2"></i>
+                                        <i class="fas fa-folder-open text-secondary mr-3"></i>
+                                        <div>
+                                            <span class="font-medium text-gray-900">${subcategory.name}</span>
+                                            <div class="text-sm text-gray-500">└ ${mainCategory.name} → ${subcategory.name}</div>
+                                        </div>
+                                    </div>
+                                    <button onclick="app.deleteCategory(${subcategory.id})" 
+                                            class="text-red-600 hover:text-red-800 text-sm p-2 rounded-full hover:bg-red-100">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div class="p-4 text-center text-gray-500 text-sm">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            No subcategories yet. Create subcategories to organize products under this category.
+                        </div>
+                    `}
+                </div>
+            `;
+        }).join('');
+
+        container.innerHTML = hierarchicalHTML;
     }
 
     renderSubcategories() {
@@ -555,23 +622,52 @@ class ProductManager {
         modal.classList.remove('hidden');
     }
 
-    initializeCategorySelection(product) {
-        this.selectedCategories = new Set();
+    async initializeCategorySelection(product) {
+        // Initialize the hierarchical category selector
+        this.categorySelector = new CategorySelector(
+            this.categories,
+            (selectedCategoryIds) => {
+                this.onCategorySelectionChange(selectedCategoryIds);
+            }
+        );
         
-        // Load existing categories for the product
+        // Render the selector in the modal
+        this.categorySelector.render('hierarchicalCategorySelector');
+        
+        // Load existing categories for the product if editing
         if (product && product.id) {
-            this.loadProductCategories(product.id);
+            await this.loadProductCategories(product.id);
         }
-        
-        // Add event listener for category selection
-        const categorySelect = document.getElementById('categorySelect');
-        if (categorySelect) {
-            categorySelect.addEventListener('change', (e) => {
-                if (e.target.value) {
-                    this.addCategoryToSelection(e.target.value, e.target.options[e.target.selectedIndex].dataset.name);
-                    e.target.value = ''; // Reset select
-                }
+    }
+
+    onCategorySelectionChange(selectedCategoryIds) {
+        // This will be called whenever category selection changes
+        if (this.currentProduct && this.currentProduct.id) {
+            this.saveProductCategories(this.currentProduct.id, selectedCategoryIds);
+        }
+    }
+
+    async saveProductCategories(productId, categoryIds) {
+        try {
+            const response = await fetch(`/api/products/${productId}/categories`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ category_ids: categoryIds })
             });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            // Refresh the product list to show updated categories
+            await this.loadProducts();
+            this.renderProducts();
+            
+        } catch (error) {
+            console.error('Failed to save product categories:', error);
+            alert('Failed to save category assignments. Please try again.');
         }
     }
 
@@ -580,17 +676,20 @@ class ProductManager {
             const response = await fetch(`/api/products/${productId}/categories`);
             if (response.ok) {
                 const data = await response.json();
-                data.categories.forEach(category => {
-                    this.addCategoryToSelection(category.id, category.name, false);
-                });
+                const categoryIds = data.categories.map(cat => cat.id);
+                
+                // Set the selected categories in the hierarchical selector
+                if (this.categorySelector) {
+                    this.categorySelector.setSelectedCategories(categoryIds);
+                }
             }
         } catch (error) {
             console.log('Could not load product categories (junction table may not exist yet)');
             // Fallback to old single category if available
             if (this.currentProduct && this.currentProduct.category) {
                 const category = this.categories.find(c => c.name === this.currentProduct.category);
-                if (category) {
-                    this.addCategoryToSelection(category.id, category.name, false);
+                if (category && this.categorySelector) {
+                    this.categorySelector.setSelectedCategories([category.id]);
                 }
             }
         }
@@ -692,18 +791,9 @@ class ProductManager {
                 </div>
                 
                 <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Categories</label>
-                    <div class="space-y-2">
-                        <div id="selectedCategories" class="flex flex-wrap gap-2 mb-2">
-                            <!-- Selected categories will appear here as tags -->
-                        </div>
-                        <select id="categorySelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                            <option value="">Add a category...</option>
-                            ${this.categories.map(cat => {
-                                const prefix = cat.is_sub_category ? '-- ' : '';
-                                return `<option value="${cat.id}" data-name="${cat.name}" data-is-sub="${cat.is_sub_category}">${prefix}${cat.name}</option>`;
-                            }).join('')}
-                        </select>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Categories & Subcategories</label>
+                    <div id="hierarchicalCategorySelector">
+                        <!-- Hierarchical category selector will be rendered here -->
                     </div>
                 </div>
                 

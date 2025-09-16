@@ -346,6 +346,204 @@ app.delete('/api/categories/:id', async (req, res) => {
   }
 });
 
+// Helper function to check if table exists
+async function checkTableExists(tableName) {
+  try {
+    const { data } = await supabase
+      .from('information_schema.tables')
+      .select('table_name')
+      .eq('table_schema', 'public')
+      .eq('table_name', tableName);
+    
+    return data && data.length > 0;
+  } catch (error) {
+    return false;
+  }
+}
+
+// Product Categories Junction API
+app.get('/api/products/:productId/categories', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    // Check if product_categories table exists, if not fall back to single category
+    const tableExists = await checkTableExists('product_categories');
+    
+    if (tableExists) {
+      // New structure: multiple categories via junction table
+      const { data, error } = await supabase
+        .from('product_categories')
+        .select(`
+          category_id,
+          categories (
+            id,
+            name,
+            parent_id,
+            is_sub_category
+          )
+        `)
+        .eq('product_id', productId);
+      
+      if (error) {
+        console.error('Error fetching product categories:', error);
+        return res.status(500).json({ error: 'Failed to fetch product categories' });
+      }
+      
+      const categories = data?.map(pc => pc.categories) || [];
+      res.json({ categories });
+    } else {
+      // Fallback to single category from products table
+      const { data, error } = await supabase
+        .from('products')
+        .select('category')
+        .eq('id', productId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching product category:', error);
+        return res.status(500).json({ error: 'Failed to fetch product category' });
+      }
+      
+      // Find matching category
+      if (data.category) {
+        const { data: categories } = await supabase
+          .from('categories')
+          .select('*')
+          .eq('name', data.category);
+        
+        res.json({ categories: categories || [] });
+      } else {
+        res.json({ categories: [] });
+      }
+    }
+  } catch (error) {
+    console.error('Product categories API error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/products/:productId/categories', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const { category_ids } = req.body;
+    
+    if (!category_ids || !Array.isArray(category_ids)) {
+      return res.status(400).json({ error: 'category_ids array is required' });
+    }
+    
+    // Check if product_categories table exists
+    const tableExists = await checkTableExists('product_categories');
+    
+    if (!tableExists) {
+      return res.status(400).json({ 
+        error: 'Product categories junction table not created. Please run the migration first.' 
+      });
+    }
+    
+    // First, remove all existing category assignments for this product
+    const { error: deleteError } = await supabase
+      .from('product_categories')
+      .delete()
+      .eq('product_id', productId);
+    
+    if (deleteError) {
+      console.error('Error removing existing categories:', deleteError);
+      return res.status(500).json({ error: 'Failed to update categories' });
+    }
+    
+    // Then, add new category assignments
+    if (category_ids.length > 0) {
+      const insertData = category_ids.map(category_id => ({
+        product_id: productId,
+        category_id: category_id
+      }));
+      
+      const { error: insertError } = await supabase
+        .from('product_categories')
+        .insert(insertData);
+      
+      if (insertError) {
+        console.error('Error inserting new categories:', insertError);
+        return res.status(500).json({ error: 'Failed to assign categories' });
+      }
+    }
+    
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Assign categories API error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/api/products/:productId/categories/:categoryId', async (req, res) => {
+  try {
+    const { productId, categoryId } = req.params;
+    
+    const { error } = await supabase
+      .from('product_categories')
+      .delete()
+      .eq('product_id', productId)
+      .eq('category_id', categoryId);
+    
+    if (error) {
+      console.error('Error removing category from product:', error);
+      return res.status(500).json({ error: 'Failed to remove category' });
+    }
+    
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Remove category API error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Enhanced products API to include category relationships
+app.get('/api/products/with-categories', async (req, res) => {
+  try {
+    // Check if product_categories table exists
+    const tableExists = await checkTableExists('product_categories');
+    
+    if (tableExists) {
+      // New structure: fetch products with their categories via junction table
+      const { data, error } = await supabase
+        .from('products')
+        .select(`
+          *,
+          product_categories (
+            categories (
+              id,
+              name,
+              parent_id,
+              is_sub_category
+            )
+          )
+        `);
+      
+      if (error) {
+        console.error('Error fetching products with categories:', error);
+        return res.status(500).json({ error: 'Failed to fetch products' });
+      }
+      
+      res.json({ products: data || [] });
+    } else {
+      // Fallback to single category structure
+      const { data, error } = await supabase
+        .from('products')
+        .select('*');
+      
+      if (error) {
+        console.error('Error fetching products:', error);
+        return res.status(500).json({ error: 'Failed to fetch products' });
+      }
+      
+      res.json({ products: data || [] });
+    }
+  } catch (error) {
+    console.error('Products with categories API error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Goals API
 app.get('/api/goals', async (req, res) => {
   try {
