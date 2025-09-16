@@ -62,27 +62,11 @@ class ProductManager {
     }
 
     async checkAuth() {
-        if (!this.supabase) return false;
-        
-        try {
-            const { data: { session }, error } = await this.supabase.auth.getSession();
-            
-            if (error) {
-                console.error('Auth error:', error);
-                return false;
-            }
-            
-            if (session?.user) {
-                this.currentUser = session.user;
-                this.updateUserDisplay();
-                return true;
-            }
-            
-            return false;
-        } catch (error) {
-            console.error('Authentication check failed:', error);
-            return false;
-        }
+        // For now, skip authentication and use a default user
+        // In production, implement proper authentication
+        this.currentUser = { email: 'admin@momentous.com' };
+        this.updateUserDisplay();
+        return true;
     }
 
     updateUserDisplay() {
@@ -256,14 +240,11 @@ class ProductManager {
 
     async loadProducts() {
         try {
-            const { data, error } = await this.supabase
-                .from('products')
-                .select('*')
-                .order('title', { ascending: true });
-
-            if (error) throw error;
-
-            this.products = data || [];
+            const response = await fetch('/api/products');
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const data = await response.json();
+            this.products = data.products || [];
             this.renderProducts();
             this.updateProductFilters();
             
@@ -276,14 +257,11 @@ class ProductManager {
 
     async loadCategories() {
         try {
-            const { data, error } = await this.supabase
-                .from('categories')
-                .select('*')
-                .order('name', { ascending: true });
-
-            if (error) throw error;
-
-            this.categories = data || [];
+            const response = await fetch('/api/categories');
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const data = await response.json();
+            this.categories = data.categories || [];
             this.renderCategories();
             
         } catch (error) {
@@ -620,22 +598,28 @@ class ProductManager {
         if (data.price_amount) data.price_amount = parseFloat(data.price_amount);
         
         try {
-            let result;
+            let response;
             
             if (this.currentProduct) {
                 // Update existing product
-                result = await this.supabase
-                    .from('products')
-                    .update(data)
-                    .eq('id', this.currentProduct.id);
+                response = await fetch(`/api/products/${this.currentProduct.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
             } else {
                 // Create new product
-                result = await this.supabase
-                    .from('products')
-                    .insert([data]);
+                response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
             }
             
-            if (result.error) throw result.error;
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP ${response.status}`);
+            }
             
             this.hideModal();
             await this.loadProducts();
@@ -654,11 +638,16 @@ class ProductManager {
         if (!name) return;
         
         try {
-            const { error } = await this.supabase
-                .from('categories')
-                .insert([{ name: name.trim() }]);
-                
-            if (error) throw error;
+            const response = await fetch('/api/categories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name.trim() })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP ${response.status}`);
+            }
             
             await this.loadCategories();
             alert('Category added successfully!');
