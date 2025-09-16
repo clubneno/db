@@ -137,7 +137,10 @@ module.exports = async (req, res) => {
             console.log('💥 Error loading local products:', error.message);
         }
         
-        // Merge Supabase data with local data
+        // Create a comprehensive list including ALL Supabase products
+        const allSupabaseHandles = new Set((supabaseProducts || []).map(p => p.handle));
+        
+        // Start with all Supabase products and merge local data where available
         const mergedProducts = (supabaseProducts || []).map(supabaseProduct => {
             // Find matching local product by handle
             const localProduct = localProducts.find(local => 
@@ -146,7 +149,7 @@ module.exports = async (req, res) => {
             );
             
             if (localProduct) {
-                // PRIORITIZE local JSON data (has user-added data) and supplement with Supabase metadata
+                // PRIORITIZE Supabase for updatable fields, local for rich content
                 return {
                     // Keep essential Supabase metadata
                     id: supabaseProduct.id,
@@ -198,8 +201,27 @@ module.exports = async (req, res) => {
                     updatedAt: localProduct.updatedAt
                 };
             } else {
-                // Only Supabase data available
-                return supabaseProduct;
+                // Only Supabase data available - return with basic formatting
+                return {
+                    id: supabaseProduct.id,
+                    scraped_at: supabaseProduct.scraped_at,
+                    title: supabaseProduct.title,
+                    handle: supabaseProduct.handle,
+                    category: supabaseProduct.category,
+                    categories: supabaseProduct.categories,
+                    goals: supabaseProduct.goals,
+                    eu_notification_status: supabaseProduct.eu_notification_status || 'Not started',
+                    eu_allowed: supabaseProduct.eu_allowed || 'yes',
+                    hs_code: supabaseProduct.hs_code,
+                    hs_code_description: supabaseProduct.hs_code_description,
+                    duty_rate: supabaseProduct.duty_rate,
+                    vendor: supabaseProduct.vendor,
+                    // Set defaults for missing fields
+                    price: supabaseProduct.price || '$0.00',
+                    image: supabaseProduct.image || '',
+                    description: supabaseProduct.description || 'Product description not available',
+                    source: 'supabase-only'
+                };
             }
         });
         
