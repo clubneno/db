@@ -225,6 +225,9 @@ class ProductManager {
                 this.loadCategories()
             ]);
             
+            // Load subcategories as part of categories
+            await this.renderCategories();
+            
             await this.updateDashboard();
             
         } catch (error) {
@@ -334,7 +337,7 @@ class ProductManager {
 
     createProductCard(product) {
         const price = product.price_amount ? `$${product.price_amount}` : 'N/A';
-        const image = product.main_image || product.image || 'https://via.placeholder.com/300x200?text=No+Image';
+        const image = product.main_image || product.image || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMjUgNzVIMTc1VjEyNUgxMjVWNzVaIiBmaWxsPSIjOUI5Q0E0Ii8+CjxyZWN0IHg9IjEzNyIgeT0iMTAwIiB3aWR0aD0iMjUiIGhlaWdodD0iNSIgZmlsbD0iIzlCOUNBNCIvPgo8dGV4dCB4PSIxNTAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOUI5Q0E0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ObyBJbWFnZTwvdGV4dD4KPC9zdmc+';
         const title = product.title || 'Untitled Product';
         const description = product.description ? 
             (product.description.length > 100 ? product.description.substring(0, 100) + '...' : product.description) : 
@@ -342,7 +345,7 @@ class ProductManager {
         
         return `
             <div class="product-card bg-white rounded-lg shadow overflow-hidden fade-in">
-                <img src="${image}" alt="${title}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                <img src="${image}" alt="${title}" class="w-full h-48 object-cover" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMjUgNzVIMTc1VjEyNUgxMjVWNzVaIiBmaWxsPSIjOUI5Q0E0Ii8+CjxyZWN0IHg9IjEzNyIgeT0iMTAwIiB3aWR0aD0iMjUiIGhlaWdodD0iNSIgZmlsbD0iIzlCOUNBNCIvPgo8dGV4dCB4PSIxNTAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOUI5Q0E0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ObyBJbWFnZTwvdGV4dD4KPC9zdmc+'">
                 <div class="p-4">
                     <h4 class="font-heading font-semibold text-lg text-gray-900 mb-2">${title}</h4>
                     <p class="text-gray-600 text-sm mb-3">${description}</p>
@@ -563,7 +566,7 @@ class ProductManager {
                     <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
                     <select name="category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                         <option value="">Select category...</option>
-                        ${this.categories.map(cat => 
+                        ${this.categories.filter(cat => !cat.is_sub_category).map(cat => 
                             `<option value="${cat.name}" ${data.category === cat.name ? 'selected' : ''}>${cat.name}</option>`
                         ).join('')}
                     </select>
