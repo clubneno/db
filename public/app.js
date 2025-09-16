@@ -1,552 +1,724 @@
-class MomentousAnalyzer {
+// Momentous Product Manager Application
+// Modern vanilla JS with Supabase integration
+
+class ProductManager {
     constructor() {
-        console.log('MomentousAnalyzer constructor called');
+        this.supabase = null;
+        this.currentUser = null;
         this.products = [];
-        this.analytics = {};
-        this.charts = {};
+        this.categories = [];
+        this.goals = [];
+        this.currentProduct = null;
         
-        console.log('Initializing event listeners...');
-        this.initializeEventListeners();
-        console.log('Loading data...');
-        this.loadData();
+        this.init();
     }
 
-    initializeEventListeners() {
-        // Search and filter inputs
-        document.getElementById('searchInput').addEventListener('input', () => this.applyFilters());
-        document.getElementById('categoryFilter').addEventListener('change', () => this.applyFilters());
-        document.getElementById('goalFilter').addEventListener('change', () => this.applyFilters());
-        document.getElementById('minPrice').addEventListener('input', () => this.applyFilters());
-        document.getElementById('maxPrice').addEventListener('input', () => this.applyFilters());
-        document.getElementById('sortBy').addEventListener('change', () => this.applyFilters());
+    async init() {
+        console.log('Initializing Product Manager...');
         
+        try {
+            // Initialize Supabase
+            await this.initSupabase();
+            
+            // Check authentication
+            const isAuthenticated = await this.checkAuth();
+            
+            if (!isAuthenticated) {
+                this.redirectToLogin();
+                return;
+            }
+
+            // Setup UI
+            this.setupEventListeners();
+            this.setupTabNavigation();
+            
+            // Load initial data
+            await this.loadInitialData();
+            
+            // Show the app
+            this.showApp();
+            
+        } catch (error) {
+            console.error('Failed to initialize app:', error);
+            this.showError('Failed to initialize application');
+        }
+    }
+
+    async initSupabase() {
+        try {
+            const response = await fetch('/api/config');
+            const config = await response.json();
+            
+            if (!config.supabaseUrl || !config.supabaseKey) {
+                throw new Error('Invalid Supabase configuration');
+            }
+            
+            this.supabase = supabase.createClient(config.supabaseUrl, config.supabaseKey);
+            console.log('Supabase client initialized');
+        } catch (error) {
+            console.error('Failed to initialize Supabase:', error);
+            throw error;
+        }
+    }
+
+    async checkAuth() {
+        if (!this.supabase) return false;
+        
+        try {
+            const { data: { session }, error } = await this.supabase.auth.getSession();
+            
+            if (error) {
+                console.error('Auth error:', error);
+                return false;
+            }
+            
+            if (session?.user) {
+                this.currentUser = session.user;
+                this.updateUserDisplay();
+                return true;
+            }
+            
+            return false;
+        } catch (error) {
+            console.error('Authentication check failed:', error);
+            return false;
+        }
+    }
+
+    updateUserDisplay() {
+        const userElement = document.getElementById('currentUser');
+        if (userElement && this.currentUser) {
+            const displayName = this.currentUser.email?.split('@')[0] || 'User';
+            userElement.textContent = displayName;
+        }
+    }
+
+    redirectToLogin() {
+        console.log('Redirecting to login...');
+        // For now, show an alert - in production, redirect to login page
+        alert('Please log in to access the Product Manager');
+        // window.location.href = '/login.html';
+    }
+
+    async logout() {
+        try {
+            if (this.supabase) {
+                await this.supabase.auth.signOut();
+            }
+            this.redirectToLogin();
+        } catch (error) {
+            console.error('Logout failed:', error);
+            alert('Logout failed. Please try again.');
+        }
+    }
+
+    showApp() {
+        document.getElementById('loadingScreen').style.display = 'none';
+        document.getElementById('app').classList.remove('hidden');
+    }
+
+    showError(message) {
+        alert(message); // In production, use a proper toast notification
+    }
+
+    setupEventListeners() {
+        // Logout button
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            this.logout();
+        });
+
         // Refresh button
-        document.getElementById('refreshBtn').addEventListener('click', () => this.loadData());
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            this.refreshData();
+        });
+
+        // Add product button
+        document.getElementById('addProductBtn').addEventListener('click', () => {
+            this.showAddProductModal();
+        });
+
+        // Search and filters
+        document.getElementById('searchInput').addEventListener('input', 
+            this.debounce(() => this.filterProducts(), 300)
+        );
+        
+        ['categoryFilter', 'goalFilter', 'sortFilter'].forEach(id => {
+            document.getElementById(id).addEventListener('change', () => {
+                this.filterProducts();
+            });
+        });
+
+        // Modal controls
+        document.getElementById('closeModalBtn').addEventListener('click', () => {
+            this.hideModal();
+        });
+        
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            this.hideModal();
+        });
+
+        document.getElementById('productForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.saveProduct();
+        });
+
+        // Add category/goal buttons
+        document.getElementById('addCategoryBtn').addEventListener('click', () => {
+            this.addCategory();
+        });
+        
+        document.getElementById('addGoalBtn').addEventListener('click', () => {
+            this.addGoal();
+        });
     }
 
-    async loadData() {
+    setupTabNavigation() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+                
+                // Update active tab button
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active', 'border-primary', 'text-primary');
+                    btn.classList.add('border-transparent', 'text-gray-700');
+                });
+                
+                button.classList.remove('border-transparent', 'text-gray-700');
+                button.classList.add('active', 'border-primary', 'text-primary');
+                
+                // Show/hide tab content
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                document.getElementById(tabId).classList.remove('hidden');
+                
+                // Load tab-specific data if needed
+                this.onTabChanged(tabId);
+            });
+        });
+    }
+
+    async onTabChanged(tabId) {
+        switch (tabId) {
+            case 'dashboard':
+                await this.updateDashboard();
+                break;
+            case 'products':
+                await this.loadProducts();
+                break;
+            case 'categories':
+                await this.loadCategories();
+                await this.loadGoals();
+                break;
+        }
+    }
+
+    async loadInitialData() {
+        document.getElementById('loadingText').textContent = 'Loading data...';
+        
         try {
-            this.showLoading();
-            
-            // Add cache-busting parameter to ensure fresh data
-            const cacheBuster = `?t=${Date.now()}`;
-            
-            // Load products and analytics
-            const [productsResponse, analyticsResponse] = await Promise.all([
-                fetch(`/api/products${cacheBuster}`),
-                fetch(`/api/analytics${cacheBuster}`)
+            await Promise.all([
+                this.loadProducts(),
+                this.loadCategories(), 
+                this.loadGoals()
             ]);
-
-            if (!productsResponse.ok || !analyticsResponse.ok) {
-                throw new Error('Failed to load data');
-            }
-
-            const productsData = await productsResponse.json();
-            this.analytics = await analyticsResponse.json();
             
-            this.products = productsData.products;
-            
-            this.updateAnalytics();
-            this.updateCharts();
-            this.populateFilters();
-            this.renderProducts(this.products);
-            this.updateLastUpdated(productsData.scraped_at);
+            await this.updateDashboard();
             
         } catch (error) {
-            console.error('Error loading data:', error);
-            this.showNoData();
+            console.error('Failed to load initial data:', error);
+            this.showError('Failed to load data');
         }
     }
 
-    showLoading() {
-        document.getElementById('loadingState').classList.remove('hidden');
-        document.getElementById('noDataState').classList.add('hidden');
-        document.getElementById('productsGrid').innerHTML = '';
-    }
-
-    showNoData() {
-        document.getElementById('loadingState').classList.add('hidden');
-        document.getElementById('noDataState').classList.remove('hidden');
-        document.getElementById('productsGrid').innerHTML = '';
-    }
-
-    updateAnalytics() {
-        document.getElementById('totalProducts').textContent = this.analytics.total_products || 0;
-        document.getElementById('avgPrice').textContent = this.analytics.price_stats ? 
-            `$${this.analytics.price_stats.average.toFixed(2)}` : '$0';
-        document.getElementById('priceRange').textContent = this.analytics.price_stats ? 
-            `$${this.analytics.price_stats.min.toFixed(2)} - $${this.analytics.price_stats.max.toFixed(2)}` : '$0 - $0';
-        document.getElementById('totalCategories').textContent = 
-            Object.keys(this.analytics.categories || {}).length;
-    }
-
-    updateCharts() {
-        this.createPriceChart();
-        this.createCategoryChart();
-    }
-
-    createPriceChart() {
-        const ctx = document.getElementById('priceChart').getContext('2d');
+    async refreshData() {
+        const refreshBtn = document.getElementById('refreshBtn');
+        const originalText = refreshBtn.innerHTML;
         
-        if (this.charts.priceChart) {
-            this.charts.priceChart.destroy();
-        }
-
-        const priceRanges = this.analytics.price_ranges || {};
+        refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Refreshing...';
+        refreshBtn.disabled = true;
         
-        this.charts.priceChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: Object.keys(priceRanges),
-                datasets: [{
-                    label: 'Number of Products',
-                    data: Object.values(priceRanges),
-                    backgroundColor: [
-                        'rgba(59, 130, 246, 0.8)',
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(245, 101, 101, 0.8)',
-                        'rgba(139, 92, 246, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgb(59, 130, 246)',
-                        'rgb(16, 185, 129)',
-                        'rgb(245, 101, 101)',
-                        'rgb(139, 92, 246)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    createCategoryChart() {
-        const ctx = document.getElementById('categoryChart').getContext('2d');
-        
-        if (this.charts.categoryChart) {
-            this.charts.categoryChart.destroy();
-        }
-
-        const categories = this.analytics.categories || {};
-        const sortedCategories = Object.entries(categories)
-            .sort(([,a], [,b]) => b - a)
-            .slice(0, 8); // Top 8 categories
-
-        this.charts.categoryChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: sortedCategories.map(([name]) => name || 'Other'),
-                datasets: [{
-                    data: sortedCategories.map(([, count]) => count),
-                    backgroundColor: [
-                        '#3B82F6', '#10B981', '#F59E0B', '#EF4444',
-                        '#8B5CF6', '#06B6D4', '#84CC16', '#F97316'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 10,
-                            usePointStyle: true,
-                            font: {
-                                size: 12
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    populateFilters() {
-        console.log('Populating filters with analytics:', this.analytics);
-        
-        // Populate categories
-        const categorySelect = document.getElementById('categoryFilter');
-        categorySelect.innerHTML = '<option value="">All Categories</option>';
-        
-        const categories = Object.keys(this.analytics.categories || {}).sort();
-        console.log('Available categories:', categories);
-        categories.forEach(category => {
-            if (category) {
-                const option = document.createElement('option');
-                option.value = category;
-                option.textContent = `${category} (${this.analytics.categories[category]})`;
-                categorySelect.appendChild(option);
-            }
-        });
-        
-        // Populate goals
-        const goalSelect = document.getElementById('goalFilter');
-        goalSelect.innerHTML = '<option value="">All Goals</option>';
-        
-        const goals = Object.keys(this.analytics.goals || {}).sort();
-        console.log('Available goals:', goals);
-        goals.forEach(goal => {
-            if (goal && goal !== 'General Health') {
-                const option = document.createElement('option');
-                option.value = goal;
-                option.textContent = `${goal} (${this.analytics.goals[goal]})`;
-                goalSelect.appendChild(option);
-            }
-        });
-    }
-
-    async applyFilters() {
-        const search = document.getElementById('searchInput').value;
-        const category = document.getElementById('categoryFilter').value;
-        const goal = document.getElementById('goalFilter').value;
-        const minPrice = document.getElementById('minPrice').value;
-        const maxPrice = document.getElementById('maxPrice').value;
-        const sortBy = document.getElementById('sortBy').value;
-
-        console.log('Applying filters:', { search, category, goal, minPrice, maxPrice, sortBy });
-
-        const params = new URLSearchParams();
-        if (search) params.append('search', search);
-        if (category) params.append('category', category);
-        if (goal) params.append('goal', goal);
-        if (minPrice) params.append('minPrice', minPrice);
-        if (maxPrice) params.append('maxPrice', maxPrice);
-        if (sortBy) params.append('sortBy', sortBy);
-
-        // Add cache-busting to filtered requests too
-        const separator = params.toString() ? '&' : '?';
-        const cacheBuster = `${separator}t=${Date.now()}`;
-        const url = `/api/products?${params.toString()}${cacheBuster}`;
-        console.log('Fetching URL:', url);
-
         try {
-            const response = await fetch(url);
-            const data = await response.json();
-            console.log('Filter results:', data.total, 'products');
-            this.renderProducts(data.products);
+            await this.loadInitialData();
         } catch (error) {
-            console.error('Error applying filters:', error);
+            console.error('Refresh failed:', error);
+            this.showError('Failed to refresh data');
+        } finally {
+            refreshBtn.innerHTML = originalText;
+            refreshBtn.disabled = false;
         }
     }
 
-    renderProducts(products) {
-        const grid = document.getElementById('productsGrid');
-        const productCount = document.getElementById('productCount');
-        
-        document.getElementById('loadingState').classList.add('hidden');
-        document.getElementById('noDataState').classList.add('hidden');
-        
-        productCount.textContent = products.length;
+    async loadProducts() {
+        try {
+            const { data, error } = await this.supabase
+                .from('products')
+                .select('*')
+                .order('title', { ascending: true });
 
-        if (products.length === 0) {
-            grid.innerHTML = `
-                <div class="col-span-full text-center py-12">
-                    <i class="fas fa-search text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-500">No products found matching your criteria</p>
-                </div>
-            `;
+            if (error) throw error;
+
+            this.products = data || [];
+            this.renderProducts();
+            this.updateProductFilters();
+            
+        } catch (error) {
+            console.error('Failed to load products:', error);
+            this.products = [];
+            this.renderProducts();
+        }
+    }
+
+    async loadCategories() {
+        try {
+            const { data, error } = await this.supabase
+                .from('categories')
+                .select('*')
+                .order('name', { ascending: true });
+
+            if (error) throw error;
+
+            this.categories = data || [];
+            this.renderCategories();
+            
+        } catch (error) {
+            console.error('Failed to load categories:', error);
+            this.categories = [];
+            this.renderCategories();
+        }
+    }
+
+    async loadGoals() {
+        try {
+            const { data, error } = await this.supabase
+                .from('goals')
+                .select('*')
+                .order('name', { ascending: true });
+
+            if (error) throw error;
+
+            this.goals = data || [];
+            this.renderGoals();
+            
+        } catch (error) {
+            console.error('Failed to load goals:', error);
+            this.goals = [];
+            this.renderGoals();
+        }
+    }
+
+    renderProducts() {
+        const grid = document.getElementById('productsGrid');
+        const loading = document.getElementById('loadingProducts');
+        const noProducts = document.getElementById('noProducts');
+        const productCount = document.getElementById('productCount');
+
+        loading.classList.add('hidden');
+        
+        if (!this.products || this.products.length === 0) {
+            grid.classList.add('hidden');
+            noProducts.classList.remove('hidden');
+            productCount.textContent = '0';
             return;
         }
 
-        grid.innerHTML = products.map(product => {
-            const price = this.extractPrice(product.price);
-            const priceDisplay = price > 0 ? `$${price.toFixed(2)}` : product.price;
-            
-            return `
-                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                    ${product.image ? `
-                        <img src="${product.image}" alt="${product.title}" 
-                             class="w-full h-48 object-cover" 
-                             onerror="this.style.display='none'">
-                    ` : `
-                        <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
-                            <i class="fas fa-image text-gray-400 text-4xl"></i>
-                        </div>
-                    `}
-                    
-                    <div class="p-4">
-                        <h4 class="font-semibold text-gray-900 mb-2 line-clamp-2">${product.title}</h4>
-                        
-                        <div class="mb-2">
-                            <div class="flex justify-between items-center">
-                                <div class="pricing">
-                                    <span class="text-lg font-bold text-green-600">${priceDisplay}</span>
-                                    ${product.subscriptionPrice && product.subscriptionPrice !== priceDisplay ? `
-                                        <div class="text-sm text-blue-600 font-medium">
-                                            Subscribe: ${product.subscriptionPrice}
-                                        </div>
-                                    ` : ''}
-                                    ${product.originalPrice ? `
-                                        <span class="text-sm text-gray-500 line-through ml-2">${product.originalPrice}</span>
-                                    ` : ''}
-                                </div>
-                                ${product.availability ? `
-                                    <span class="text-xs px-2 py-1 rounded-full ${
-                                        product.availability.toLowerCase().includes('out') ? 
-                                        'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
-                                    }">
-                                        ${product.availability}
-                                    </span>
-                                ` : ''}
-                            </div>
-                        </div>
+        noProducts.classList.add('hidden');
+        grid.classList.remove('hidden');
+        productCount.textContent = this.products.length;
 
-                        ${product.categories && product.categories.length > 0 ? `
-                            <div class="mb-1">
-                                <p class="text-xs text-gray-600">
-                                    <i class="fas fa-tags mr-1"></i><strong>Categories:</strong>
-                                </p>
-                                <div class="flex flex-wrap gap-1 mt-1">
-                                    ${product.categories.slice(0, 3).map(cat => 
-                                        `<span class="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">${cat}</span>`
-                                    ).join('')}
-                                    ${product.categories.length > 3 ? 
-                                        `<span class="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">+${product.categories.length - 3} more</span>` 
-                                        : ''}
-                                </div>
-                            </div>
-                        ` : product.category ? `
-                            <p class="text-xs text-gray-600 mb-1">
-                                <i class="fas fa-tag mr-1"></i><strong>Category:</strong> ${product.category}
-                            </p>
-                        ` : ''}
-                        
-                        ${product.goals && product.goals.length > 0 ? `
-                            <div class="mb-2">
-                                <p class="text-xs text-blue-600">
-                                    <i class="fas fa-bullseye mr-1"></i><strong>Goals:</strong>
-                                </p>
-                                <div class="flex flex-wrap gap-1 mt-1">
-                                    ${product.goals.slice(0, 2).map(goal => 
-                                        `<span class="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded-full">${goal}</span>`
-                                    ).join('')}
-                                    ${product.goals.length > 2 ? 
-                                        `<span class="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded-full">+${product.goals.length - 2} more</span>` 
-                                        : ''}
-                                </div>
-                            </div>
-                        ` : product.primaryGoal ? `
-                            <p class="text-xs text-blue-600 mb-2">
-                                <i class="fas fa-bullseye mr-1"></i><strong>Goal:</strong> ${product.primaryGoal}
-                            </p>
-                        ` : ''}
+        grid.innerHTML = this.products.map(product => this.createProductCard(product)).join('');
+    }
 
-                        ${product.description ? `
-                            <p class="text-sm text-gray-600 mb-3 line-clamp-3">${product.description}</p>
-                        ` : ''}
-
-                        ${product.benefits ? `
-                            <div class="mb-3">
-                                <h5 class="text-xs font-medium text-gray-700 mb-1">Benefits:</h5>
-                                <p class="text-xs text-gray-600 line-clamp-2">${product.benefits}</p>
-                            </div>
-                        ` : ''}
-
-                        <div class="flex justify-between items-center">
-                            <div class="flex space-x-2">
-                                ${product.link ? `
-                                    <a href="${product.link}" target="_blank" 
-                                       class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                        View Product <i class="fas fa-external-link-alt ml-1"></i>
-                                    </a>
-                                ` : ''}
-                                <button onclick="toggleEditMode('${product.title.replace(/'/g, "\\'")}', '${(product.categories || []).join(',').replace(/'/g, "\\'")}', '${(product.goals || []).join(',').replace(/'/g, "\\'")}')" 
-                                        class="text-green-600 hover:text-green-800 text-sm font-medium">
-                                    <i class="fas fa-edit mr-1"></i>Edit
-                                </button>
-                            </div>
-                            
-                            ${product.rating ? `
-                                <div class="flex items-center text-yellow-500">
-                                    <i class="fas fa-star mr-1"></i>
-                                    <span class="text-sm">${product.rating}</span>
-                                </div>
-                            ` : ''}
-                        </div>
+    createProductCard(product) {
+        const price = product.price_amount ? `$${product.price_amount}` : 'N/A';
+        const image = product.main_image || product.image || 'https://via.placeholder.com/300x200?text=No+Image';
+        const title = product.title || 'Untitled Product';
+        const description = product.description ? 
+            (product.description.length > 100 ? product.description.substring(0, 100) + '...' : product.description) : 
+            'No description available';
+        
+        return `
+            <div class="product-card bg-white rounded-lg shadow overflow-hidden fade-in">
+                <img src="${image}" alt="${title}" class="w-full h-48 object-cover" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                <div class="p-4">
+                    <h4 class="font-heading font-semibold text-lg text-gray-900 mb-2">${title}</h4>
+                    <p class="text-gray-600 text-sm mb-3">${description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-semibold text-primary">${price}</span>
+                        <button onclick="app.editProduct(${product.id})" 
+                                class="bg-secondary text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                            <i class="fas fa-edit mr-1"></i>Edit
+                        </button>
                     </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    extractPrice(priceString) {
-        const matches = priceString.match(/[\d,]+\.?\d*/);
-        return matches ? parseFloat(matches[0].replace(',', '')) : 0;
-    }
-
-    updateLastUpdated(timestamp) {
-        if (timestamp) {
-            const date = new Date(timestamp);
-            document.getElementById('lastUpdated').textContent = 
-                `Last updated: ${date.toLocaleString()}`;
-        }
-    }
-}
-
-// Auto-initialization disabled - controlled by navigation.js
-// document.addEventListener('DOMContentLoaded', () => {
-//     window.analyzer = new MomentousAnalyzer();
-// });
-
-// Helper function for running scraper (if needed)
-async function runScraper() {
-    alert('To run the scraper, execute: npm run scrape in your terminal');
-}
-
-// Edit functionality
-let currentEditProduct = null;
-
-function toggleEditMode(productTitle, currentCategories, currentGoals) {
-    currentEditProduct = productTitle;
-    
-    // Create modal if it doesn't exist
-    let modal = document.getElementById('editModal');
-    if (!modal) {
-        createEditModal();
-        modal = document.getElementById('editModal');
-    }
-    
-    // Populate form with current data
-    document.getElementById('editProductTitle').textContent = productTitle;
-    document.getElementById('editCategories').value = currentCategories || '';
-    document.getElementById('editGoals').value = currentGoals || '';
-    
-    // Show modal
-    modal.classList.remove('hidden');
-}
-
-function createEditModal() {
-    const modal = document.createElement('div');
-    modal.id = 'editModal';
-    modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 hidden';
-    
-    modal.innerHTML = `
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-lg max-w-md w-full p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900">Edit Product</h3>
-                    <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="mb-4">
-                    <h4 id="editProductTitle" class="font-medium text-gray-700 mb-3"></h4>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Categories</label>
-                        <input type="text" id="editCategories" 
-                               placeholder="Enter categories separated by commas"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <p class="text-xs text-gray-500 mt-1">Separate multiple categories with commas</p>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Goals</label>
-                        <input type="text" id="editGoals" 
-                               placeholder="Enter goals separated by commas"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <p class="text-xs text-gray-500 mt-1">Separate multiple goals with commas</p>
-                    </div>
-                </div>
-                
-                <div class="flex justify-end space-x-3">
-                    <button onclick="closeEditModal()" 
-                            class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200">
-                        Cancel
-                    </button>
-                    <button onclick="saveProductEdit()" 
-                            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                        Save Changes
-                    </button>
                 </div>
             </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-}
-
-function closeEditModal() {
-    const modal = document.getElementById('editModal');
-    if (modal) {
-        modal.classList.add('hidden');
+        `;
     }
-    currentEditProduct = null;
-}
 
-async function saveProductEdit() {
-    if (!currentEditProduct) return;
-    
-    const categoriesInput = document.getElementById('editCategories').value;
-    const goalsInput = document.getElementById('editGoals').value;
-    
-    const categories = categoriesInput ? categoriesInput.split(',').map(c => c.trim()).filter(c => c) : [];
-    const goals = goalsInput ? goalsInput.split(',').map(g => g.trim()).filter(g => g) : [];
-    
-    try {
-        const response = await fetch(`/api/products/${encodeURIComponent(currentEditProduct)}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                categories,
-                goals
-            })
-        });
+    renderCategories() {
+        const container = document.getElementById('categoriesList');
         
-        if (response.ok) {
-            // Close modal
-            closeEditModal();
+        if (!this.categories || this.categories.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-8">No categories found</p>';
+            return;
+        }
+
+        container.innerHTML = this.categories.map(category => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span class="font-medium text-gray-900">${category.name}</span>
+                <button onclick="app.deleteCategory(${category.id})" 
+                        class="text-red-600 hover:text-red-800 text-sm">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    renderGoals() {
+        const container = document.getElementById('goalsList');
+        
+        if (!this.goals || this.goals.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-8">No goals found</p>';
+            return;
+        }
+
+        container.innerHTML = this.goals.map(goal => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span class="font-medium text-gray-900">${goal.name}</span>
+                <button onclick="app.deleteGoal(${goal.id})" 
+                        class="text-red-600 hover:text-red-800 text-sm">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    updateProductFilters() {
+        // Update category filter
+        const categoryFilter = document.getElementById('categoryFilter');
+        const uniqueCategories = [...new Set(this.products.map(p => p.category).filter(Boolean))];
+        
+        categoryFilter.innerHTML = '<option value="">All Categories</option>' + 
+            uniqueCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+
+        // Update goal filter  
+        const goalFilter = document.getElementById('goalFilter');
+        const uniqueGoals = [...new Set(this.products.map(p => p.primary_goal).filter(Boolean))];
+        
+        goalFilter.innerHTML = '<option value="">All Goals</option>' + 
+            uniqueGoals.map(goal => `<option value="${goal}">${goal}</option>`).join('');
+    }
+
+    filterProducts() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const categoryFilter = document.getElementById('categoryFilter').value;
+        const goalFilter = document.getElementById('goalFilter').value;
+        const sortFilter = document.getElementById('sortFilter').value;
+
+        let filtered = [...this.products];
+
+        // Apply search filter
+        if (search) {
+            filtered = filtered.filter(product => 
+                (product.title?.toLowerCase() || '').includes(search) ||
+                (product.description?.toLowerCase() || '').includes(search)
+            );
+        }
+
+        // Apply category filter
+        if (categoryFilter) {
+            filtered = filtered.filter(product => product.category === categoryFilter);
+        }
+
+        // Apply goal filter
+        if (goalFilter) {
+            filtered = filtered.filter(product => product.primary_goal === goalFilter);
+        }
+
+        // Apply sorting
+        if (sortFilter) {
+            switch (sortFilter) {
+                case 'title':
+                    filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                    break;
+                case 'title_desc':
+                    filtered.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+                    break;
+                case 'price_asc':
+                    filtered.sort((a, b) => (a.price_amount || 0) - (b.price_amount || 0));
+                    break;
+                case 'price_desc':
+                    filtered.sort((a, b) => (b.price_amount || 0) - (a.price_amount || 0));
+                    break;
+            }
+        }
+
+        // Update the products display
+        const originalProducts = this.products;
+        this.products = filtered;
+        this.renderProducts();
+        this.products = originalProducts; // Restore original list
+    }
+
+    async updateDashboard() {
+        try {
+            const totalProducts = this.products.length;
+            const avgPrice = this.products.length > 0 ? 
+                this.products.reduce((sum, p) => sum + (p.price_amount || 0), 0) / this.products.length : 0;
             
-            // Refresh the data to show updated product
-            if (window.analyzer) {
-                await window.analyzer.loadData();
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('avgPrice').textContent = `$${avgPrice.toFixed(2)}`;
+            document.getElementById('totalCategories').textContent = this.categories.length;
+            document.getElementById('totalGoals').textContent = this.goals.length;
+            
+        } catch (error) {
+            console.error('Failed to update dashboard:', error);
+        }
+    }
+
+    async editProduct(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (!product) return;
+
+        this.currentProduct = product;
+        this.showEditProductModal(product);
+    }
+
+    showAddProductModal() {
+        this.currentProduct = null;
+        this.showEditProductModal();
+    }
+
+    showEditProductModal(product = null) {
+        const modal = document.getElementById('productModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const form = document.getElementById('productForm');
+
+        modalTitle.textContent = product ? 'Edit Product' : 'Add Product';
+        
+        // Generate form fields
+        form.innerHTML = this.generateProductForm(product);
+        
+        modal.classList.remove('hidden');
+    }
+
+    generateProductForm(product) {
+        const data = product || {};
+        
+        return `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
+                    <input type="text" name="title" value="${data.title || ''}" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Handle/Slug</label>
+                    <input type="text" name="handle" value="${data.handle || ''}"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
+                    <input type="number" name="price_amount" value="${data.price_amount || ''}" step="0.01"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+                    <select name="price_currency" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="USD" ${data.price_currency === 'USD' ? 'selected' : ''}>USD</option>
+                        <option value="EUR" ${data.price_currency === 'EUR' ? 'selected' : ''}>EUR</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                    <select name="category" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">Select category...</option>
+                        ${this.categories.map(cat => 
+                            `<option value="${cat.name}" ${data.category === cat.name ? 'selected' : ''}>${cat.name}</option>`
+                        ).join('')}
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Primary Goal</label>
+                    <select name="primary_goal" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">Select goal...</option>
+                        ${this.goals.map(goal => 
+                            `<option value="${goal.name}" ${data.primary_goal === goal.name ? 'selected' : ''}>${goal.name}</option>`
+                        ).join('')}
+                    </select>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                    <input type="url" name="main_image" value="${data.main_image || ''}"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Link</label>
+                    <input type="url" name="link" value="${data.link || ''}"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea name="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">${data.description || ''}</textarea>
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Description</label>
+                    <textarea name="full_description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">${data.full_description || ''}</textarea>
+                </div>
+            </div>
+        `;
+    }
+
+    hideModal() {
+        document.getElementById('productModal').classList.add('hidden');
+    }
+
+    async saveProduct() {
+        const form = document.getElementById('productForm');
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Convert numeric fields
+        if (data.price_amount) data.price_amount = parseFloat(data.price_amount);
+        
+        try {
+            let result;
+            
+            if (this.currentProduct) {
+                // Update existing product
+                result = await this.supabase
+                    .from('products')
+                    .update(data)
+                    .eq('id', this.currentProduct.id);
+            } else {
+                // Create new product
+                result = await this.supabase
+                    .from('products')
+                    .insert([data]);
             }
             
-            // Show success message
-            showNotification('Product updated successfully!', 'success');
-        } else {
-            const error = await response.json();
-            showNotification(`Failed to update product: ${error.error}`, 'error');
+            if (result.error) throw result.error;
+            
+            this.hideModal();
+            await this.loadProducts();
+            await this.updateDashboard();
+            
+            alert(this.currentProduct ? 'Product updated successfully!' : 'Product created successfully!');
+            
+        } catch (error) {
+            console.error('Failed to save product:', error);
+            alert('Failed to save product. Please try again.');
         }
-    } catch (error) {
-        console.error('Error updating product:', error);
-        showNotification('Failed to update product. Please try again.', 'error');
+    }
+
+    async addCategory() {
+        const name = prompt('Enter category name:');
+        if (!name) return;
+        
+        try {
+            const { error } = await this.supabase
+                .from('categories')
+                .insert([{ name: name.trim() }]);
+                
+            if (error) throw error;
+            
+            await this.loadCategories();
+            alert('Category added successfully!');
+            
+        } catch (error) {
+            console.error('Failed to add category:', error);
+            alert('Failed to add category. Please try again.');
+        }
+    }
+
+    async addGoal() {
+        const name = prompt('Enter goal name:');
+        if (!name) return;
+        
+        try {
+            const { error } = await this.supabase
+                .from('goals')
+                .insert([{ name: name.trim() }]);
+                
+            if (error) throw error;
+            
+            await this.loadGoals();
+            alert('Goal added successfully!');
+            
+        } catch (error) {
+            console.error('Failed to add goal:', error);
+            alert('Failed to add goal. Please try again.');
+        }
+    }
+
+    async deleteCategory(categoryId) {
+        if (!confirm('Are you sure you want to delete this category?')) return;
+        
+        try {
+            const { error } = await this.supabase
+                .from('categories')
+                .delete()
+                .eq('id', categoryId);
+                
+            if (error) throw error;
+            
+            await this.loadCategories();
+            alert('Category deleted successfully!');
+            
+        } catch (error) {
+            console.error('Failed to delete category:', error);
+            alert('Failed to delete category. Please try again.');
+        }
+    }
+
+    async deleteGoal(goalId) {
+        if (!confirm('Are you sure you want to delete this goal?')) return;
+        
+        try {
+            const { error } = await this.supabase
+                .from('goals')
+                .delete()
+                .eq('id', goalId);
+                
+            if (error) throw error;
+            
+            await this.loadGoals();
+            alert('Goal deleted successfully!');
+            
+        } catch (error) {
+            console.error('Failed to delete goal:', error);
+            alert('Failed to delete goal. Please try again.');
+        }
+    }
+
+    // Utility function
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
 }
 
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `fixed top-4 right-4 z-50 px-4 py-2 rounded-md text-white ${
-        type === 'success' ? 'bg-green-600' : 
-        type === 'error' ? 'bg-red-600' : 
-        'bg-blue-600'
-    } shadow-lg`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-}
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.app = new ProductManager();
+});

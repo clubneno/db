@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": false,
+  "tsx": false,
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "src/globals.css",
+    "baseColor": "slate",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "./components",
+    "utils": "./lib/utils"
+  },
+  "registries": {
+    "@shadcn": {
+      "url": "https://ui.shadcn.com/registry",
+      "style": "default",
+      "baseColor": "slate"
+    },
+    "@originui": {
+      "url": "https://originui.com/registry",
+      "style": "default",
+      "baseColor": "slate"
+    },
+    "@aceternity": {
+      "url": "https://aceternity.com/registry",
+      "style": "default", 
+      "baseColor": "slate"
+    },
+    "@magicui": {
+      "url": "https://magicui.design/registry",
+      "style": "default",
+      "baseColor": "slate"
+    }
+  }
+}

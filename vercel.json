@@ -1,15 +1,16 @@
 {
+  "version": 2,
+  "functions": {
+    "server.js": {
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/api/index.js"
+      "destination": "/server.js"
     }
   ],
-  "functions": {
-    "api/*.js": {
-      "maxDuration": 10
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",
@@ -19,14 +20,21 @@
           "value": "no-cache, no-store, must-revalidate"
         },
         {
-          "key": "Pragma",
-          "value": "no-cache"
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         },
         {
-          "key": "Expires",
-          "value": "0"
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
         }
       ]
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }

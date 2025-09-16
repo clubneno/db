@@ -1,29 +1,16 @@
 {
   "name": "clubneno-db",
   "version": "1.0.0",
-  "description": "A beautiful product scraper and analysis tool for Clubneno supplements",
+  "description": "A modern product management system for Momentous supplements with Supabase backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "scrape": "node enhanced-scraper.js",
-    "scrape-basic": "node scraper.js",
-    "build": "npm run scrape && npm start",
-    "full-scrape": "node enhanced-scraper.js",
-    "migrate": "node migrate-v2.js",
-    "migrate-v2": "node migrate-v2.js",
-    "migrate-resume": "node migrate-v2.js --auto-resume",
-    "migrate-versions": "node migrate-v2.js --list-versions",
-    "migrate-mcp": "node mcp-migration-live.js",
-    "migrate-mcp-demo": "node demo-mcp-migration.js"
+    "dev": "nodemon server.js"
   },
   "dependencies": {
-    "puppeteer": "^21.0.0",
     "express": "^4.18.2",
     "cors": "^2.8.5",
-    "cheerio": "^1.0.0-rc.12",
     "axios": "^1.5.0",
-    "sqlite3": "^5.1.6",
     "moment": "^2.29.4",
     "@supabase/supabase-js": "^2.38.0"
   },
