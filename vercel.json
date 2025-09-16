@@ -1,14 +1,18 @@
 {
   "version": 2,
   "functions": {
-    "server.js": {
+    "api/*.js": {
       "maxDuration": 30
     }
   },
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/server.js"
+      "destination": "/public/$1"
     }
   ],
   "headers": [
