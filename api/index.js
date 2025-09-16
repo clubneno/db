@@ -205,14 +205,14 @@ module.exports = async (req, res) => {
         .filter(p => p !== null && !isNaN(p));
       
       const categories = {};
-      const goals = {};
+      const subcategories = {};
       
       products.forEach(product => {
         if (product.category) {
           categories[product.category] = (categories[product.category] || 0) + 1;
         }
-        if (product.primary_goal) {
-          goals[product.primary_goal] = (goals[product.primary_goal] || 0) + 1;
+        if (product.subcategory) {
+          subcategories[product.subcategory] = (subcategories[product.subcategory] || 0) + 1;
         }
       });
       
@@ -234,7 +234,7 @@ module.exports = async (req, res) => {
         total_products: products.length,
         price_stats: priceStats,
         categories,
-        goals,
+        subcategories,
         price_ranges: priceRanges,
         source: 'supabase'
       });
@@ -292,57 +292,7 @@ module.exports = async (req, res) => {
       return sendResponse(res, { success: true });
     }
 
-    // Route: /api/goals
-    if (path === '/api/goals' && method === 'GET') {
-      const { data, error } = await supabase
-        .from('goals')
-        .select('*')
-        .order('name', { ascending: true });
-      
-      if (error) {
-        return handleError(res, error, 'Failed to fetch goals');
-      }
-      
-      return sendResponse(res, { goals: data || [] });
-    }
-
-    // Route: /api/goals POST (Create goal)
-    if (path === '/api/goals' && method === 'POST') {
-      const { name } = req.body;
-      
-      if (!name) {
-        return res.status(400).json({ error: 'Goal name is required' });
-      }
-      
-      const { data, error } = await supabase
-        .from('goals')
-        .insert([{ name: name.trim() }])
-        .select();
-      
-      if (error) {
-        return handleError(res, error, 'Failed to create goal');
-      }
-      
-      return sendResponse(res, {
-        success: true,
-        goal: data[0]
-      });
-    }
-
-    // Route: /api/goals/:id DELETE (Delete goal)
-    if (path.match(/^\/api\/goals\/\d+$/) && method === 'DELETE') {
-      const id = path.split('/')[3];
-      const { error } = await supabase
-        .from('goals')
-        .delete()
-        .eq('id', id);
-      
-      if (error) {
-        return handleError(res, error, 'Failed to delete goal');
-      }
-      
-      return sendResponse(res, { success: true });
-    }
+    // Goals endpoints removed - using hierarchical categories instead
 
     // Default route - serve static files or 404
     if (path === '/' || path === '/index.html') {

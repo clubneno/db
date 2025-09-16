@@ -7,7 +7,7 @@ class ProductManager {
         this.currentUser = null;
         this.products = [];
         this.categories = [];
-        this.goals = [];
+        this.subcategories = [];
         this.currentProduct = null;
         
         this.init();
@@ -142,7 +142,7 @@ class ProductManager {
             this.debounce(() => this.filterProducts(), 300)
         );
         
-        ['categoryFilter', 'goalFilter', 'sortFilter'].forEach(id => {
+        ['categoryFilter', 'subcategoryFilter', 'sortFilter'].forEach(id => {
             document.getElementById(id).addEventListener('change', () => {
                 this.filterProducts();
             });
@@ -162,13 +162,13 @@ class ProductManager {
             this.saveProduct();
         });
 
-        // Add category/goal buttons
+        // Add category/subcategory buttons
         document.getElementById('addCategoryBtn').addEventListener('click', () => {
             this.addCategory();
         });
         
-        document.getElementById('addGoalBtn').addEventListener('click', () => {
-            this.addGoal();
+        document.getElementById('addSubcategoryBtn').addEventListener('click', () => {
+            this.addSubcategory();
         });
     }
 
@@ -212,7 +212,6 @@ class ProductManager {
                 break;
             case 'categories':
                 await this.loadCategories();
-                await this.loadGoals();
                 break;
         }
     }
@@ -223,8 +222,7 @@ class ProductManager {
         try {
             await Promise.all([
                 this.loadProducts(),
-                this.loadCategories(), 
-                this.loadGoals()
+                this.loadCategories()
             ]);
             
             await this.updateDashboard();
@@ -292,22 +290,23 @@ class ProductManager {
         }
     }
 
-    async loadGoals() {
+    async loadSubcategories() {
         try {
             const { data, error } = await this.supabase
-                .from('goals')
+                .from('categories')
                 .select('*')
+                .eq('is_sub_category', true)
                 .order('name', { ascending: true });
 
             if (error) throw error;
 
-            this.goals = data || [];
-            this.renderGoals();
+            this.subcategories = data || [];
+            this.renderSubcategories();
             
         } catch (error) {
-            console.error('Failed to load goals:', error);
-            this.goals = [];
-            this.renderGoals();
+            console.error('Failed to load subcategories:', error);
+            this.subcategories = [];
+            this.renderSubcategories();
         }
     }
 
@@ -360,41 +359,61 @@ class ProductManager {
     }
 
     renderCategories() {
-        const container = document.getElementById('categoriesList');
+        const mainContainer = document.getElementById('mainCategoriesList');
+        const subContainer = document.getElementById('subcategoriesList');
         
-        if (!this.categories || this.categories.length === 0) {
-            container.innerHTML = '<p class="text-gray-500 text-center py-8">No categories found</p>';
-            return;
+        // Filter main categories and subcategories
+        const mainCategories = this.categories.filter(cat => !cat.is_sub_category);
+        const subcategories = this.categories.filter(cat => cat.is_sub_category);
+        
+        // Render main categories
+        if (!mainCategories || mainCategories.length === 0) {
+            mainContainer.innerHTML = '<p class="text-gray-500 text-center py-8">No main categories found</p>';
+        } else {
+            mainContainer.innerHTML = mainCategories.map(category => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-folder text-primary mr-3"></i>
+                        <span class="font-medium text-gray-900">${category.name}</span>
+                    </div>
+                    <button onclick="app.deleteCategory(${category.id})" 
+                            class="text-red-600 hover:text-red-800 text-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
         }
-
-        container.innerHTML = this.categories.map(category => `
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span class="font-medium text-gray-900">${category.name}</span>
-                <button onclick="app.deleteCategory(${category.id})" 
-                        class="text-red-600 hover:text-red-800 text-sm">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `).join('');
+        
+        // Render subcategories
+        if (!subcategories || subcategories.length === 0) {
+            subContainer.innerHTML = '<p class="text-gray-500 text-center py-8">No subcategories found</p>';
+        } else {
+            subContainer.innerHTML = subcategories.map(subcategory => {
+                const parentCategory = this.categories.find(cat => cat.id === subcategory.parent_id);
+                const parentName = parentCategory ? parentCategory.name : 'Unknown';
+                return `
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-folder-open text-secondary mr-3"></i>
+                            <div>
+                                <span class="font-medium text-gray-900">${subcategory.name}</span>
+                                <div class="text-xs text-gray-500">under ${parentName}</div>
+                            </div>
+                        </div>
+                        <button onclick="app.deleteCategory(${subcategory.id})" 
+                                class="text-red-600 hover:text-red-800 text-sm">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
     }
 
-    renderGoals() {
-        const container = document.getElementById('goalsList');
-        
-        if (!this.goals || this.goals.length === 0) {
-            container.innerHTML = '<p class="text-gray-500 text-center py-8">No goals found</p>';
-            return;
-        }
-
-        container.innerHTML = this.goals.map(goal => `
-            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span class="font-medium text-gray-900">${goal.name}</span>
-                <button onclick="app.deleteGoal(${goal.id})" 
-                        class="text-red-600 hover:text-red-800 text-sm">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `).join('');
+    renderSubcategories() {
+        // This function is now handled within renderCategories()
+        // Keep for compatibility but delegate to renderCategories
+        this.renderCategories();
     }
 
     updateProductFilters() {
@@ -405,18 +424,18 @@ class ProductManager {
         categoryFilter.innerHTML = '<option value="">All Categories</option>' + 
             uniqueCategories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
 
-        // Update goal filter  
-        const goalFilter = document.getElementById('goalFilter');
-        const uniqueGoals = [...new Set(this.products.map(p => p.primary_goal).filter(Boolean))];
+        // Update subcategory filter  
+        const subcategoryFilter = document.getElementById('subcategoryFilter');
+        const uniqueSubcategories = [...new Set(this.products.map(p => p.subcategory).filter(Boolean))];
         
-        goalFilter.innerHTML = '<option value="">All Goals</option>' + 
-            uniqueGoals.map(goal => `<option value="${goal}">${goal}</option>`).join('');
+        subcategoryFilter.innerHTML = '<option value="">All Subcategories</option>' + 
+            uniqueSubcategories.map(subcat => `<option value="${subcat}">${subcat}</option>`).join('');
     }
 
     filterProducts() {
         const search = document.getElementById('searchInput').value.toLowerCase();
         const categoryFilter = document.getElementById('categoryFilter').value;
-        const goalFilter = document.getElementById('goalFilter').value;
+        const subcategoryFilter = document.getElementById('subcategoryFilter').value;
         const sortFilter = document.getElementById('sortFilter').value;
 
         let filtered = [...this.products];
@@ -434,9 +453,9 @@ class ProductManager {
             filtered = filtered.filter(product => product.category === categoryFilter);
         }
 
-        // Apply goal filter
-        if (goalFilter) {
-            filtered = filtered.filter(product => product.primary_goal === goalFilter);
+        // Apply subcategory filter
+        if (subcategoryFilter) {
+            filtered = filtered.filter(product => product.subcategory === subcategoryFilter);
         }
 
         // Apply sorting
@@ -470,10 +489,13 @@ class ProductManager {
             const avgPrice = this.products.length > 0 ? 
                 this.products.reduce((sum, p) => sum + (p.price_amount || 0), 0) / this.products.length : 0;
             
+            const mainCategories = this.categories.filter(cat => !cat.is_sub_category);
+            const subcategories = this.categories.filter(cat => cat.is_sub_category);
+            
             document.getElementById('totalProducts').textContent = totalProducts;
             document.getElementById('avgPrice').textContent = `$${avgPrice.toFixed(2)}`;
-            document.getElementById('totalCategories').textContent = this.categories.length;
-            document.getElementById('totalGoals').textContent = this.goals.length;
+            document.getElementById('totalCategories').textContent = mainCategories.length;
+            document.getElementById('totalSubcategories').textContent = subcategories.length;
             
         } catch (error) {
             console.error('Failed to update dashboard:', error);
@@ -548,11 +570,11 @@ class ProductManager {
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Primary Goal</label>
-                    <select name="primary_goal" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                        <option value="">Select goal...</option>
-                        ${this.goals.map(goal => 
-                            `<option value="${goal.name}" ${data.primary_goal === goal.name ? 'selected' : ''}>${goal.name}</option>`
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Subcategory</label>
+                    <select name="subcategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">Select subcategory...</option>
+                        ${this.categories.filter(cat => cat.is_sub_category).map(subcat => 
+                            `<option value="${subcat.name}" ${data.subcategory === subcat.name ? 'selected' : ''}>${subcat.name}</option>`
                         ).join('')}
                     </select>
                 </div>
@@ -644,23 +666,44 @@ class ProductManager {
         }
     }
 
-    async addGoal() {
-        const name = prompt('Enter goal name:');
-        if (!name) return;
+    async addSubcategory() {
+        // First, show available main categories
+        const mainCategories = this.categories.filter(cat => !cat.is_sub_category);
+        
+        if (mainCategories.length === 0) {
+            alert('Please create at least one main category first.');
+            return;
+        }
+        
+        const categoryOptions = mainCategories.map(cat => `${cat.id}: ${cat.name}`).join('\n');
+        const parentId = prompt(`Enter subcategory name, then parent category ID:\n\nAvailable categories:\n${categoryOptions}\n\nFormat: SubcategoryName|ParentID`);
+        
+        if (!parentId) return;
+        
+        const [subcategoryName, parentCategoryId] = parentId.split('|');
+        
+        if (!subcategoryName || !parentCategoryId) {
+            alert('Please use the format: SubcategoryName|ParentID');
+            return;
+        }
         
         try {
             const { error } = await this.supabase
-                .from('goals')
-                .insert([{ name: name.trim() }]);
+                .from('categories')
+                .insert([{ 
+                    name: subcategoryName.trim(), 
+                    parent_id: parseInt(parentCategoryId), 
+                    is_sub_category: true 
+                }]);
                 
             if (error) throw error;
             
-            await this.loadGoals();
-            alert('Goal added successfully!');
+            await this.loadCategories();
+            alert('Subcategory added successfully!');
             
         } catch (error) {
-            console.error('Failed to add goal:', error);
-            alert('Failed to add goal. Please try again.');
+            console.error('Failed to add subcategory:', error);
+            alert('Failed to add subcategory. Please try again.');
         }
     }
 
@@ -684,23 +727,23 @@ class ProductManager {
         }
     }
 
-    async deleteGoal(goalId) {
-        if (!confirm('Are you sure you want to delete this goal?')) return;
+    async deleteSubcategory(subcategoryId) {
+        if (!confirm('Are you sure you want to delete this subcategory?')) return;
         
         try {
             const { error } = await this.supabase
-                .from('goals')
+                .from('categories')
                 .delete()
-                .eq('id', goalId);
+                .eq('id', subcategoryId);
                 
             if (error) throw error;
             
-            await this.loadGoals();
-            alert('Goal deleted successfully!');
+            await this.loadCategories();
+            alert('Subcategory deleted successfully!');
             
         } catch (error) {
-            console.error('Failed to delete goal:', error);
-            alert('Failed to delete goal. Please try again.');
+            console.error('Failed to delete subcategory:', error);
+            alert('Failed to delete subcategory. Please try again.');
         }
     }
 
