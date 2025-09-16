@@ -349,14 +349,14 @@ app.delete('/api/categories/:id', async (req, res) => {
 // Helper function to check if table exists
 async function checkTableExists(tableName) {
   try {
-    const { data } = await supabase
-      .from('information_schema.tables')
-      .select('table_name')
-      .eq('table_schema', 'public')
-      .eq('table_name', tableName);
+    // Try to query the table directly with a limit of 0 to check existence
+    const { error } = await supabase
+      .from(tableName)
+      .select('*', { count: 'exact', head: true });
     
-    return data && data.length > 0;
+    return !error;
   } catch (error) {
+    console.log(`Table ${tableName} does not exist:`, error.message);
     return false;
   }
 }
@@ -427,12 +427,20 @@ app.post('/api/products/:productId/categories', async (req, res) => {
     const { productId } = req.params;
     const { category_ids } = req.body;
     
+    console.log('POST /api/products/:productId/categories called with:', {
+      productId,
+      category_ids,
+      body: req.body
+    });
+    
     if (!category_ids || !Array.isArray(category_ids)) {
+      console.log('Invalid category_ids:', category_ids);
       return res.status(400).json({ error: 'category_ids array is required' });
     }
     
     // Check if product_categories table exists
     const tableExists = await checkTableExists('product_categories');
+    console.log('Table product_categories exists:', tableExists);
     
     if (!tableExists) {
       return res.status(400).json({ 
